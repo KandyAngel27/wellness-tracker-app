@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Notification, Tray, Menu, ipcMain, nativeImage } = require('electron');
+const { app, BrowserWindow, Notification, Tray, Menu, ipcMain, nativeImage, powerMonitor } = require('electron');
 const path = require('path');
 const schedule = require('node-schedule');
 const fs = require('fs');
@@ -288,6 +288,14 @@ app.whenReady().then(() => {
     createWindow();
     createTray();
     setupAutoBackup();
+
+    // Listen for system resume (wake from sleep/hibernate)
+    powerMonitor.on('resume', () => {
+        console.log('System resumed from sleep - notifying renderer to check date');
+        if (mainWindow && mainWindow.webContents) {
+            mainWindow.webContents.send('system-resumed');
+        }
+    });
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {

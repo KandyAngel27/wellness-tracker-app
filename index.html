@@ -903,6 +903,16 @@
                 padding: 12px 8px;
                 font-size: 0.85em;
             }
+
+            .se-timeline-row {
+                grid-template-columns: 120px 80px 70px 70px 60px;
+                font-size: 0.8em;
+            }
+
+            .se-freq-label {
+                min-width: 110px;
+                font-size: 0.8em;
+            }
         }
 
         /* Notification Permission Banner */
@@ -928,6 +938,402 @@
             flex: 1;
             min-width: 200px;
         }
+
+        /* Medication Manager Styles */
+        .med-manager-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .med-manager-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .med-manager-item.prn {
+            border-left-color: #fd7e14;
+        }
+
+        .med-manager-item .med-manager-info {
+            flex: 1;
+        }
+
+        .med-manager-item .med-manager-name {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .med-manager-item .med-manager-schedule {
+            font-size: 0.85em;
+            color: #6c757d;
+        }
+
+        .med-manager-delete {
+            background: none;
+            border: none;
+            color: #dc3545;
+            font-size: 1.3em;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            opacity: 0.6;
+        }
+
+        .med-manager-delete:hover {
+            opacity: 1;
+            background: #fff5f5;
+        }
+
+        .med-manager-default-badge {
+            font-size: 0.7em;
+            background: #e9ecef;
+            color: #6c757d;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
+
+        /* Add Medication Form */
+        .add-med-form {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px dashed #667eea;
+            margin-top: 15px;
+        }
+
+        .add-med-form h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .emoji-picker {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .emoji-picker-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .emoji-picker-btn:hover {
+            border-color: #667eea;
+            transform: scale(1.1);
+        }
+
+        .emoji-picker-btn.selected {
+            border-color: #667eea;
+            background: #f0f3ff;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
+        }
+
+        .add-med-conditional {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .add-med-conditional.visible {
+            display: block;
+        }
+
+        .day-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .day-checkboxes label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+
+        /* Side Effects Patterns Tab */
+        .se-range-btn {
+            padding: 6px 16px;
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            background: white;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .se-range-btn.active, .se-range-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        .se-active-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .se-freq-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85em;
+        }
+        .se-freq-label {
+            min-width: 150px;
+            font-weight: 500;
+            color: #333;
+        }
+        .se-freq-bar-bg {
+            flex: 1;
+            height: 18px;
+            background: #f0f0f0;
+            border-radius: 9px;
+            overflow: hidden;
+        }
+        .se-freq-bar {
+            height: 100%;
+            border-radius: 9px;
+            transition: width 0.4s ease;
+            min-width: 2px;
+        }
+        .se-freq-count {
+            min-width: 55px;
+            text-align: right;
+            color: #666;
+            font-size: 0.85em;
+        }
+        .se-timeline-row {
+            display: grid;
+            grid-template-columns: 150px 1fr 100px 100px 80px;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.85em;
+        }
+        .se-timeline-header {
+            font-weight: 700;
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+            margin-bottom: 4px;
+        }
+        .se-streak-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 0.85em;
+        }
+        .se-streak-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 32px;
+            height: 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 700;
+            font-size: 0.8em;
+            padding: 0 8px;
+        }
+        .se-cat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            border-left: 4px solid;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+        .se-cat-card h4 {
+            margin: 0 0 8px 0;
+            font-size: 0.95em;
+        }
+        .se-cat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+            font-size: 0.85em;
+            color: #555;
+        }
+
+        /* PRN (As Needed) Section */
+        .prn-section {
+            background: linear-gradient(135deg, #fd7e14 0%, #e85d04 100%);
+            border-radius: 15px;
+            padding: 20px 25px;
+            color: white;
+            margin-top: 15px;
+        }
+
+        .prn-section h3 {
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .prn-section .prn-toggle {
+            font-size: 0.8em;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .prn-section .prn-toggle:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .prn-meds-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .prn-med-card {
+            background: rgba(255,255,255,0.15);
+            padding: 12px 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .prn-med-card .prn-med-info {
+            flex: 1;
+        }
+
+        .prn-med-card .prn-med-name {
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .prn-med-card .prn-dose-count {
+            font-size: 0.8em;
+            opacity: 0.85;
+        }
+
+        .prn-take-btn {
+            background: rgba(255,255,255,0.25);
+            border: 2px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .prn-take-btn:hover {
+            background: rgba(255,255,255,0.35);
+            border-color: rgba(255,255,255,0.6);
+            transform: translateY(-1px);
+        }
+
+        .prn-take-btn.at-limit {
+            background: rgba(220, 53, 69, 0.4);
+            border-color: rgba(220, 53, 69, 0.6);
+        }
+
+        /* PRN Dose Popup */
+        .prn-popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .prn-popup-overlay.active {
+            display: flex;
+        }
+
+        .prn-popup {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .prn-popup h3 {
+            color: #fd7e14;
+            margin-bottom: 15px;
+        }
+
+        .prn-warning-banner {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #856404;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .prn-warning-banner.danger {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        /* PRN Dose Log in Modal */
+        .prn-dose-log {
+            margin-top: 10px;
+        }
+
+        .prn-dose-log-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 0.85em;
+            color: #6c757d;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .prn-dose-log-item:last-child {
+            border-bottom: none;
+        }
+
+        .prn-dose-time {
+            font-weight: 600;
+            color: #fd7e14;
+            min-width: 55px;
+        }
     </style>
 </head>
 <body>
@@ -943,6 +1349,7 @@
             <button class="tab" onclick="switchTab('sleep')">Sleep Trends</button>
             <button class="tab" onclick="switchTab('labs')">Labs</button>
             <button class="tab" onclick="switchTab('tapering')">Tapering</button>
+            <button class="tab" onclick="switchTab('sideeffects')">Side Effects</button>
             <button class="tab" onclick="switchTab('timeline')">Resources</button>
             <button class="tab" onclick="switchTab('reminders')">Settings</button>
         </div>
@@ -955,6 +1362,27 @@
                     <h3>Today - <span id="today-date"></span></h3>
                     <div class="today-meds" id="today-meds">
                         <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- As-Needed (PRN) Medications -->
+                <div id="prn-section-container">
+                    <!-- Populated by JS - only shown when PRN meds exist -->
+                </div>
+
+                <!-- PRN Dose Popup -->
+                <div class="prn-popup-overlay" id="prn-popup-overlay">
+                    <div class="prn-popup">
+                        <h3 id="prn-popup-title">Log Dose</h3>
+                        <div id="prn-popup-warning"></div>
+                        <div class="form-group">
+                            <label>Note (optional)</label>
+                            <input type="text" id="prn-dose-note" placeholder="e.g., headache, allergies, pain...">
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button onclick="confirmPrnDose()" class="btn" style="flex: 1; background: linear-gradient(135deg, #fd7e14, #e85d04);">Confirm</button>
+                            <button onclick="closePrnPopup()" class="btn btn-secondary" style="flex: 1;">Cancel</button>
+                        </div>
                     </div>
                 </div>
 
@@ -1478,6 +1906,14 @@
                     </div>
                 </div>
 
+                <!-- Manage Medications Section -->
+                <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; margin-bottom: 25px;">
+                    <h3 style="color: #667eea; margin-bottom: 20px;">Manage Medications</h3>
+                    <div id="medication-manager">
+                        <!-- Populated by renderMedicationManager() -->
+                    </div>
+                </div>
+
                 <div style="background: #f8f9fa; padding: 25px; border-radius: 15px;">
                     <h3 style="color: #667eea; margin-bottom: 20px;">Edit Reminder Times</h3>
                     <div id="reminder-editor">
@@ -1506,6 +1942,65 @@
                     </div>
 
                     <div id="backup-status" style="margin-top: 15px; display: none; padding: 10px; border-radius: 8px;"></div>
+                </div>
+            </div>
+
+            <!-- Side Effects Patterns Tab -->
+            <div id="sideeffects" class="tab-content">
+                <h2 style="color: #667eea; margin-bottom: 5px;">Side Effects Patterns</h2>
+                <p style="color: #6c757d; margin-bottom: 20px; font-size: 0.9em;">Track when side effects appear, how long they last, and spot patterns across your medications.</p>
+
+                <!-- Time Range Selector -->
+                <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <button class="se-range-btn active" onclick="setSERange(7, this)">7 Days</button>
+                    <button class="se-range-btn" onclick="setSERange(14, this)">14 Days</button>
+                    <button class="se-range-btn" onclick="setSERange(30, this)">30 Days</button>
+                    <button class="se-range-btn" onclick="setSERange(0, this)">All Time</button>
+                </div>
+
+                <!-- Active Side Effects -->
+                <div style="margin-bottom: 25px;">
+                    <h3 style="color: #e53935; margin-bottom: 12px; font-size: 1.1em;">Currently Active</h3>
+                    <p style="color: #999; font-size: 0.85em; margin-bottom: 10px;">Side effects logged in your most recent entry</p>
+                    <div id="se-active-list" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        <span style="color: #aaa; font-style: italic;">No data yet</span>
+                    </div>
+                </div>
+
+                <!-- Frequency Summary -->
+                <div style="margin-bottom: 25px;">
+                    <h3 style="color: #667eea; margin-bottom: 12px; font-size: 1.1em;">Frequency (selected period)</h3>
+                    <p style="color: #999; font-size: 0.85em; margin-bottom: 10px;">How often each side effect was reported</p>
+                    <div id="se-frequency-bars" style="display: grid; gap: 6px;">
+                        <span style="color: #aaa; font-style: italic;">No data yet</span>
+                    </div>
+                </div>
+
+                <!-- Timeline: When Did It Start / Stop -->
+                <div style="margin-bottom: 25px;">
+                    <h3 style="color: #ff9800; margin-bottom: 12px; font-size: 1.1em;">Timeline: First & Last Seen</h3>
+                    <p style="color: #999; font-size: 0.85em; margin-bottom: 10px;">When each side effect first appeared and was last reported - helps identify what resolved vs persists</p>
+                    <div id="se-timeline-table" style="overflow-x: auto;">
+                        <span style="color: #aaa; font-style: italic;">No data yet</span>
+                    </div>
+                </div>
+
+                <!-- Streaks: Consecutive Days -->
+                <div style="margin-bottom: 25px;">
+                    <h3 style="color: #9c27b0; margin-bottom: 12px; font-size: 1.1em;">Duration Streaks</h3>
+                    <p style="color: #999; font-size: 0.85em; margin-bottom: 10px;">Longest consecutive day streaks - longer streaks may warrant a provider discussion</p>
+                    <div id="se-streaks-list" style="display: grid; gap: 6px;">
+                        <span style="color: #aaa; font-style: italic;">No data yet</span>
+                    </div>
+                </div>
+
+                <!-- Category Breakdown -->
+                <div style="margin-bottom: 25px;">
+                    <h3 style="color: #11998e; margin-bottom: 12px; font-size: 1.1em;">By Medication</h3>
+                    <p style="color: #999; font-size: 0.85em; margin-bottom: 10px;">Side effect counts grouped by medication category</p>
+                    <div id="se-category-breakdown" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                        <span style="color: #aaa; font-style: italic;">No data yet</span>
+                    </div>
                 </div>
             </div>
 
@@ -2276,34 +2771,220 @@
                     </div>
                 </div>
 
-                <!-- Wellbutrin Side Effects Section -->
+                <!-- Side Effects Section -->
                 <div class="modal-section">
-                    <h3>Wellbutrin Side Effects (check any you're experiencing)</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
-                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                            <input type="checkbox" id="modal-se-drymouth" style="width: 18px; height: 18px;">
-                            <span>Dry mouth</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                            <input type="checkbox" id="modal-se-appetite" style="width: 18px; height: 18px;">
-                            <span>Appetite changes</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                            <input type="checkbox" id="modal-se-headache" style="width: 18px; height: 18px;">
-                            <span>Headache</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                            <input type="checkbox" id="modal-se-jitters" style="width: 18px; height: 18px;">
-                            <span>Jitters/restless</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                            <input type="checkbox" id="modal-se-insomnia" style="width: 18px; height: 18px;">
-                            <span>Insomnia</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                            <input type="checkbox" id="modal-se-nausea" style="width: 18px; height: 18px;">
-                            <span>Nausea</span>
-                        </label>
+                    <h3>Side Effects (check any you're experiencing)</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
+
+                        <!-- Wellbutrin -->
+                        <div style="background: #f0f3ff; padding: 15px; border-radius: 10px; border-left: 4px solid #667eea;">
+                            <div style="font-weight: 600; color: #667eea; margin-bottom: 10px; font-size: 0.9em;">💊 Wellbutrin</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-drymouth" style="width: 16px; height: 16px;"> Dry mouth
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-appetite" style="width: 16px; height: 16px;"> Appetite changes
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-jitters" style="width: 16px; height: 16px;"> Jitters/restless
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-insomnia" style="width: 16px; height: 16px;"> Insomnia
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-sweating" style="width: 16px; height: 16px;"> Sweating
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-tinnitus" style="width: 16px; height: 16px;"> Ringing in ears
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-tremor" style="width: 16px; height: 16px;"> Tremor/shaking
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-rapid-heart" style="width: 16px; height: 16px;"> Rapid heartbeat
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-wb-constipation" style="width: 16px; height: 16px;"> Constipation
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-wb-weightchange" style="width: 16px; height: 16px;"> Weight change
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-wb-blurredvision" style="width: 16px; height: 16px;"> Blurred vision
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-wb-agitation" style="width: 16px; height: 16px;"> Agitation
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-wb-rash" style="width: 16px; height: 16px;"> Skin rash
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-wb-seizure" style="width: 16px; height: 16px;"> Seizure warning signs
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- TRT -->
+                        <div style="background: #f5f0ff; padding: 15px; border-radius: 10px; border-left: 4px solid #764ba2;">
+                            <div style="font-weight: 600; color: #764ba2; margin-bottom: 10px; font-size: 0.9em;">💉 TRT</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-acne" style="width: 16px; height: 16px;"> Acne/oily skin
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-hairchanges" style="width: 16px; height: 16px;"> Hair thinning/loss
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-moodswings" style="width: 16px; height: 16px;"> Mood swings
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-injection-pain" style="width: 16px; height: 16px;"> Injection site pain
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-bloating" style="width: 16px; height: 16px;"> Water retention
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-voice" style="width: 16px; height: 16px;"> Voice changes
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-bodyhair" style="width: 16px; height: 16px;"> Body hair growth
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-irritability" style="width: 16px; height: 16px;"> Irritability
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-trt-nightsweats" style="width: 16px; height: 16px;"> Night sweats
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-trt-breast" style="width: 16px; height: 16px;"> Breast tenderness
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-trt-snoring" style="width: 16px; height: 16px;"> Snoring/sleep apnea
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-trt-aggression" style="width: 16px; height: 16px;"> Aggression
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-trt-bp" style="width: 16px; height: 16px;"> High blood pressure
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-trt-edema" style="width: 16px; height: 16px;"> Swelling/edema
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- NAD+ -->
+                        <div style="background: #e8f8f5; padding: 15px; border-radius: 10px; border-left: 4px solid #11998e;">
+                            <div style="font-weight: 600; color: #11998e; margin-bottom: 10px; font-size: 0.9em;">💉 NAD+</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-flushing" style="width: 16px; height: 16px;"> Flushing/warmth
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-chest-tightness" style="width: 16px; height: 16px;"> Chest tightness
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-nad-nausea" style="width: 16px; height: 16px;"> Nausea
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-lightheaded" style="width: 16px; height: 16px;"> Lightheaded
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-cramping" style="width: 16px; height: 16px;"> Cramping
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-bruising" style="width: 16px; height: 16px;"> Bruising at site
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-nad-headache" style="width: 16px; height: 16px;"> Headache
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-nad-palpitations" style="width: 16px; height: 16px;"> Heart palpitations
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-nad-tingling" style="width: 16px; height: 16px;"> Tingling/numbness
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-nad-muscleache" style="width: 16px; height: 16px;"> Muscle aches
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Iron & Supplements -->
+                        <div style="background: #fff8f0; padding: 15px; border-radius: 10px; border-left: 4px solid #e65100;">
+                            <div style="font-weight: 600; color: #e65100; margin-bottom: 10px; font-size: 0.9em;">💊 Iron / Vitamins</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-constipation" style="width: 16px; height: 16px;"> Constipation
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-stomach" style="width: 16px; height: 16px;"> Stomach cramps
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-nausea" style="width: 16px; height: 16px;"> Nausea
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-darkstool" style="width: 16px; height: 16px;"> Dark stool
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-metallic" style="width: 16px; height: 16px;"> Metallic taste
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-heartburn" style="width: 16px; height: 16px;"> Heartburn
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-iron-diarrhea" style="width: 16px; height: 16px;"> Diarrhea
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-iron-appetiteloss" style="width: 16px; height: 16px;"> Loss of appetite
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- General - full width -->
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 4px solid #6c757d; margin-top: 12px;">
+                        <div style="font-weight: 600; color: #6c757d; margin-bottom: 10px; font-size: 0.9em;">General</div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 6px;">
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                <input type="checkbox" id="modal-se-headache" style="width: 16px; height: 16px;"> Headache
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                <input type="checkbox" id="modal-se-fatigue" style="width: 16px; height: 16px;"> Fatigue
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                <input type="checkbox" id="modal-se-dizziness" style="width: 16px; height: 16px;"> Dizziness
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                <input type="checkbox" id="modal-se-hotflash" style="width: 16px; height: 16px;"> Hot flash
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                <input type="checkbox" id="modal-se-brainfog" style="width: 16px; height: 16px;"> Brain fog
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                <input type="checkbox" id="modal-se-anxiety" style="width: 16px; height: 16px;"> Anxiety
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                <input type="checkbox" id="modal-se-jointpain" style="width: 16px; height: 16px;"> Joint pain
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                <input type="checkbox" id="modal-se-musclecramps" style="width: 16px; height: 16px;"> Muscle cramps
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                <input type="checkbox" id="modal-se-nightsweats" style="width: 16px; height: 16px;"> Night sweats
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                <input type="checkbox" id="modal-se-dryskin" style="width: 16px; height: 16px;"> Dry skin
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                <input type="checkbox" id="modal-se-chestpain" style="width: 16px; height: 16px;"> Chest pain
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                <input type="checkbox" id="modal-se-shortbreath" style="width: 16px; height: 16px;"> Shortness of breath
+                            </label>
+                        </div>
                     </div>
                 </div>
 
@@ -2357,6 +3038,135 @@
             }
         };
 
+        // Side effect field mappings (element ID -> data key)
+        const seFields = {
+            // Wellbutrin
+            'modal-se-drymouth': 'dryMouth',
+            'modal-se-appetite': 'appetite',
+            'modal-se-jitters': 'jitters',
+            'modal-se-insomnia': 'insomnia',
+            'modal-se-sweating': 'sweating',
+            'modal-se-tinnitus': 'tinnitus',
+            'modal-se-tremor': 'tremor',
+            'modal-se-rapid-heart': 'rapidHeart',
+            'modal-se-wb-constipation': 'wbConstipation',
+            'modal-se-wb-weightchange': 'wbWeightChange',
+            'modal-se-wb-blurredvision': 'wbBlurredVision',
+            'modal-se-wb-agitation': 'wbAgitation',
+            'modal-se-wb-rash': 'wbRash',
+            'modal-se-wb-seizure': 'wbSeizureWarning',
+            // TRT
+            'modal-se-acne': 'acne',
+            'modal-se-hairchanges': 'hairChanges',
+            'modal-se-moodswings': 'moodSwings',
+            'modal-se-injection-pain': 'injectionPain',
+            'modal-se-bloating': 'bloating',
+            'modal-se-voice': 'voice',
+            'modal-se-bodyhair': 'bodyHair',
+            'modal-se-irritability': 'irritability',
+            'modal-se-trt-nightsweats': 'trtNightSweats',
+            'modal-se-trt-breast': 'trtBreastTenderness',
+            'modal-se-trt-snoring': 'trtSnoring',
+            'modal-se-trt-aggression': 'trtAggression',
+            'modal-se-trt-bp': 'trtHighBP',
+            'modal-se-trt-edema': 'trtEdema',
+            // NAD+
+            'modal-se-flushing': 'flushing',
+            'modal-se-chest-tightness': 'chestTightness',
+            'modal-se-nad-nausea': 'nadNausea',
+            'modal-se-lightheaded': 'lightheaded',
+            'modal-se-cramping': 'cramping',
+            'modal-se-bruising': 'bruising',
+            'modal-se-nad-headache': 'nadHeadache',
+            'modal-se-nad-palpitations': 'nadPalpitations',
+            'modal-se-nad-tingling': 'nadTingling',
+            'modal-se-nad-muscleache': 'nadMuscleAche',
+            // Iron & Vitamins
+            'modal-se-constipation': 'constipation',
+            'modal-se-stomach': 'stomach',
+            'modal-se-nausea': 'nausea',
+            'modal-se-darkstool': 'darkStool',
+            'modal-se-metallic': 'metallic',
+            'modal-se-heartburn': 'heartburn',
+            'modal-se-iron-diarrhea': 'ironDiarrhea',
+            'modal-se-iron-appetiteloss': 'ironAppetiteLoss',
+            // General
+            'modal-se-headache': 'headache',
+            'modal-se-fatigue': 'fatigue',
+            'modal-se-dizziness': 'dizziness',
+            'modal-se-hotflash': 'hotFlash',
+            'modal-se-brainfog': 'brainFog',
+            'modal-se-anxiety': 'anxiety',
+            'modal-se-jointpain': 'jointPain',
+            'modal-se-musclecramps': 'muscleCramps',
+            'modal-se-nightsweats': 'nightSweats',
+            'modal-se-dryskin': 'drySkin',
+            'modal-se-chestpain': 'chestPain',
+            'modal-se-shortbreath': 'shortBreath'
+        };
+
+        // Human-readable labels and categories for side effects
+        const seLabels = {
+            dryMouth: { label: 'Dry mouth', category: 'Wellbutrin', color: '#667eea' },
+            appetite: { label: 'Appetite changes', category: 'Wellbutrin', color: '#667eea' },
+            jitters: { label: 'Jitters/restless', category: 'Wellbutrin', color: '#667eea' },
+            insomnia: { label: 'Insomnia', category: 'Wellbutrin', color: '#667eea' },
+            sweating: { label: 'Sweating', category: 'Wellbutrin', color: '#667eea' },
+            tinnitus: { label: 'Ringing in ears', category: 'Wellbutrin', color: '#667eea' },
+            tremor: { label: 'Tremor/shaking', category: 'Wellbutrin', color: '#667eea' },
+            rapidHeart: { label: 'Rapid heartbeat', category: 'Wellbutrin', color: '#667eea' },
+            wbConstipation: { label: 'Constipation', category: 'Wellbutrin', color: '#667eea' },
+            wbWeightChange: { label: 'Weight change', category: 'Wellbutrin', color: '#667eea' },
+            wbBlurredVision: { label: 'Blurred vision', category: 'Wellbutrin', color: '#667eea' },
+            wbAgitation: { label: 'Agitation', category: 'Wellbutrin', color: '#667eea' },
+            wbRash: { label: 'Skin rash', category: 'Wellbutrin', color: '#667eea' },
+            wbSeizureWarning: { label: 'Seizure warning', category: 'Wellbutrin', color: '#667eea' },
+            acne: { label: 'Acne/oily skin', category: 'TRT', color: '#764ba2' },
+            hairChanges: { label: 'Hair thinning/loss', category: 'TRT', color: '#764ba2' },
+            moodSwings: { label: 'Mood swings', category: 'TRT', color: '#764ba2' },
+            injectionPain: { label: 'Injection site pain', category: 'TRT', color: '#764ba2' },
+            bloating: { label: 'Water retention', category: 'TRT', color: '#764ba2' },
+            voice: { label: 'Voice changes', category: 'TRT', color: '#764ba2' },
+            bodyHair: { label: 'Body hair growth', category: 'TRT', color: '#764ba2' },
+            irritability: { label: 'Irritability', category: 'TRT', color: '#764ba2' },
+            trtNightSweats: { label: 'Night sweats', category: 'TRT', color: '#764ba2' },
+            trtBreastTenderness: { label: 'Breast tenderness', category: 'TRT', color: '#764ba2' },
+            trtSnoring: { label: 'Snoring/sleep apnea', category: 'TRT', color: '#764ba2' },
+            trtAggression: { label: 'Aggression', category: 'TRT', color: '#764ba2' },
+            trtHighBP: { label: 'High blood pressure', category: 'TRT', color: '#764ba2' },
+            trtEdema: { label: 'Swelling/edema', category: 'TRT', color: '#764ba2' },
+            flushing: { label: 'Flushing/warmth', category: 'NAD+', color: '#11998e' },
+            chestTightness: { label: 'Chest tightness', category: 'NAD+', color: '#11998e' },
+            nadNausea: { label: 'Nausea', category: 'NAD+', color: '#11998e' },
+            lightheaded: { label: 'Lightheaded', category: 'NAD+', color: '#11998e' },
+            cramping: { label: 'Cramping', category: 'NAD+', color: '#11998e' },
+            bruising: { label: 'Bruising at site', category: 'NAD+', color: '#11998e' },
+            nadHeadache: { label: 'Headache', category: 'NAD+', color: '#11998e' },
+            nadPalpitations: { label: 'Heart palpitations', category: 'NAD+', color: '#11998e' },
+            nadTingling: { label: 'Tingling/numbness', category: 'NAD+', color: '#11998e' },
+            nadMuscleAche: { label: 'Muscle aches', category: 'NAD+', color: '#11998e' },
+            constipation: { label: 'Constipation', category: 'Iron/Vitamins', color: '#e65100' },
+            stomach: { label: 'Stomach cramps', category: 'Iron/Vitamins', color: '#e65100' },
+            nausea: { label: 'Nausea', category: 'Iron/Vitamins', color: '#e65100' },
+            darkStool: { label: 'Dark stool', category: 'Iron/Vitamins', color: '#e65100' },
+            metallic: { label: 'Metallic taste', category: 'Iron/Vitamins', color: '#e65100' },
+            heartburn: { label: 'Heartburn', category: 'Iron/Vitamins', color: '#e65100' },
+            ironDiarrhea: { label: 'Diarrhea', category: 'Iron/Vitamins', color: '#e65100' },
+            ironAppetiteLoss: { label: 'Loss of appetite', category: 'Iron/Vitamins', color: '#e65100' },
+            headache: { label: 'Headache', category: 'General', color: '#6c757d' },
+            fatigue: { label: 'Fatigue', category: 'General', color: '#6c757d' },
+            dizziness: { label: 'Dizziness', category: 'General', color: '#6c757d' },
+            hotFlash: { label: 'Hot flash', category: 'General', color: '#6c757d' },
+            brainFog: { label: 'Brain fog', category: 'General', color: '#6c757d' },
+            anxiety: { label: 'Anxiety', category: 'General', color: '#6c757d' },
+            jointPain: { label: 'Joint pain', category: 'General', color: '#6c757d' },
+            muscleCramps: { label: 'Muscle cramps', category: 'General', color: '#6c757d' },
+            nightSweats: { label: 'Night sweats', category: 'General', color: '#6c757d' },
+            drySkin: { label: 'Dry skin', category: 'General', color: '#6c757d' },
+            chestPain: { label: 'Chest pain', category: 'General', color: '#6c757d' },
+            shortBreath: { label: 'Shortness of breath', category: 'General', color: '#6c757d' }
+        };
+
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
         let selectedDate = null;
@@ -2366,6 +3176,7 @@
         let nadMiniChart = null;
         let editingLabIndex = null; // Track which lab entry we're editing
         let reminderIntervals = [];
+        let lastKnownDateStr = null; // Track the current date for auto-refresh
 
         // ============ INITIALIZATION ============
         function init() {
@@ -2424,7 +3235,79 @@
                         console.error('Auto-backup failed:', result.error);
                     }
                 });
+
+                // Listen for system resume from sleep/hibernate
+                window.electronAPI.onSystemResumed(() => {
+                    console.log('System resumed from sleep - checking for date change');
+                    checkForDateChange();
+                });
             }
+
+            // Set up date change watcher
+            setupDateChangeWatcher();
+        }
+
+        // ============ DATE CHANGE DETECTION ============
+        function setupDateChangeWatcher() {
+            // Store the current date
+            lastKnownDateStr = formatDateKey(new Date());
+
+            // Schedule refresh for just after midnight
+            scheduleMidnightRefresh();
+
+            // Also check every minute as a backup (handles sleep/hibernate)
+            setInterval(checkForDateChange, 60000);
+        }
+
+        function scheduleMidnightRefresh() {
+            const now = new Date();
+            const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+            const msUntilMidnight = tomorrow.getTime() - now.getTime() + 1000; // Add 1 second buffer
+
+            setTimeout(() => {
+                refreshForNewDay();
+                // Schedule the next midnight refresh
+                scheduleMidnightRefresh();
+            }, msUntilMidnight);
+
+            console.log(`Date change scheduled in ${Math.round(msUntilMidnight / 1000 / 60)} minutes`);
+        }
+
+        function checkForDateChange() {
+            const currentDateStr = formatDateKey(new Date());
+            if (lastKnownDateStr && currentDateStr !== lastKnownDateStr) {
+                console.log(`Date changed from ${lastKnownDateStr} to ${currentDateStr}`);
+                refreshForNewDay();
+            }
+        }
+
+        function refreshForNewDay() {
+            console.log('Refreshing app for new day...');
+            lastKnownDateStr = formatDateKey(new Date());
+
+            // Update the calendar month/year if needed
+            const now = new Date();
+            currentMonth = now.getMonth();
+            currentYear = now.getFullYear();
+
+            // Refresh all date-dependent UI elements
+            document.getElementById('today-date').textContent = formatDate(new Date());
+
+            // Update default date inputs
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('withdrawal-date').value = today;
+            document.getElementById('lab-date').value = today;
+            document.getElementById('taper-start-date').value = today;
+
+            // Refresh all components
+            renderCalendar();
+            renderTodayMeds();
+            updateStats();
+            updateShotDashboard();
+            updateInjectionSiteRotation();
+            renderNadMiniChart();
+
+            console.log('App refreshed for new day: ' + lastKnownDateStr);
         }
 
         // ============ DATA PERSISTENCE ============
@@ -2445,16 +3328,17 @@
                 defaultMeds.forEach(defaultMed => {
                     const existingMed = appData.medications.find(m => m.id === defaultMed.id);
                     if (!existingMed) {
-                        // Add missing medications
+                        // Add missing default medications
                         appData.medications.push(defaultMed);
-                    } else {
-                        // Update schedule from code defaults (so code changes take effect)
-                        // but preserve user's reminder preferences
+                    } else if (['trt', 'nad', 'wellbutrin', 'multivitamin', 'iron', 'vitc'].includes(defaultMed.id)) {
+                        // Only update schedule from code defaults for the 6 known defaults
+                        // Preserve user's reminder preferences but sync schedule/name/emoji
                         existingMed.days = defaultMed.days;
                         existingMed.schedule = defaultMed.schedule;
                         existingMed.name = defaultMed.name;
                         existingMed.emoji = defaultMed.emoji;
                     }
+                    // Custom medications are left untouched
                 });
             }
 
@@ -2569,7 +3453,189 @@
                 renderLabsTab();
             } else if (tabId === 'reminders') {
                 renderRemindersTab();
+            } else if (tabId === 'sideeffects') {
+                renderSideEffectsTab();
             }
+        }
+
+        // ============ SIDE EFFECTS PATTERNS TAB ============
+        let seRangeDays = 7;
+
+        function setSERange(days, btn) {
+            seRangeDays = days;
+            document.querySelectorAll('.se-range-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderSideEffectsTab();
+        }
+
+        function renderSideEffectsTab() {
+            const logs = appData.dailyLogs;
+            const sortedDates = Object.keys(logs).sort();
+            if (sortedDates.length === 0) return;
+
+            // Filter dates by range
+            const today = new Date();
+            const filteredDates = seRangeDays === 0 ? sortedDates : sortedDates.filter(d => {
+                const diff = (today - parseDate(d)) / (1000 * 60 * 60 * 24);
+                return diff <= seRangeDays;
+            });
+
+            const allSEKeys = Object.values(seFields);
+
+            // --- Active side effects (most recent entry) ---
+            const activeContainer = document.getElementById('se-active-list');
+            const mostRecentDate = sortedDates[sortedDates.length - 1];
+            const recentLog = logs[mostRecentDate];
+            const activeSEs = [];
+            if (recentLog && recentLog.sideEffects) {
+                allSEKeys.forEach(key => {
+                    if (recentLog.sideEffects[key]) activeSEs.push(key);
+                });
+            }
+            if (activeSEs.length === 0) {
+                activeContainer.innerHTML = '<span style="color: #4caf50; font-weight: 600;">None reported on ' + formatDate(parseDate(mostRecentDate)) + '</span>';
+            } else {
+                activeContainer.innerHTML = activeSEs.map(key => {
+                    const info = seLabels[key] || { label: key, color: '#999' };
+                    return `<span class="se-active-tag" style="background: ${info.color}20; color: ${info.color}; border: 1px solid ${info.color}40;">${info.label} <span style="font-size:0.75em; opacity:0.7;">${info.category}</span></span>`;
+                }).join('');
+            }
+
+            // --- Frequency bars ---
+            const freqContainer = document.getElementById('se-frequency-bars');
+            const freqMap = {};
+            filteredDates.forEach(d => {
+                const log = logs[d];
+                if (!log || !log.sideEffects) return;
+                allSEKeys.forEach(key => {
+                    if (log.sideEffects[key]) freqMap[key] = (freqMap[key] || 0) + 1;
+                });
+            });
+            const totalDays = filteredDates.length || 1;
+            const freqSorted = Object.entries(freqMap).sort((a, b) => b[1] - a[1]);
+            if (freqSorted.length === 0) {
+                freqContainer.innerHTML = '<span style="color: #aaa; font-style: italic;">No side effects reported in this period</span>';
+            } else {
+                freqContainer.innerHTML = freqSorted.map(([key, count]) => {
+                    const info = seLabels[key] || { label: key, color: '#999' };
+                    const pct = Math.round((count / totalDays) * 100);
+                    return `<div class="se-freq-row">
+                        <span class="se-freq-label" style="color: ${info.color};">${info.label}</span>
+                        <div class="se-freq-bar-bg"><div class="se-freq-bar" style="width: ${pct}%; background: ${info.color};"></div></div>
+                        <span class="se-freq-count">${count}/${totalDays} days (${pct}%)</span>
+                    </div>`;
+                }).join('');
+            }
+
+            // --- Timeline: first & last seen ---
+            const timelineContainer = document.getElementById('se-timeline-table');
+            const timelineData = {};
+            sortedDates.forEach(d => {
+                const log = logs[d];
+                if (!log || !log.sideEffects) return;
+                allSEKeys.forEach(key => {
+                    if (log.sideEffects[key]) {
+                        if (!timelineData[key]) timelineData[key] = { first: d, last: d, count: 0 };
+                        timelineData[key].last = d;
+                        timelineData[key].count++;
+                    }
+                });
+            });
+            const tlEntries = Object.entries(timelineData).sort((a, b) => a[1].first.localeCompare(b[1].first));
+            if (tlEntries.length === 0) {
+                timelineContainer.innerHTML = '<span style="color: #aaa; font-style: italic;">No data yet</span>';
+            } else {
+                let html = `<div class="se-timeline-row se-timeline-header">
+                    <span>Side Effect</span><span>Category</span><span>First Seen</span><span>Last Seen</span><span>Total</span>
+                </div>`;
+                tlEntries.forEach(([key, data]) => {
+                    const info = seLabels[key] || { label: key, category: '?', color: '#999' };
+                    const daysBetween = Math.round((parseDate(data.last) - parseDate(data.first)) / (1000 * 60 * 60 * 24));
+                    const stillActive = activeSEs.includes(key);
+                    html += `<div class="se-timeline-row">
+                        <span style="font-weight: 500; color: ${info.color};">${info.label} ${stillActive ? '<span style="color:#e53935;" title="Still active">*</span>' : ''}</span>
+                        <span style="color: #888;">${info.category}</span>
+                        <span>${formatShortDate(data.first)}</span>
+                        <span>${formatShortDate(data.last)}</span>
+                        <span>${data.count} day${data.count > 1 ? 's' : ''}</span>
+                    </div>`;
+                });
+                timelineContainer.innerHTML = html;
+            }
+
+            // --- Streaks (longest consecutive days) ---
+            const streaksContainer = document.getElementById('se-streaks-list');
+            const streakData = {};
+            allSEKeys.forEach(key => {
+                let maxStreak = 0, currentStreak = 0;
+                sortedDates.forEach((d, i) => {
+                    const log = logs[d];
+                    const active = log && log.sideEffects && log.sideEffects[key];
+                    if (active) {
+                        if (i === 0) { currentStreak = 1; }
+                        else {
+                            const prev = parseDate(sortedDates[i - 1]);
+                            const curr = parseDate(d);
+                            const gap = (curr - prev) / (1000 * 60 * 60 * 24);
+                            currentStreak = gap <= 1.5 ? currentStreak + 1 : 1;
+                        }
+                        maxStreak = Math.max(maxStreak, currentStreak);
+                    } else {
+                        currentStreak = 0;
+                    }
+                });
+                if (maxStreak > 0) streakData[key] = maxStreak;
+            });
+            const streaksSorted = Object.entries(streakData).sort((a, b) => b[1] - a[1]).filter(([_, v]) => v >= 2);
+            if (streaksSorted.length === 0) {
+                streaksContainer.innerHTML = '<span style="color: #4caf50;">No multi-day streaks recorded yet - this is good!</span>';
+            } else {
+                streaksContainer.innerHTML = streaksSorted.map(([key, streak]) => {
+                    const info = seLabels[key] || { label: key, color: '#999' };
+                    const bgColor = streak >= 7 ? '#e53935' : streak >= 4 ? '#ff9800' : '#9c27b0';
+                    return `<div class="se-streak-row">
+                        <span class="se-streak-badge" style="background: ${bgColor};">${streak}d</span>
+                        <span style="font-weight: 500; color: ${info.color};">${info.label}</span>
+                        <span style="color: #888; font-size: 0.8em;">${info.category}</span>
+                        ${streak >= 7 ? '<span style="color: #e53935; font-size: 0.8em; font-weight: 600;">Consider discussing with provider</span>' : ''}
+                    </div>`;
+                }).join('');
+            }
+
+            // --- Category breakdown ---
+            const catContainer = document.getElementById('se-category-breakdown');
+            const categories = {};
+            filteredDates.forEach(d => {
+                const log = logs[d];
+                if (!log || !log.sideEffects) return;
+                allSEKeys.forEach(key => {
+                    if (log.sideEffects[key]) {
+                        const info = seLabels[key] || { category: 'Other', color: '#999' };
+                        if (!categories[info.category]) categories[info.category] = { color: info.color, items: {} };
+                        categories[info.category].items[key] = (categories[info.category].items[key] || 0) + 1;
+                    }
+                });
+            });
+            if (Object.keys(categories).length === 0) {
+                catContainer.innerHTML = '<span style="color: #aaa; font-style: italic;">No data yet</span>';
+            } else {
+                catContainer.innerHTML = Object.entries(categories).map(([cat, data]) => {
+                    const totalCat = Object.values(data.items).reduce((a, b) => a + b, 0);
+                    const itemsHtml = Object.entries(data.items).sort((a, b) => b[1] - a[1]).map(([key, count]) => {
+                        const info = seLabels[key] || { label: key };
+                        return `<div class="se-cat-item"><span>${info.label}</span><span style="font-weight:600;">${count}</span></div>`;
+                    }).join('');
+                    return `<div class="se-cat-card" style="border-left-color: ${data.color};">
+                        <h4 style="color: ${data.color};">${cat} <span style="font-size:0.8em; color:#999;">(${totalCat} reports)</span></h4>
+                        ${itemsHtml}
+                    </div>`;
+                }).join('');
+            }
+        }
+
+        function formatShortDate(dateStr) {
+            const d = parseDate(dateStr);
+            return (d.getMonth() + 1) + '/' + d.getDate();
         }
 
         // ============ RESOURCE SECTION TOGGLES ============
@@ -2716,6 +3782,7 @@
         function getMedsForDate(date) {
             const dayOfWeek = date.getDay();
             return appData.medications.filter(med => {
+                if (med.schedule === 'asneeded') return false; // PRN meds are not scheduled
                 if (med.schedule === 'daily') return true;
                 if (med.schedule === 'weekly') return med.days.includes(dayOfWeek);
                 return false;
@@ -2756,11 +3823,14 @@
                         <input type="checkbox" ${taken ? 'checked' : ''} onclick="event.stopPropagation(); toggleTodayMed('${med.id}')">
                         <div class="med-info">
                             <div class="med-name">${med.emoji} ${med.name}</div>
-                            <div class="med-time">${med.time || (med.schedule === 'weekly' ? getDayName(med.days[0]) : 'Daily')}</div>
+                            <div class="med-time">${med.time ? formatTime12h(med.time) : (med.schedule === 'weekly' ? getDayName(med.days[0]) : 'Daily')}</div>
                         </div>
                     </div>
                 `;
             }).join('');
+
+            // Also render PRN section
+            renderPrnSection();
         }
 
         function toggleTodayMed(medId) {
@@ -2798,7 +3868,8 @@
             const log = appData.dailyLogs[dateStr];
             const scheduledMeds = getMedsForDate(date);
             const scheduledIds = scheduledMeds.map(m => m.id);
-            const otherMeds = appData.medications.filter(m => !scheduledIds.includes(m.id));
+            const otherMeds = appData.medications.filter(m => !scheduledIds.includes(m.id) && m.schedule !== 'asneeded');
+            const prnMeds = appData.medications.filter(m => m.schedule === 'asneeded');
 
             document.getElementById('modal-date-title').textContent = `Check-In: ${formatDate(date)}`;
 
@@ -2815,7 +3886,7 @@
                                onchange="this.parentElement.classList.toggle('checked')${isInjection ? '; toggleInjectionSite(\'' + med.id + '\', this.checked)' : ''}">
                         <div class="med-details">
                             <div class="med-name">${med.emoji} ${med.name}</div>
-                            <div class="med-schedule">${med.time || (med.schedule === 'weekly' ? getDayName(med.days[0]) + 's' : 'Daily')}</div>
+                            <div class="med-schedule">${med.time ? formatTime12h(med.time) : (med.schedule === 'weekly' ? getDayName(med.days[0]) + 's' : 'Daily')}</div>
                             ${isInjection ? `
                             <div class="injection-site-row" id="injection-site-${med.id}" style="display: ${taken ? 'flex' : 'none'}; align-items: center; gap: 8px; margin-top: 6px;">
                                 <span style="font-size: 0.8em; color: #666;">Site:</span>
@@ -2843,7 +3914,7 @@
                                    onchange="this.parentElement.classList.toggle('checked'); this.parentElement.style.opacity = this.checked ? '1' : '0.7';${isInjection ? ' toggleInjectionSite(\'' + med.id + '\', this.checked)' : ''}">
                             <div class="med-details">
                                 <div class="med-name">${med.emoji} ${med.name}</div>
-                                <div class="med-schedule" style="color: #fd7e14;">(Usually ${med.schedule === 'weekly' ? getDayName(med.days[0]) + 's' : 'Daily'})</div>
+                                <div class="med-schedule" style="color: #fd7e14;">(Usually ${med.schedule === 'weekly' ? med.days.map(d => getDayName(d)).join(', ') : 'Daily'})</div>
                                 ${isInjection ? `
                                 <div class="injection-site-row" id="injection-site-${med.id}" style="display: ${taken ? 'flex' : 'none'}; align-items: center; gap: 8px; margin-top: 6px;">
                                     <span style="font-size: 0.8em; color: #666;">Site:</span>
@@ -2856,6 +3927,36 @@
                         </label>
                     `;
                 }).join('');
+                html += `</div>`;
+            }
+
+            // Add PRN dose log section
+            if (prnMeds.length > 0) {
+                html += `<div style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ddd;">
+                    <div style="font-size: 0.85em; color: #fd7e14; font-weight: 600; margin-bottom: 10px;">As Needed Medications</div>`;
+                prnMeds.forEach(med => {
+                    const doses = (log && log.prnDoses && log.prnDoses[med.id]) || [];
+                    const limitText = med.maxPerDay ? ` (${doses.length}/${med.maxPerDay})` : ` (${doses.length} taken)`;
+                    html += `
+                        <div style="background: #fff8f0; padding: 12px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #fd7e14;">
+                            <div style="font-weight: 600; color: #495057;">${med.emoji} ${med.name}${limitText}</div>
+                    `;
+                    if (doses.length > 0) {
+                        html += '<div class="prn-dose-log">';
+                        doses.forEach((dose, idx) => {
+                            html += `
+                                <div class="prn-dose-log-item">
+                                    <span class="prn-dose-time">${formatTime12h(dose.time)}</span>
+                                    <span>${dose.note || 'No note'}</span>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                    } else {
+                        html += '<div style="font-size: 0.8em; color: #999; margin-top: 4px;">No doses taken</div>';
+                    }
+                    html += '</div>';
+                });
                 html += `</div>`;
             }
 
@@ -2896,22 +3997,11 @@
                 document.getElementById('modal-anxiety-value').textContent = 3;
             }
 
-            // Populate side effects
-            if (log && log.sideEffects) {
-                document.getElementById('modal-se-drymouth').checked = log.sideEffects.dryMouth || false;
-                document.getElementById('modal-se-appetite').checked = log.sideEffects.appetite || false;
-                document.getElementById('modal-se-headache').checked = log.sideEffects.headache || false;
-                document.getElementById('modal-se-jitters').checked = log.sideEffects.jitters || false;
-                document.getElementById('modal-se-insomnia').checked = log.sideEffects.insomnia || false;
-                document.getElementById('modal-se-nausea').checked = log.sideEffects.nausea || false;
-            } else {
-                document.getElementById('modal-se-drymouth').checked = false;
-                document.getElementById('modal-se-appetite').checked = false;
-                document.getElementById('modal-se-headache').checked = false;
-                document.getElementById('modal-se-jitters').checked = false;
-                document.getElementById('modal-se-insomnia').checked = false;
-                document.getElementById('modal-se-nausea').checked = false;
-            }
+            // Populate side effects using global seFields mapping
+            Object.entries(seFields).forEach(([elementId, dataKey]) => {
+                const el = document.getElementById(elementId);
+                if (el) el.checked = (log && log.sideEffects && log.sideEffects[dataKey]) || false;
+            });
 
             // Populate notes
             document.getElementById('modal-notes').value = log && log.notes ? log.notes : '';
@@ -2963,16 +4053,15 @@
                     wellbeing: parseInt(document.getElementById('modal-wellbeing').value),
                     temperature: parseInt(document.getElementById('modal-temperature').value)
                 },
-                sideEffects: {
-                    dryMouth: document.getElementById('modal-se-drymouth').checked,
-                    appetite: document.getElementById('modal-se-appetite').checked,
-                    headache: document.getElementById('modal-se-headache').checked,
-                    jitters: document.getElementById('modal-se-jitters').checked,
-                    insomnia: document.getElementById('modal-se-insomnia').checked,
-                    nausea: document.getElementById('modal-se-nausea').checked
-                },
+                sideEffects: {},
                 notes: document.getElementById('modal-notes').value
             };
+
+            // Dynamically gather all side effects using the seFields mapping
+            Object.entries(seFields).forEach(([elementId, dataKey]) => {
+                const el = document.getElementById(elementId);
+                if (el) entry.sideEffects[dataKey] = el.checked;
+            });
 
             // Gather medication statuses (ALL medications, not just scheduled)
             const injectionMeds = ['trt', 'nad'];
@@ -2992,6 +4081,12 @@
                     }
                 }
             });
+
+            // Preserve PRN doses from existing log (they are managed separately)
+            const existingLog = appData.dailyLogs[dateStr];
+            if (existingLog && existingLog.prnDoses) {
+                entry.prnDoses = existingLog.prnDoses;
+            }
 
             appData.dailyLogs[dateStr] = entry;
             saveData();
@@ -3138,6 +4233,15 @@
                                 <span style="background: #e9ecef; padding: 5px 10px; border-radius: 8px; font-size: 0.85em;">Mood: ${log.symptoms.mood}/10</span>
                                 <span style="background: #e9ecef; padding: 5px 10px; border-radius: 8px; font-size: 0.85em;">Libido: ${log.symptoms.libido}/10</span>
                                 <span style="background: #e9ecef; padding: 5px 10px; border-radius: 8px; font-size: 0.85em;">Clarity: ${log.symptoms.clarity}/10</span>
+                            </div>
+                        ` : ''}
+                        ${log.prnDoses && Object.keys(log.prnDoses).length > 0 ? `
+                            <div style="margin-bottom: 10px;">
+                                ${Object.entries(log.prnDoses).map(([medId, doses]) => {
+                                    const med = appData.medications.find(m => m.id === medId);
+                                    const medName = med ? med.emoji + ' ' + med.name : medId;
+                                    return `<span class="entry-med-badge taken" style="background: #fff3e0; color: #e65100;">${medName} x${doses.length}</span>`;
+                                }).join('')}
                             </div>
                         ` : ''}
                         ${log.notes ? `<div class="entry-notes">${log.notes}</div>` : ''}
@@ -4645,33 +5749,62 @@
             const scheduleContainer = document.getElementById('medication-schedule');
             const editorContainer = document.getElementById('reminder-editor');
 
-            // Show current schedule
-            scheduleContainer.innerHTML = appData.medications.map(med => `
-                <div class="reminder-card">
-                    <div class="reminder-info">
-                        <h4>${med.emoji} ${med.name}</h4>
-                        <p>${med.schedule === 'daily' ? 'Daily' : getDayName(med.days[0]) + 's'}</p>
-                    </div>
-                    <div class="reminder-time">${med.time || 'No time set'}</div>
-                </div>
-            `).join('');
+            // Show current schedule (exclude PRN meds - they don't have a schedule)
+            const scheduledMeds = appData.medications.filter(m => m.schedule !== 'asneeded');
+            const prnMeds = appData.medications.filter(m => m.schedule === 'asneeded');
 
-            // Show editor
-            editorContainer.innerHTML = appData.medications.map(med => `
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 200px;">
-                        <strong>${med.emoji} ${med.name}</strong>
-                        <span style="color: #6c757d; margin-left: 10px;">(${med.schedule === 'daily' ? 'Daily' : getDayName(med.days[0]) + 's'})</span>
+            let scheduleHtml = scheduledMeds.map(med => {
+                const scheduleText = med.schedule === 'daily' ? 'Daily' :
+                    med.schedule === 'weekly' ? med.days.map(d => getDayName(d)).join(', ') : med.schedule;
+                return `
+                    <div class="reminder-card">
+                        <div class="reminder-info">
+                            <h4>${med.emoji} ${med.name}</h4>
+                            <p>${scheduleText}</p>
+                        </div>
+                        <div class="reminder-time">${med.time ? formatTime12h(med.time) : 'No time set'}</div>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <input type="time" id="reminder-time-${med.id}" value="${med.time || ''}" style="padding: 8px; border: 2px solid #e9ecef; border-radius: 8px;">
-                        <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
-                            <input type="checkbox" id="reminder-enabled-${med.id}" ${med.reminderEnabled ? 'checked' : ''} style="width: 18px; height: 18px;">
-                            <span style="font-size: 0.9em;">Enabled</span>
-                        </label>
+                `;
+            }).join('');
+
+            if (prnMeds.length > 0) {
+                scheduleHtml += '<div style="margin-top: 15px; font-size: 0.9em; color: #fd7e14; font-weight: 600; margin-bottom: 8px;">As Needed</div>';
+                scheduleHtml += prnMeds.map(med => `
+                    <div class="reminder-card" style="border-left-color: #fd7e14;">
+                        <div class="reminder-info">
+                            <h4>${med.emoji} ${med.name}</h4>
+                            <p>As Needed${med.maxPerDay ? ' (max ' + med.maxPerDay + '/day)' : ''}</p>
+                        </div>
+                        <div class="reminder-time" style="background: #fd7e14;">PRN</div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
+
+            scheduleContainer.innerHTML = scheduleHtml;
+
+            // Show editor (only for scheduled meds - PRN meds don't have reminders)
+            editorContainer.innerHTML = scheduledMeds.map(med => {
+                const scheduleText = med.schedule === 'daily' ? 'Daily' :
+                    med.schedule === 'weekly' ? med.days.map(d => getDayName(d)).join(', ') : med.schedule;
+                return `
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <strong>${med.emoji} ${med.name}</strong>
+                            <span style="color: #6c757d; margin-left: 10px;">(${scheduleText})</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="time" id="reminder-time-${med.id}" value="${med.time || ''}" style="padding: 8px; border: 2px solid #e9ecef; border-radius: 8px;">
+                            <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                                <input type="checkbox" id="reminder-enabled-${med.id}" ${med.reminderEnabled ? 'checked' : ''} style="width: 18px; height: 18px;">
+                                <span style="font-size: 0.9em;">Enabled</span>
+                            </label>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Render the medication manager section
+            renderMedicationManager();
 
             // Update notification status banner
             updateNotificationBanner();
@@ -4693,6 +5826,374 @@
             saveData();
             setupReminders();
             alert('Reminder times saved!');
+        }
+
+        // ============ MEDICATION MANAGER ============
+        const DEFAULT_MED_IDS = ['trt', 'nad', 'wellbutrin', 'multivitamin', 'iron', 'vitc'];
+
+        function renderMedicationManager() {
+            const container = document.getElementById('medication-manager');
+            if (!container) return;
+
+            const scheduledMeds = appData.medications.filter(m => m.schedule !== 'asneeded');
+            const prnMeds = appData.medications.filter(m => m.schedule === 'asneeded');
+
+            let html = '<div class="med-manager-list">';
+
+            // Scheduled medications
+            scheduledMeds.forEach(med => {
+                const isDefault = DEFAULT_MED_IDS.includes(med.id);
+                const scheduleText = med.schedule === 'daily' ? 'Daily' :
+                    med.schedule === 'weekly' ? med.days.map(d => getDayName(d)).join(', ') : med.schedule;
+                html += `
+                    <div class="med-manager-item">
+                        <div class="med-manager-info">
+                            <div class="med-manager-name">
+                                ${med.emoji} ${med.name}
+                                ${isDefault ? '<span class="med-manager-default-badge">Default</span>' : ''}
+                            </div>
+                            <div class="med-manager-schedule">${scheduleText}${med.time ? ' at ' + formatTime12h(med.time) : ''}</div>
+                        </div>
+                        ${!isDefault ? `<button class="med-manager-delete" onclick="removeMedication('${med.id}')" title="Remove medication">&times;</button>` : ''}
+                    </div>
+                `;
+            });
+
+            // PRN medications
+            if (prnMeds.length > 0) {
+                html += '<div style="margin-top: 12px; font-size: 0.85em; color: #fd7e14; font-weight: 600;">As Needed</div>';
+                prnMeds.forEach(med => {
+                    const limitText = med.maxPerDay ? `Max ${med.maxPerDay}/day` : 'No daily limit';
+                    html += `
+                        <div class="med-manager-item prn">
+                            <div class="med-manager-info">
+                                <div class="med-manager-name">${med.emoji} ${med.name}</div>
+                                <div class="med-manager-schedule">As Needed &mdash; ${limitText}</div>
+                            </div>
+                            <button class="med-manager-delete" onclick="removeMedication('${med.id}')" title="Remove medication">&times;</button>
+                        </div>
+                    `;
+                });
+            }
+
+            html += '</div>';
+
+            // Add New Medication Form
+            html += `
+                <div class="add-med-form">
+                    <h4>+ Add New Medication / Supplement</h4>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" id="new-med-name" placeholder="e.g., Magnesium, Tylenol, Melatonin">
+                    </div>
+                    <div class="form-group">
+                        <label>Emoji</label>
+                        <div class="emoji-picker" id="emoji-picker">
+                            <button type="button" class="emoji-picker-btn selected" data-emoji="💊" onclick="selectEmoji(this)">💊</button>
+                            <button type="button" class="emoji-picker-btn" data-emoji="💉" onclick="selectEmoji(this)">💉</button>
+                            <button type="button" class="emoji-picker-btn" data-emoji="🧴" onclick="selectEmoji(this)">🧴</button>
+                            <button type="button" class="emoji-picker-btn" data-emoji="🌿" onclick="selectEmoji(this)">🌿</button>
+                            <button type="button" class="emoji-picker-btn" data-emoji="🩹" onclick="selectEmoji(this)">🩹</button>
+                            <button type="button" class="emoji-picker-btn" data-emoji="🫁" onclick="selectEmoji(this)">🫁</button>
+                            <button type="button" class="emoji-picker-btn" data-emoji="🧬" onclick="selectEmoji(this)">🧬</button>
+                            <button type="button" class="emoji-picker-btn" data-emoji="🥤" onclick="selectEmoji(this)">🥤</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="new-med-category">
+                            <option value="supplement">Supplement</option>
+                            <option value="medication">Medication</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Schedule</label>
+                        <select id="new-med-schedule" onchange="updateAddMedForm()">
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="asneeded">As Needed (PRN)</option>
+                        </select>
+                    </div>
+                    <div class="add-med-conditional" id="add-med-time-section">
+                        <div class="form-group">
+                            <label>Reminder Time</label>
+                            <input type="time" id="new-med-time" value="08:00">
+                        </div>
+                    </div>
+                    <div class="add-med-conditional" id="add-med-days-section">
+                        <div class="form-group">
+                            <label>Which days?</label>
+                            <div class="day-checkboxes">
+                                <label><input type="checkbox" value="0"> Sun</label>
+                                <label><input type="checkbox" value="1"> Mon</label>
+                                <label><input type="checkbox" value="2"> Tue</label>
+                                <label><input type="checkbox" value="3"> Wed</label>
+                                <label><input type="checkbox" value="4"> Thu</label>
+                                <label><input type="checkbox" value="5"> Fri</label>
+                                <label><input type="checkbox" value="6"> Sat</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-med-conditional" id="add-med-maxperday-section">
+                        <div class="form-group">
+                            <label>Max doses per day (0 = no limit)</label>
+                            <input type="number" id="new-med-maxperday" min="0" max="20" value="0" placeholder="e.g., 4">
+                        </div>
+                    </div>
+                    <div class="add-med-conditional" id="add-med-reminder-section">
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" id="new-med-reminder" checked style="width: 18px; height: 18px;">
+                                Enable reminder
+                            </label>
+                        </div>
+                    </div>
+                    <button onclick="addMedication()" class="btn" style="margin-top: 10px;">Add Medication</button>
+                </div>
+            `;
+
+            container.innerHTML = html;
+            updateAddMedForm();
+        }
+
+        function selectEmoji(btn) {
+            document.querySelectorAll('.emoji-picker-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        function updateAddMedForm() {
+            const schedule = document.getElementById('new-med-schedule').value;
+            const timeSection = document.getElementById('add-med-time-section');
+            const daysSection = document.getElementById('add-med-days-section');
+            const maxSection = document.getElementById('add-med-maxperday-section');
+            const reminderSection = document.getElementById('add-med-reminder-section');
+
+            // Reset visibility
+            timeSection.classList.remove('visible');
+            daysSection.classList.remove('visible');
+            maxSection.classList.remove('visible');
+            reminderSection.classList.remove('visible');
+
+            if (schedule === 'daily') {
+                timeSection.classList.add('visible');
+                reminderSection.classList.add('visible');
+            } else if (schedule === 'weekly') {
+                timeSection.classList.add('visible');
+                daysSection.classList.add('visible');
+                reminderSection.classList.add('visible');
+            } else if (schedule === 'asneeded') {
+                maxSection.classList.add('visible');
+            }
+        }
+
+        function addMedication() {
+            const name = document.getElementById('new-med-name').value.trim();
+            if (!name) {
+                alert('Please enter a medication name.');
+                return;
+            }
+
+            const selectedEmoji = document.querySelector('.emoji-picker-btn.selected');
+            const emoji = selectedEmoji ? selectedEmoji.dataset.emoji : '💊';
+            const schedule = document.getElementById('new-med-schedule').value;
+            const category = document.getElementById('new-med-category').value;
+            const id = 'custom_' + Date.now();
+
+            const newMed = {
+                id: id,
+                name: name,
+                emoji: emoji,
+                schedule: schedule,
+                days: [],
+                time: null,
+                reminderEnabled: false,
+                isCustom: true,
+                maxPerDay: null,
+                category: category
+            };
+
+            if (schedule === 'daily') {
+                newMed.time = document.getElementById('new-med-time').value || null;
+                newMed.reminderEnabled = document.getElementById('new-med-reminder').checked;
+            } else if (schedule === 'weekly') {
+                const dayCheckboxes = document.querySelectorAll('#add-med-days-section .day-checkboxes input[type="checkbox"]:checked');
+                newMed.days = Array.from(dayCheckboxes).map(cb => parseInt(cb.value));
+                if (newMed.days.length === 0) {
+                    alert('Please select at least one day for weekly medications.');
+                    return;
+                }
+                newMed.time = document.getElementById('new-med-time').value || null;
+                newMed.reminderEnabled = document.getElementById('new-med-reminder').checked;
+            } else if (schedule === 'asneeded') {
+                const maxPerDay = parseInt(document.getElementById('new-med-maxperday').value) || 0;
+                newMed.maxPerDay = maxPerDay > 0 ? maxPerDay : null;
+                newMed.reminderEnabled = false;
+            }
+
+            appData.medications.push(newMed);
+            saveData();
+
+            // Re-render everything
+            renderMedicationManager();
+            renderRemindersTab();
+            renderTodayMeds();
+            renderPrnSection();
+            renderCalendar();
+            setupReminders();
+
+            // Clear form
+            document.getElementById('new-med-name').value = '';
+
+            alert(`${emoji} ${name} added successfully!`);
+        }
+
+        function removeMedication(id) {
+            const med = appData.medications.find(m => m.id === id);
+            if (!med) return;
+
+            if (DEFAULT_MED_IDS.includes(id)) {
+                alert('Default medications cannot be removed.');
+                return;
+            }
+
+            if (!confirm(`Remove "${med.emoji} ${med.name}" from your medications?\n\nNote: Historical logs will be preserved.`)) return;
+
+            appData.medications = appData.medications.filter(m => m.id !== id);
+            saveData();
+
+            renderMedicationManager();
+            renderRemindersTab();
+            renderTodayMeds();
+            renderPrnSection();
+            renderCalendar();
+            setupReminders();
+        }
+
+        function formatTime12h(time24) {
+            if (!time24) return '';
+            const [h, m] = time24.split(':').map(Number);
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            const h12 = h % 12 || 12;
+            return `${h12}:${String(m).padStart(2, '0')} ${ampm}`;
+        }
+
+        // ============ PRN (AS-NEEDED) MEDICATIONS ============
+        let pendingPrnMedId = null;
+
+        function renderPrnSection() {
+            const container = document.getElementById('prn-section-container');
+            if (!container) return;
+
+            const prnMeds = appData.medications.filter(m => m.schedule === 'asneeded');
+            if (prnMeds.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            const todayStr = formatDateKey(new Date());
+            const log = appData.dailyLogs[todayStr];
+
+            let html = `
+                <div class="prn-section">
+                    <h3>As Needed Medications</h3>
+                    <div class="prn-meds-grid">
+            `;
+
+            prnMeds.forEach(med => {
+                const doseCount = getPrnDoseCount(med.id, todayStr);
+                const atLimit = med.maxPerDay && doseCount >= med.maxPerDay;
+                const limitText = med.maxPerDay ? `${doseCount}/${med.maxPerDay} today` : `${doseCount} today`;
+
+                html += `
+                    <div class="prn-med-card">
+                        <div class="prn-med-info">
+                            <div class="prn-med-name">${med.emoji} ${med.name}</div>
+                            <div class="prn-dose-count">${limitText}</div>
+                        </div>
+                        <button class="prn-take-btn ${atLimit ? 'at-limit' : ''}" onclick="takePrnDose('${med.id}')">
+                            ${atLimit ? 'Limit Reached' : 'Take'}
+                        </button>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function getPrnDoseCount(medId, dateStr) {
+            const log = appData.dailyLogs[dateStr];
+            if (!log || !log.prnDoses || !log.prnDoses[medId]) return 0;
+            return log.prnDoses[medId].length;
+        }
+
+        function takePrnDose(medId) {
+            const med = appData.medications.find(m => m.id === medId);
+            if (!med) return;
+
+            pendingPrnMedId = medId;
+            const todayStr = formatDateKey(new Date());
+            const doseCount = getPrnDoseCount(medId, todayStr);
+
+            document.getElementById('prn-popup-title').textContent = `Log ${med.emoji} ${med.name} Dose`;
+            document.getElementById('prn-dose-note').value = '';
+
+            // Show warning if at or over limit
+            const warningEl = document.getElementById('prn-popup-warning');
+            if (med.maxPerDay && doseCount >= med.maxPerDay) {
+                warningEl.innerHTML = `<div class="prn-warning-banner danger">You've already taken ${doseCount} dose${doseCount !== 1 ? 's' : ''} today (max ${med.maxPerDay}). Are you sure?</div>`;
+            } else if (med.maxPerDay && doseCount === med.maxPerDay - 1) {
+                warningEl.innerHTML = `<div class="prn-warning-banner">This will be your last dose for today (${doseCount + 1}/${med.maxPerDay}).</div>`;
+            } else {
+                warningEl.innerHTML = '';
+            }
+
+            document.getElementById('prn-popup-overlay').classList.add('active');
+        }
+
+        function closePrnPopup() {
+            document.getElementById('prn-popup-overlay').classList.remove('active');
+            pendingPrnMedId = null;
+        }
+
+        function confirmPrnDose() {
+            if (!pendingPrnMedId) return;
+
+            const todayStr = formatDateKey(new Date());
+            const note = document.getElementById('prn-dose-note').value.trim();
+            const now = new Date();
+            const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+
+            // Ensure daily log exists
+            if (!appData.dailyLogs[todayStr]) {
+                appData.dailyLogs[todayStr] = {
+                    medications: {},
+                    sleep: {},
+                    symptoms: {},
+                    notes: ''
+                };
+            }
+
+            // Ensure prnDoses object exists
+            if (!appData.dailyLogs[todayStr].prnDoses) {
+                appData.dailyLogs[todayStr].prnDoses = {};
+            }
+            if (!appData.dailyLogs[todayStr].prnDoses[pendingPrnMedId]) {
+                appData.dailyLogs[todayStr].prnDoses[pendingPrnMedId] = [];
+            }
+
+            appData.dailyLogs[todayStr].prnDoses[pendingPrnMedId].push({
+                time: timeStr,
+                note: note
+            });
+
+            saveData();
+            closePrnPopup();
+            renderPrnSection();
         }
 
         function saveCheckinReminder() {

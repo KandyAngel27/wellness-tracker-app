@@ -26,6 +26,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
         ipcRenderer.on('request-auto-backup', callback);
     },
 
+    // Listen for system resume from sleep/hibernate
+    onSystemResumed: (callback) => {
+        ipcRenderer.on('system-resumed', callback);
+    },
+
     // Check if running in Electron
     isElectron: true,
 
