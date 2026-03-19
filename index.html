@@ -395,6 +395,16 @@
             transition: border-color 0.2s;
         }
 
+        /* Remove number input spinners */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
         input:focus,
         select:focus,
         textarea:focus {
@@ -993,6 +1003,27 @@
             background: #fff5f5;
         }
 
+        .drag-handle {
+            cursor: grab;
+            color: #667eea;
+            font-size: 1.3em;
+            padding: 0 10px 0 0;
+            flex-shrink: 0;
+            user-select: none;
+            opacity: 0.7;
+        }
+
+        .drag-handle:hover { opacity: 1; }
+
+        .drag-handle:active { cursor: grabbing; }
+
+        .med-manager-item.drag-over {
+            border: 2px dashed #667eea;
+            background: #f0f2ff;
+        }
+
+        .med-manager-item[draggable="true"] { cursor: default; }
+
         .med-manager-default-badge {
             font-size: 0.7em;
             background: #e9ecef;
@@ -1556,15 +1587,15 @@
                         </label>
                         <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
                             <input type="checkbox" id="chart-libido" onchange="saveChartCheckboxes(); renderSymptomChart()">
-                            <span style="color: #e83e8c;">Libido</span>
+                            <span style="color: #ff0000;">Libido</span>
                         </label>
                         <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
                             <input type="checkbox" id="chart-clarity" onchange="saveChartCheckboxes(); renderSymptomChart()">
-                            <span style="color: #17a2b8;">Mental Clarity</span>
+                            <span style="color: #00BCD4;">Mental Clarity</span>
                         </label>
                         <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
                             <input type="checkbox" id="chart-anxiety" onchange="saveChartCheckboxes(); renderSymptomChart()">
-                            <span style="color: #dc3545;">Anxiety</span>
+                            <span style="color: #000000;">Anxiety</span>
                         </label>
                         <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
                             <input type="checkbox" id="chart-wellbeing" onchange="saveChartCheckboxes(); renderSymptomChart()">
@@ -1572,7 +1603,7 @@
                         </label>
                         <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
                             <input type="checkbox" id="chart-temperature" checked onchange="saveChartCheckboxes(); renderSymptomChart()">
-                            <span style="color: #fd7e14;">Temperature</span>
+                            <span style="color: #8B4513;">Temperature</span>
                         </label>
                     </div>
                     </div>
@@ -1637,10 +1668,6 @@
                     <div class="stat-card">
                         <div class="stat-label">Best Night</div>
                         <div class="stat-value" id="sleep-best">-</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Avg Wake-ups</div>
-                        <div class="stat-value" id="sleep-avg-wakeups">-</div>
                     </div>
                 </div>
             </div>
@@ -1715,6 +1742,180 @@
                         <button onclick="resetTaper()" class="btn btn-danger btn-small">Reset Tapering Plan</button>
                     </div>
                 </div>
+
+                <!-- What to Expect Guide - always visible -->
+                <div style="margin-top: 25px;">
+
+                    <!-- Dose-by-dose guide -->
+                    <div class="resource-dropdown" style="margin-bottom: 12px;">
+                        <div onclick="toggleResourceSection('taper-doses')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 18px 20px; border-radius: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="color: white; margin: 0;">📉 What to Expect at Each Dose</h3>
+                            <span id="taper-doses-arrow" style="font-size: 20px; transition: transform 0.3s;">▼</span>
+                        </div>
+                        <div id="taper-doses-content" style="display: none; background: #f8f9fa; border-radius: 0 0 15px 15px; padding: 20px; margin-top: -10px;">
+
+                            <div style="background: #e8f4fd; border-left: 4px solid #2196F3; padding: 15px; border-radius: 8px; margin-bottom: 12px;">
+                                <h4 style="color: #1565C0; margin-bottom: 8px;">300mg → 150mg (First Reduction)</h4>
+                                <p style="color: #555; font-size: 0.9em; margin-bottom: 8px;">This is usually the biggest adjustment. Your brain has been used to a higher dopamine/norepinephrine boost.</p>
+                                <ul style="color: #555; font-size: 0.9em; margin-left: 18px;">
+                                    <li style="margin-bottom: 5px;"><strong>Week 1–2:</strong> Possible fatigue, mild headaches, irritability, or feeling "flat." This is normal and temporary.</li>
+                                    <li style="margin-bottom: 5px;"><strong>Week 2–4:</strong> Most people stabilize. Energy and mood start to level out at the new baseline.</li>
+                                    <li style="margin-bottom: 5px;"><strong>Appetite:</strong> May increase slightly — Wellbutrin suppresses appetite, so reducing the dose can reverse this.</li>
+                                    <li><strong>Sleep:</strong> May temporarily improve or feel different as stimulating effects decrease.</li>
+                                </ul>
+                            </div>
+
+                            <div style="background: #f3e5f5; border-left: 4px solid #9C27B0; padding: 15px; border-radius: 8px; margin-bottom: 12px;">
+                                <h4 style="color: #6A1B9A; margin-bottom: 8px;">150mg → 0mg (Final Step)</h4>
+                                <p style="color: #555; font-size: 0.9em; margin-bottom: 8px;">Good news: Wellbutrin has far fewer discontinuation symptoms than SSRIs. No brain zaps, minimal physical symptoms.</p>
+                                <ul style="color: #555; font-size: 0.9em; margin-left: 18px;">
+                                    <li style="margin-bottom: 5px;"><strong>Week 1–2:</strong> Low motivation, fatigue, possible mood dip. This is the drug leaving — not "you."</li>
+                                    <li style="margin-bottom: 5px;"><strong>Week 2–4:</strong> Your brain starts producing its own dopamine regulation again. Most people notice this lifting.</li>
+                                    <li style="margin-bottom: 5px;"><strong>Week 4–8:</strong> Authentic baseline emerges. Many people feel more emotionally connected and like "themselves" again.</li>
+                                    <li><strong>Some taper 150mg → 75mg first</strong> if the 150→0 step feels too big (requires IR pills, discuss with prescriber).</li>
+                                </ul>
+                            </div>
+
+                            <div style="background: #e8f5e9; border-left: 4px solid #4CAF50; padding: 15px; border-radius: 8px;">
+                                <h4 style="color: #2E7D32; margin-bottom: 8px;">✅ After Stopping Completely</h4>
+                                <ul style="color: #555; font-size: 0.9em; margin-left: 18px;">
+                                    <li style="margin-bottom: 5px;"><strong>2–4 weeks:</strong> Physical adjustment mostly complete. Energy stabilizing.</li>
+                                    <li style="margin-bottom: 5px;"><strong>4–6 weeks:</strong> Mood settles to your natural baseline. Appetite normalizes fully.</li>
+                                    <li><strong>6–12 weeks:</strong> Full picture of how you feel without medication. Give it this long before evaluating.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Symptoms guide -->
+                    <div class="resource-dropdown" style="margin-bottom: 12px;">
+                        <div onclick="toggleResourceSection('taper-symptoms')" style="background: linear-gradient(135deg, #fd7e14 0%, #e55a00 100%); color: white; padding: 18px 20px; border-radius: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="color: white; margin: 0;">⚠️ Symptoms to Know About</h3>
+                            <span id="taper-symptoms-arrow" style="font-size: 20px; transition: transform 0.3s;">▼</span>
+                        </div>
+                        <div id="taper-symptoms-content" style="display: none; background: #f8f9fa; border-radius: 0 0 15px 15px; padding: 20px; margin-top: -10px;">
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px;">
+                                <div style="background: #fff3e0; padding: 15px; border-radius: 10px;">
+                                    <h4 style="color: #e65100; margin-bottom: 10px;">Common (Expected)</h4>
+                                    <ul style="color: #555; font-size: 0.88em; margin-left: 16px;">
+                                        <li style="margin-bottom: 4px;">Fatigue / low energy</li>
+                                        <li style="margin-bottom: 4px;">Irritability or mood swings</li>
+                                        <li style="margin-bottom: 4px;">Headaches (usually mild)</li>
+                                        <li style="margin-bottom: 4px;">Increased appetite</li>
+                                        <li style="margin-bottom: 4px;">Difficulty concentrating</li>
+                                        <li style="margin-bottom: 4px;">Vivid or unusual dreams</li>
+                                        <li>Temporary mood dip</li>
+                                    </ul>
+                                </div>
+                                <div style="background: #fce4ec; padding: 15px; border-radius: 10px;">
+                                    <h4 style="color: #880E4F; margin-bottom: 10px;">Less Common</h4>
+                                    <ul style="color: #555; font-size: 0.88em; margin-left: 16px;">
+                                        <li style="margin-bottom: 4px;">Mild anxiety uptick</li>
+                                        <li style="margin-bottom: 4px;">Lightheadedness</li>
+                                        <li style="margin-bottom: 4px;">Flu-like feeling</li>
+                                        <li style="margin-bottom: 4px;">Muscle tension</li>
+                                        <li style="margin-bottom: 4px;">Nausea (uncommon)</li>
+                                        <li>Lowered motivation temporarily</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; margin-bottom: 12px;">
+                                <h4 style="color: #2E7D32; margin-bottom: 8px;">👍 What Wellbutrin Doesn't Usually Cause (Unlike SSRIs)</h4>
+                                <p style="color: #555; font-size: 0.88em;">No "brain zaps," no severe dizziness, no electric shock sensations, no intense flu-like syndrome. Wellbutrin is generally considered one of the easier antidepressants to taper off.</p>
+                            </div>
+
+                            <div style="background: #ffebee; border-left: 4px solid #f44336; padding: 15px; border-radius: 8px;">
+                                <h4 style="color: #b71c1c; margin-bottom: 8px;">🚨 Contact Your Prescriber If:</h4>
+                                <ul style="color: #555; font-size: 0.88em; margin-left: 18px;">
+                                    <li style="margin-bottom: 4px;">Symptoms are severe or getting worse after week 3</li>
+                                    <li style="margin-bottom: 4px;">Seizure activity (rare but important — Wellbutrin lowers seizure threshold)</li>
+                                    <li style="margin-bottom: 4px;">Suicidal thoughts or severe hopelessness</li>
+                                    <li>You feel like your original depression symptoms are fully returning</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Withdrawal vs Relapse -->
+                    <div class="resource-dropdown" style="margin-bottom: 12px;">
+                        <div onclick="toggleResourceSection('taper-relapse')" style="background: linear-gradient(135deg, #28a745 0%, #1a7a32 100%); color: white; padding: 18px 20px; border-radius: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="color: white; margin: 0;">🔍 Withdrawal vs. Relapse — How to Tell</h3>
+                            <span id="taper-relapse-arrow" style="font-size: 20px; transition: transform 0.3s;">▼</span>
+                        </div>
+                        <div id="taper-relapse-content" style="display: none; background: #f8f9fa; border-radius: 0 0 15px 15px; padding: 20px; margin-top: -10px;">
+                            <p style="color: #555; font-size: 0.9em; margin-bottom: 15px;">This is the most important thing to track. The key difference is <strong>timing and trajectory</strong>.</p>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px;">
+                                <div style="background: #e8f4fd; padding: 15px; border-radius: 10px; border-top: 3px solid #2196F3;">
+                                    <h4 style="color: #1565C0; margin-bottom: 10px;">Discontinuation (Normal)</h4>
+                                    <ul style="color: #555; font-size: 0.88em; margin-left: 16px;">
+                                        <li style="margin-bottom: 5px;">Appears <strong>within days</strong> of reducing dose</li>
+                                        <li style="margin-bottom: 5px;">Peaks at <strong>1–2 weeks</strong></li>
+                                        <li style="margin-bottom: 5px;"><strong>Improves</strong> week by week</li>
+                                        <li style="margin-bottom: 5px;">Resolves within <strong>2–4 weeks</strong></li>
+                                        <li>Feels like a physical adjustment</li>
+                                    </ul>
+                                </div>
+                                <div style="background: #fce4ec; padding: 15px; border-radius: 10px; border-top: 3px solid #f44336;">
+                                    <h4 style="color: #c62828; margin-bottom: 10px;">Relapse (Worth Checking)</h4>
+                                    <ul style="color: #555; font-size: 0.88em; margin-left: 16px;">
+                                        <li style="margin-bottom: 5px;">Emerges <strong>gradually</strong>, often 4–8 weeks out</li>
+                                        <li style="margin-bottom: 5px;">Gets <strong>progressively worse</strong> over time</li>
+                                        <li style="margin-bottom: 5px;">Feels like <strong>original symptoms</strong> returning</li>
+                                        <li style="margin-bottom: 5px;">Doesn't resolve on its own</li>
+                                        <li>Affects function at work, relationships</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div style="background: #fff9c4; border-left: 4px solid #f9a825; padding: 15px; border-radius: 8px;">
+                                <h4 style="color: #f57f17; margin-bottom: 6px;">💡 Simple Rule of Thumb</h4>
+                                <p style="color: #555; font-size: 0.9em;">If you feel better each week → it's withdrawal. If you feel <em>worse</em> three weeks or more after stopping → check in with your prescriber. Use your symptom log in this app to track the trend!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ready to stop guide -->
+                    <div class="resource-dropdown" style="margin-bottom: 12px;">
+                        <div onclick="toggleResourceSection('taper-ready')" style="background: linear-gradient(135deg, #20c997 0%, #12876f 100%); color: white; padding: 18px 20px; border-radius: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="color: white; margin: 0;">✅ How to Know You're Ready to Stop</h3>
+                            <span id="taper-ready-arrow" style="font-size: 20px; transition: transform 0.3s;">▼</span>
+                        </div>
+                        <div id="taper-ready-content" style="display: none; background: #f8f9fa; border-radius: 0 0 15px 15px; padding: 20px; margin-top: -10px;">
+
+                            <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; margin-bottom: 12px;">
+                                <h4 style="color: #2E7D32; margin-bottom: 10px;">Green Lights — Good Signs to Proceed</h4>
+                                <ul style="color: #555; font-size: 0.9em; margin-left: 18px;">
+                                    <li style="margin-bottom: 6px;">✅ You've been <strong>stable at your current dose for 4+ weeks</strong> with manageable symptoms</li>
+                                    <li style="margin-bottom: 6px;">✅ No major life stressors expected in the next <strong>2–3 months</strong></li>
+                                    <li style="margin-bottom: 6px;">✅ You have <strong>coping tools in place</strong> (exercise, sleep hygiene, stress management, therapy if applicable)</li>
+                                    <li style="margin-bottom: 6px;">✅ Your TRT levels are optimized — testosterone plays a big role in mood and motivation</li>
+                                    <li style="margin-bottom: 6px;">✅ You feel <strong>emotionally equipped</strong> to handle a temporary dip</li>
+                                    <li>✅ You and your prescriber are aligned on the timeline</li>
+                                </ul>
+                            </div>
+
+                            <div style="background: #ffebee; padding: 15px; border-radius: 10px; margin-bottom: 12px;">
+                                <h4 style="color: #b71c1c; margin-bottom: 10px;">Red Lights — Consider Waiting</h4>
+                                <ul style="color: #555; font-size: 0.9em; margin-left: 18px;">
+                                    <li style="margin-bottom: 6px;">❌ Current mood or depression symptoms are still significant</li>
+                                    <li style="margin-bottom: 6px;">❌ High stress period (job change, relationship stress, family crisis)</li>
+                                    <li style="margin-bottom: 6px;">❌ Symptoms worsening week to week at the current dose</li>
+                                    <li style="margin-bottom: 6px;">❌ TRT or other hormone levels are not yet optimized</li>
+                                    <li>❌ Suicidal ideation or severe hopelessness present</li>
+                                </ul>
+                            </div>
+
+                            <div style="background: #e8f4fd; padding: 15px; border-radius: 10px;">
+                                <h4 style="color: #1565C0; margin-bottom: 8px;">💬 Your TRT + NAD+ Advantage</h4>
+                                <p style="color: #555; font-size: 0.9em;">You're in a better position than most people tapering Wellbutrin. Optimized testosterone supports dopamine regulation, mood, and motivation — exactly what Wellbutrin was helping with. NAD+ supports mitochondrial energy production and neurotransmitter synthesis. These give your brain a real foundation to function well without the medication. Track your energy and motivation scores in the daily check-in to see the data.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
             <!-- Labs Tab -->
@@ -1758,6 +1959,25 @@
                     </div>
                 </div>
 
+                <!-- Import Lab Report -->
+                <div style="background: #e8f4fd; padding: 25px; border-radius: 15px; border: 2px dashed #667eea; margin-bottom: 25px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">📋 Import Lab Report</h3>
+                    <p style="color: #6c757d; font-size: 0.9em; margin-bottom: 15px;">Upload a PDF from Quest, LabCorp, or any lab — values are auto-detected and fill the form below.</p>
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; align-items: center;">
+                        <label class="btn" style="cursor: pointer; background: #667eea; color: white;">
+                            📄 Upload Lab PDF
+                            <input type="file" id="lab-pdf-upload" accept=".pdf" style="display: none;" onchange="handleLabPDFUpload(event)">
+                        </label>
+                        <span style="color: #6c757d; font-size: 0.9em;">or paste text below</span>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 10px;">
+                        <textarea id="lab-text-input" placeholder="Paste lab report text here, then click Parse..." style="min-height: 80px; font-size: 0.85em;"></textarea>
+                    </div>
+                    <button onclick="parsePastedLabText()" class="btn" style="background: #6c757d; margin-bottom: 12px;">Parse Pasted Text</button>
+                    <div id="lab-parse-status" style="font-size: 0.9em; color: #6c757d; margin-bottom: 8px;"></div>
+                    <div id="lab-parse-preview" style="display: none;"></div>
+                </div>
+
                 <div style="background: #f8f9fa; padding: 25px; border-radius: 15px;">
                     <h3 style="color: #667eea; margin-bottom: 20px;">Add Lab Results</h3>
                     <div class="form-group">
@@ -1771,31 +1991,31 @@
                             <h4 style="color: #667eea; margin-bottom: 15px;">Hormones</h4>
                             <div class="form-group" style="margin-bottom: 12px;">
                                 <label>Testosterone Total (ng/dL)</label>
-                                <input type="number" step="0.01" id="lab-testosterone" placeholder="e.g., 45.2">
+                                <input type="text" inputmode="decimal" id="lab-testosterone" placeholder="e.g., 45.2">
                             </div>
                             <div class="form-group" style="margin-bottom: 12px;">
                                 <label>Free Testosterone / cFT (pg/mL)</label>
-                                <input type="number" step="0.01" id="lab-testosterone-free" placeholder="e.g., 1.2">
+                                <input type="text" inputmode="decimal" id="lab-testosterone-free" placeholder="e.g., 1.2">
                             </div>
                             <div class="form-group" style="margin-bottom: 12px;">
                                 <label>Estradiol (pg/mL)</label>
-                                <input type="number" step="0.01" id="lab-estradiol" placeholder="e.g., 59.0">
+                                <input type="text" inputmode="decimal" id="lab-estradiol" placeholder="e.g., 59.0">
                             </div>
                             <div class="form-group" style="margin-bottom: 12px;">
                                 <label>Progesterone (ng/mL)</label>
-                                <input type="number" step="0.01" id="lab-progesterone" placeholder="e.g., 0.55">
+                                <input type="text" inputmode="decimal" id="lab-progesterone" placeholder="e.g., 0.55">
                             </div>
                             <div class="form-group" style="margin-bottom: 12px;">
                                 <label>SHBG (nmol/L)</label>
-                                <input type="number" step="0.01" id="lab-shbg" placeholder="e.g., 70.92">
+                                <input type="text" inputmode="decimal" id="lab-shbg" placeholder="e.g., 70.92">
                             </div>
                             <div class="form-group" style="margin-bottom: 12px;">
                                 <label>Prolactin (ng/mL)</label>
-                                <input type="number" step="0.01" id="lab-prolactin" placeholder="e.g., 41.55">
+                                <input type="text" inputmode="decimal" id="lab-prolactin" placeholder="e.g., 41.55">
                             </div>
                             <div class="form-group" style="margin-bottom: 0;">
                                 <label>DHEA-S (ug/dL)</label>
-                                <input type="number" step="0.01" id="lab-dhea" placeholder="e.g., 151.8">
+                                <input type="text" inputmode="decimal" id="lab-dhea" placeholder="e.g., 151.8">
                             </div>
                         </div>
 
@@ -1804,15 +2024,15 @@
                             <h4 style="color: #667eea; margin-bottom: 15px;">Thyroid</h4>
                             <div class="form-group" style="margin-bottom: 12px;">
                                 <label>TSH (uIU/mL)</label>
-                                <input type="number" step="0.001" id="lab-tsh" placeholder="e.g., 2.525">
+                                <input type="text" inputmode="decimal" id="lab-tsh" placeholder="e.g., 2.525">
                             </div>
                             <div class="form-group" style="margin-bottom: 12px;">
                                 <label>Free T4 (ng/dL)</label>
-                                <input type="number" step="0.01" id="lab-t4" placeholder="e.g., 0.62">
+                                <input type="text" inputmode="decimal" id="lab-t4" placeholder="e.g., 0.62">
                             </div>
                             <div class="form-group" style="margin-bottom: 0;">
                                 <label>Free T3 (pg/mL)</label>
-                                <input type="number" step="0.01" id="lab-t3" placeholder="e.g., 3.21">
+                                <input type="text" inputmode="decimal" id="lab-t3" placeholder="e.g., 3.21">
                             </div>
                         </div>
 
@@ -1821,15 +2041,15 @@
                             <h4 style="color: #667eea; margin-bottom: 15px;">Vitamins & Minerals</h4>
                             <div class="form-group" style="margin-bottom: 12px;">
                                 <label>Vitamin D (ng/mL)</label>
-                                <input type="number" step="0.01" id="lab-vitd" placeholder="e.g., 37.19">
+                                <input type="text" inputmode="decimal" id="lab-vitd" placeholder="e.g., 37.19">
                             </div>
                             <div class="form-group" style="margin-bottom: 12px;">
                                 <label>Vitamin B12 (pg/mL)</label>
-                                <input type="number" step="0.01" id="lab-b12" placeholder="e.g., 294">
+                                <input type="text" inputmode="decimal" id="lab-b12" placeholder="e.g., 294">
                             </div>
                             <div class="form-group" style="margin-bottom: 0;">
                                 <label>Ferritin (ng/mL)</label>
-                                <input type="number" step="0.01" id="lab-ferritin" placeholder="e.g., 26.97">
+                                <input type="text" inputmode="decimal" id="lab-ferritin" placeholder="e.g., 26.97">
                             </div>
                         </div>
 
@@ -1838,27 +2058,27 @@
                             <h4 style="color: #667eea; margin-bottom: 15px;">Metabolic</h4>
                             <div class="form-group" style="margin-bottom: 12px;">
                                 <label>Glucose (mg/dL)</label>
-                                <input type="number" step="0.1" id="lab-glucose" placeholder="e.g., 85">
+                                <input type="text" inputmode="decimal" id="lab-glucose" placeholder="e.g., 85">
                             </div>
                             <div class="form-group" style="margin-bottom: 12px;">
                                 <label>HbA1c (%)</label>
-                                <input type="number" step="0.1" id="lab-hba1c" placeholder="e.g., 4.9">
+                                <input type="text" inputmode="decimal" id="lab-hba1c" placeholder="e.g., 4.9">
                             </div>
                             <div class="form-group" style="margin-bottom: 12px;">
                                 <label>Total Cholesterol (mg/dL)</label>
-                                <input type="number" step="1" id="lab-cholesterol" placeholder="e.g., 197">
+                                <input type="text" inputmode="decimal" id="lab-cholesterol" placeholder="e.g., 197">
                             </div>
                             <div class="form-group" style="margin-bottom: 12px;">
                                 <label>LDL (mg/dL)</label>
-                                <input type="number" step="1" id="lab-ldl" placeholder="e.g., 120">
+                                <input type="text" inputmode="decimal" id="lab-ldl" placeholder="e.g., 120">
                             </div>
                             <div class="form-group" style="margin-bottom: 12px;">
                                 <label>HDL (mg/dL)</label>
-                                <input type="number" step="1" id="lab-hdl" placeholder="e.g., 78">
+                                <input type="text" inputmode="decimal" id="lab-hdl" placeholder="e.g., 78">
                             </div>
                             <div class="form-group" style="margin-bottom: 0;">
                                 <label>Triglycerides (mg/dL)</label>
-                                <input type="number" step="1" id="lab-triglycerides" placeholder="e.g., 97">
+                                <input type="text" inputmode="decimal" id="lab-triglycerides" placeholder="e.g., 97">
                             </div>
                         </div>
                     </div>
@@ -2682,25 +2902,8 @@
                                 <input type="number" id="modal-sleep-quality" min="1" max="10" placeholder="7">
                             </div>
                             <div class="sleep-input">
-                                <label>Mins to Fall Asleep</label>
-                                <input type="number" id="modal-sleep-fallasleep" min="0" placeholder="15">
-                            </div>
-                            <div class="sleep-input">
-                                <label>Wake-ups</label>
-                                <input type="number" id="modal-sleep-wakeups" min="0" placeholder="1">
-                            </div>
-                            <div class="sleep-input">
                                 <label>Morning Energy (1-10)</label>
                                 <input type="number" id="modal-sleep-energy" min="1" max="10" placeholder="6">
-                            </div>
-                            <div class="sleep-input">
-                                <label>Sleep Aid Used?</label>
-                                <select id="modal-sleep-aid">
-                                    <option value="">None</option>
-                                    <option value="melatonin">Melatonin</option>
-                                    <option value="magnesium">Magnesium</option>
-                                    <option value="other">Other</option>
-                                </select>
                             </div>
                         </div>
                         <div style="margin-top: 15px;">
@@ -2822,6 +3025,24 @@
                                 <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
                                     <input type="checkbox" id="modal-se-wb-seizure" style="width: 16px; height: 16px;"> Seizure warning signs
                                 </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-wb-brainzaps" style="width: 16px; height: 16px;"> Brain zaps (taper)
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-wb-rebound-depression" style="width: 16px; height: 16px;"> Rebound depression (taper)
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-wb-flulike" style="width: 16px; height: 16px;"> Flu-like symptoms (taper)
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-wb-taper-irritability" style="width: 16px; height: 16px;"> Irritability (taper)
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-wb-taper-anxiety" style="width: 16px; height: 16px;"> Anxiety increase (taper)
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-wb-taper-insomnia" style="width: 16px; height: 16px;"> Sleep disruption (taper)
+                                </label>
                             </div>
                         </div>
 
@@ -2870,6 +3091,24 @@
                                 </label>
                                 <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
                                     <input type="checkbox" id="modal-se-trt-edema" style="width: 16px; height: 16px;"> Swelling/edema
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-trt-libido-increase" style="width: 16px; height: 16px;"> Libido increase
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-trt-libido-decrease" style="width: 16px; height: 16px;"> Libido decrease
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-trt-clitoral" style="width: 16px; height: 16px;"> Clitoral enlargement
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-trt-vaginal-dryness" style="width: 16px; height: 16px;"> Vaginal dryness
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-trt-arousal-changes" style="width: 16px; height: 16px;"> Arousal changes
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-trt-orgasm-changes" style="width: 16px; height: 16px;"> Orgasm changes
                                 </label>
                             </div>
                         </div>
@@ -2942,6 +3181,56 @@
                             </div>
                         </div>
 
+                        <!-- Creatine -->
+                        <div style="background: #e3f2fd; padding: 15px; border-radius: 10px; border-left: 4px solid #1565c0;">
+                            <div style="font-weight: 600; color: #1565c0; margin-bottom: 10px; font-size: 0.9em;">💪 Creatine</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-cr-bloating" style="width: 16px; height: 16px;"> Bloating/water weight
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-cr-stomach" style="width: 16px; height: 16px;"> Stomach upset
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-cr-cramps" style="width: 16px; height: 16px;"> Muscle cramps
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-cr-nausea" style="width: 16px; height: 16px;"> Nausea
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-cr-diarrhea" style="width: 16px; height: 16px;"> Diarrhea
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-cr-thirst" style="width: 16px; height: 16px;"> Increased thirst
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Magnesium -->
+                        <div style="background: #f1f8e9; padding: 15px; border-radius: 10px; border-left: 4px solid #558b2f;">
+                            <div style="font-weight: 600; color: #558b2f; margin-bottom: 10px; font-size: 0.9em;">🪨 Magnesium</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-mag-diarrhea" style="width: 16px; height: 16px;"> Diarrhea/loose stools
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-mag-cramps" style="width: 16px; height: 16px;"> Stomach cramps
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-mag-nausea" style="width: 16px; height: 16px;"> Nausea
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-mag-drowsiness" style="width: 16px; height: 16px;"> Drowsiness
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-mag-lowbp" style="width: 16px; height: 16px;"> Low blood pressure
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                    <input type="checkbox" id="modal-se-mag-weakness" style="width: 16px; height: 16px;"> Muscle weakness
+                                </label>
+                            </div>
+                        </div>
+
                     </div>
 
                     <!-- General - full width -->
@@ -3000,6 +3289,20 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <!-- Sync status indicator -->
+    <div id="sync-status" style="
+        position: fixed; bottom: 16px; right: 16px; z-index: 9999;
+        background: #28a745; color: white; font-size: 12px; font-weight: 600;
+        padding: 6px 12px; border-radius: 20px; opacity: 0;
+        transition: opacity 0.4s; pointer-events: none; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    "></div>
+
     <script>
         // ============ DATA STRUCTURE ============
         let appData = {
@@ -3011,6 +3314,7 @@
                 { id: 'iron', name: 'Iron', emoji: '💊', schedule: 'daily', days: [], time: '14:00', reminderEnabled: true },
                 { id: 'vitc', name: 'Vitamin C', emoji: '💊', schedule: 'daily', days: [], time: '14:00', reminderEnabled: true }
             ],
+            deletedDefaultIds: [],
             dailyLogs: {},
             tapering: {
                 medication: 'Wellbutrin',
@@ -3055,6 +3359,12 @@
             'modal-se-wb-agitation': 'wbAgitation',
             'modal-se-wb-rash': 'wbRash',
             'modal-se-wb-seizure': 'wbSeizureWarning',
+            'modal-se-wb-brainzaps': 'wbBrainZaps',
+            'modal-se-wb-rebound-depression': 'wbReboundDepression',
+            'modal-se-wb-flulike': 'wbFluLike',
+            'modal-se-wb-taper-irritability': 'wbTaperIrritability',
+            'modal-se-wb-taper-anxiety': 'wbTaperAnxiety',
+            'modal-se-wb-taper-insomnia': 'wbTaperInsomnia',
             // TRT
             'modal-se-acne': 'acne',
             'modal-se-hairchanges': 'hairChanges',
@@ -3070,6 +3380,12 @@
             'modal-se-trt-aggression': 'trtAggression',
             'modal-se-trt-bp': 'trtHighBP',
             'modal-se-trt-edema': 'trtEdema',
+            'modal-se-trt-libido-increase': 'trtLibidoIncrease',
+            'modal-se-trt-libido-decrease': 'trtLibidoDecrease',
+            'modal-se-trt-clitoral': 'trtClitoral',
+            'modal-se-trt-vaginal-dryness': 'trtVaginalDryness',
+            'modal-se-trt-arousal-changes': 'trtArousalChanges',
+            'modal-se-trt-orgasm-changes': 'trtOrgasmChanges',
             // NAD+
             'modal-se-flushing': 'flushing',
             'modal-se-chest-tightness': 'chestTightness',
@@ -3090,6 +3406,20 @@
             'modal-se-heartburn': 'heartburn',
             'modal-se-iron-diarrhea': 'ironDiarrhea',
             'modal-se-iron-appetiteloss': 'ironAppetiteLoss',
+            // Creatine
+            'modal-se-cr-bloating': 'crBloating',
+            'modal-se-cr-stomach': 'crStomach',
+            'modal-se-cr-cramps': 'crCramps',
+            'modal-se-cr-nausea': 'crNausea',
+            'modal-se-cr-diarrhea': 'crDiarrhea',
+            'modal-se-cr-thirst': 'crThirst',
+            // Magnesium
+            'modal-se-mag-diarrhea': 'magDiarrhea',
+            'modal-se-mag-cramps': 'magCramps',
+            'modal-se-mag-nausea': 'magNausea',
+            'modal-se-mag-drowsiness': 'magDrowsiness',
+            'modal-se-mag-lowbp': 'magLowBP',
+            'modal-se-mag-weakness': 'magWeakness',
             // General
             'modal-se-headache': 'headache',
             'modal-se-fatigue': 'fatigue',
@@ -3121,6 +3451,12 @@
             wbAgitation: { label: 'Agitation', category: 'Wellbutrin', color: '#667eea' },
             wbRash: { label: 'Skin rash', category: 'Wellbutrin', color: '#667eea' },
             wbSeizureWarning: { label: 'Seizure warning', category: 'Wellbutrin', color: '#667eea' },
+            wbBrainZaps: { label: 'Brain zaps (taper)', category: 'Wellbutrin', color: '#667eea' },
+            wbReboundDepression: { label: 'Rebound depression (taper)', category: 'Wellbutrin', color: '#667eea' },
+            wbFluLike: { label: 'Flu-like symptoms (taper)', category: 'Wellbutrin', color: '#667eea' },
+            wbTaperIrritability: { label: 'Irritability (taper)', category: 'Wellbutrin', color: '#667eea' },
+            wbTaperAnxiety: { label: 'Anxiety increase (taper)', category: 'Wellbutrin', color: '#667eea' },
+            wbTaperInsomnia: { label: 'Sleep disruption (taper)', category: 'Wellbutrin', color: '#667eea' },
             acne: { label: 'Acne/oily skin', category: 'TRT', color: '#764ba2' },
             hairChanges: { label: 'Hair thinning/loss', category: 'TRT', color: '#764ba2' },
             moodSwings: { label: 'Mood swings', category: 'TRT', color: '#764ba2' },
@@ -3135,6 +3471,12 @@
             trtAggression: { label: 'Aggression', category: 'TRT', color: '#764ba2' },
             trtHighBP: { label: 'High blood pressure', category: 'TRT', color: '#764ba2' },
             trtEdema: { label: 'Swelling/edema', category: 'TRT', color: '#764ba2' },
+            trtLibidoIncrease: { label: 'Libido increase', category: 'TRT', color: '#764ba2' },
+            trtLibidoDecrease: { label: 'Libido decrease', category: 'TRT', color: '#764ba2' },
+            trtClitoral: { label: 'Clitoral enlargement', category: 'TRT', color: '#764ba2' },
+            trtVaginalDryness: { label: 'Vaginal dryness', category: 'TRT', color: '#764ba2' },
+            trtArousalChanges: { label: 'Arousal changes', category: 'TRT', color: '#764ba2' },
+            trtOrgasmChanges: { label: 'Orgasm changes', category: 'TRT', color: '#764ba2' },
             flushing: { label: 'Flushing/warmth', category: 'NAD+', color: '#11998e' },
             chestTightness: { label: 'Chest tightness', category: 'NAD+', color: '#11998e' },
             nadNausea: { label: 'Nausea', category: 'NAD+', color: '#11998e' },
@@ -3153,6 +3495,18 @@
             heartburn: { label: 'Heartburn', category: 'Iron/Vitamins', color: '#e65100' },
             ironDiarrhea: { label: 'Diarrhea', category: 'Iron/Vitamins', color: '#e65100' },
             ironAppetiteLoss: { label: 'Loss of appetite', category: 'Iron/Vitamins', color: '#e65100' },
+            crBloating: { label: 'Bloating/water weight', category: 'Creatine', color: '#1565c0' },
+            crStomach: { label: 'Stomach upset', category: 'Creatine', color: '#1565c0' },
+            crCramps: { label: 'Muscle cramps', category: 'Creatine', color: '#1565c0' },
+            crNausea: { label: 'Nausea', category: 'Creatine', color: '#1565c0' },
+            crDiarrhea: { label: 'Diarrhea', category: 'Creatine', color: '#1565c0' },
+            crThirst: { label: 'Increased thirst', category: 'Creatine', color: '#1565c0' },
+            magDiarrhea: { label: 'Diarrhea/loose stools', category: 'Magnesium', color: '#558b2f' },
+            magCramps: { label: 'Stomach cramps', category: 'Magnesium', color: '#558b2f' },
+            magNausea: { label: 'Nausea', category: 'Magnesium', color: '#558b2f' },
+            magDrowsiness: { label: 'Drowsiness', category: 'Magnesium', color: '#558b2f' },
+            magLowBP: { label: 'Low blood pressure', category: 'Magnesium', color: '#558b2f' },
+            magWeakness: { label: 'Muscle weakness', category: 'Magnesium', color: '#558b2f' },
             headache: { label: 'Headache', category: 'General', color: '#6c757d' },
             fatigue: { label: 'Fatigue', category: 'General', color: '#6c757d' },
             dizziness: { label: 'Dizziness', category: 'General', color: '#6c757d' },
@@ -3245,6 +3599,9 @@
 
             // Set up date change watcher
             setupDateChangeWatcher();
+
+            // Pull latest data from Firebase (will update UI if remote is newer)
+            syncFromFirebase();
         }
 
         // ============ DATE CHANGE DETECTION ============
@@ -3325,20 +3682,16 @@
                     { id: 'iron', name: 'Iron', emoji: '💊', schedule: 'daily', days: [], time: '14:00', reminderEnabled: true },
                     { id: 'vitc', name: 'Vitamin C', emoji: '💊', schedule: 'daily', days: [], time: '14:00', reminderEnabled: true }
                 ];
+                if (!appData.deletedDefaultIds) appData.deletedDefaultIds = [];
                 defaultMeds.forEach(defaultMed => {
+                    // Skip defaults the user has intentionally deleted
+                    if (appData.deletedDefaultIds.includes(defaultMed.id)) return;
                     const existingMed = appData.medications.find(m => m.id === defaultMed.id);
                     if (!existingMed) {
                         // Add missing default medications
                         appData.medications.push(defaultMed);
-                    } else if (['trt', 'nad', 'wellbutrin', 'multivitamin', 'iron', 'vitc'].includes(defaultMed.id)) {
-                        // Only update schedule from code defaults for the 6 known defaults
-                        // Preserve user's reminder preferences but sync schedule/name/emoji
-                        existingMed.days = defaultMed.days;
-                        existingMed.schedule = defaultMed.schedule;
-                        existingMed.name = defaultMed.name;
-                        existingMed.emoji = defaultMed.emoji;
                     }
-                    // Custom medications are left untouched
+                    // Leave existing meds untouched so user edits (name, dose) persist
                 });
             }
 
@@ -3346,6 +3699,7 @@
 
         function saveData() {
             localStorage.setItem('wellnessTracker_v1', JSON.stringify(appData));
+            syncToFirebase();
         }
 
         // ============ BACKUP & RESTORE ============
@@ -3966,18 +4320,12 @@
             if (log && log.sleep) {
                 document.getElementById('modal-sleep-hours').value = log.sleep.hours || '';
                 document.getElementById('modal-sleep-quality').value = log.sleep.quality || '';
-                document.getElementById('modal-sleep-fallasleep').value = log.sleep.fallAsleep || '';
-                document.getElementById('modal-sleep-wakeups').value = log.sleep.wakeups || '';
                 document.getElementById('modal-sleep-energy').value = log.sleep.morningEnergy || '';
-                document.getElementById('modal-sleep-aid').value = log.sleep.aid || '';
                 document.getElementById('modal-sleep-notes').value = log.sleep.notes || '';
             } else {
                 document.getElementById('modal-sleep-hours').value = '';
                 document.getElementById('modal-sleep-quality').value = '';
-                document.getElementById('modal-sleep-fallasleep').value = '';
-                document.getElementById('modal-sleep-wakeups').value = '';
                 document.getElementById('modal-sleep-energy').value = '';
-                document.getElementById('modal-sleep-aid').value = '';
                 document.getElementById('modal-sleep-notes').value = '';
             }
 
@@ -4037,10 +4385,7 @@
                 sleep: {
                     hours: parseFloat(document.getElementById('modal-sleep-hours').value) || null,
                     quality: parseInt(document.getElementById('modal-sleep-quality').value) || null,
-                    fallAsleep: parseInt(document.getElementById('modal-sleep-fallasleep').value) || null,
-                    wakeups: parseInt(document.getElementById('modal-sleep-wakeups').value) || null,
                     morningEnergy: parseInt(document.getElementById('modal-sleep-energy').value) || null,
-                    aid: document.getElementById('modal-sleep-aid').value || null,
                     notes: document.getElementById('modal-sleep-notes').value || ''
                 },
                 symptoms: {
@@ -4223,8 +4568,7 @@
                         </div>
                         ${log.sleep && log.sleep.hours ? `
                             <div class="entry-sleep">
-                                <strong>Sleep:</strong> ${log.sleep.hours}h | Quality: ${log.sleep.quality || '-'}/10 |
-                                Wake-ups: ${log.sleep.wakeups || '-'} | Morning Energy: ${log.sleep.morningEnergy || '-'}/10
+                                <strong>Sleep:</strong> ${log.sleep.hours}h | Quality: ${log.sleep.quality || '-'}/10 | Morning Energy: ${log.sleep.morningEnergy || '-'}/10
                             </div>
                         ` : ''}
                         ${log.symptoms ? `
@@ -4413,18 +4757,15 @@
                 document.getElementById('sleep-avg-hours').textContent = '-';
                 document.getElementById('sleep-avg-quality').textContent = '-';
                 document.getElementById('sleep-best').textContent = '-';
-                document.getElementById('sleep-avg-wakeups').textContent = '-';
                 return;
             }
 
             const hours = logs.map(l => l.sleep.hours);
             const quality = logs.filter(l => l.sleep.quality).map(l => l.sleep.quality);
-            const wakeups = logs.filter(l => l.sleep.wakeups !== null).map(l => l.sleep.wakeups);
 
             document.getElementById('sleep-avg-hours').textContent = (hours.reduce((a, b) => a + b, 0) / hours.length).toFixed(1);
             document.getElementById('sleep-avg-quality').textContent = quality.length > 0 ? (quality.reduce((a, b) => a + b, 0) / quality.length).toFixed(1) : '-';
             document.getElementById('sleep-best').textContent = Math.max(...hours).toFixed(1) + 'h';
-            document.getElementById('sleep-avg-wakeups').textContent = wakeups.length > 0 ? (wakeups.reduce((a, b) => a + b, 0) / wakeups.length).toFixed(1) : '-';
         }
 
         // ============ SYMPTOM CHART ============
@@ -4436,11 +4777,11 @@
                 motivation: { show: document.getElementById('chart-motivation').checked, color: '#667eea', label: 'Motivation' },
                 energy: { show: document.getElementById('chart-energy').checked, color: '#28a745', label: 'Energy' },
                 mood: { show: document.getElementById('chart-mood').checked, color: '#ffc107', label: 'Mood' },
-                libido: { show: document.getElementById('chart-libido').checked, color: '#e83e8c', label: 'Libido' },
-                clarity: { show: document.getElementById('chart-clarity').checked, color: '#17a2b8', label: 'Mental Clarity' },
-                anxiety: { show: document.getElementById('chart-anxiety').checked, color: '#dc3545', label: 'Anxiety' },
+                libido: { show: document.getElementById('chart-libido').checked, color: '#ff0000', label: 'Libido' },
+                clarity: { show: document.getElementById('chart-clarity').checked, color: '#00BCD4', label: 'Mental Clarity' },
+                anxiety: { show: document.getElementById('chart-anxiety').checked, color: '#000000', label: 'Anxiety' },
                 wellbeing: { show: document.getElementById('chart-wellbeing').checked, color: '#6f42c1', label: 'Well-being' },
-                temperature: { show: document.getElementById('chart-temperature').checked, color: '#fd7e14', label: 'Temperature' }
+                temperature: { show: document.getElementById('chart-temperature').checked, color: '#8B4513', label: 'Temperature' }
             };
 
             // Get data from Jan 11, 2026 to today
@@ -5382,6 +5723,177 @@
         }
 
         // ============ LABS ============
+        // ============ LAB REPORT IMPORTER ============
+        const LAB_PATTERNS = [
+            { key: 'testosterone',     label: 'Testosterone Total', regex: /testosterone[,\s]*(total|serum|lc\/ms)?/i,          antiMatch: /free|bioavailable|bio-available/i },
+            { key: 'testosteroneFree', label: 'Free Testosterone',  regex: /testosterone[,\s]*(free|calculated|bioavailable)|free\s+testosterone|cft\b/i },
+            { key: 'estradiol',        label: 'Estradiol',          regex: /estradiol/i },
+            { key: 'progesterone',     label: 'Progesterone',       regex: /progesterone/i },
+            { key: 'shbg',             label: 'SHBG',               regex: /shbg\b|sex hormone.binding/i },
+            { key: 'prolactin',        label: 'Prolactin',          regex: /prolactin/i },
+            { key: 'dhea',             label: 'DHEA-S',             regex: /dhea-?s\b|dehydroepiandrosterone\s+sulfate/i },
+            { key: 'tsh',              label: 'TSH',                regex: /\btsh\b|thyroid.stimulating hormone/i },
+            { key: 't4',               label: 'Free T4',            regex: /t4[,\s]*free|free\s+t4|thyroxine[,\s]*free/i },
+            { key: 't3',               label: 'Free T3',            regex: /t3[,\s]*free|free\s+t3|triiodothyronine[,\s]*free/i },
+            { key: 'vitd',             label: 'Vitamin D',          regex: /vitamin\s*d\b|25-?(?:oh|hydroxy)/i },
+            { key: 'b12',              label: 'Vitamin B12',        regex: /vitamin\s*b-?12\b|cobalamin\b/i },
+            { key: 'ferritin',         label: 'Ferritin',           regex: /ferritin/i },
+            { key: 'glucose',          label: 'Glucose',            regex: /glucose(?!\s*tolerance)/i },
+            { key: 'hba1c',            label: 'HbA1c',              regex: /hba1c\b|hemoglobin\s*a1c|\ba1c\b/i },
+            { key: 'cholesterol',      label: 'Total Cholesterol',  regex: /cholesterol[,\s]*(total)?/i, antiMatch: /ldl|hdl|non.hdl/i },
+            { key: 'ldl',              label: 'LDL',                regex: /\bldl\b|low.density lipoprotein/i },
+            { key: 'hdl',              label: 'HDL',                regex: /\bhdl\b|high.density lipoprotein/i },
+            { key: 'triglycerides',    label: 'Triglycerides',      regex: /triglyceride/i }
+        ];
+
+        function handleLabPDFUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const status = document.getElementById('lab-parse-status');
+            document.getElementById('lab-parse-preview').style.display = 'none';
+            status.textContent = 'Reading PDF...';
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    if (!window.pdfjsLib) {
+                        status.textContent = 'PDF library not loaded — check internet connection.';
+                        return;
+                    }
+                    pdfjsLib.GlobalWorkerOptions.workerSrc =
+                        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+                    status.textContent = 'Extracting text…';
+                    const pdf = await pdfjsLib.getDocument({ data: e.target.result }).promise;
+                    let fullText = '';
+
+                    for (let p = 1; p <= pdf.numPages; p++) {
+                        const page = await pdf.getPage(p);
+                        const content = await page.getTextContent();
+                        // Sort items top-to-bottom, left-to-right to rebuild reading order
+                        const items = content.items.slice().sort((a, b) => {
+                            const dy = b.transform[5] - a.transform[5];
+                            return Math.abs(dy) > 3 ? dy : a.transform[4] - b.transform[4];
+                        });
+                        let lastY = null;
+                        for (const item of items) {
+                            if (lastY !== null && Math.abs(item.transform[5] - lastY) > 3) fullText += '\n';
+                            fullText += item.str + ' ';
+                            lastY = item.transform[5];
+                        }
+                        fullText += '\n\n';
+                    }
+
+                    if (!fullText.trim()) {
+                        status.textContent = 'No text found — this may be a scanned image. Try copying and pasting the text instead.';
+                        return;
+                    }
+                    _showLabParsePreview(parseLabReportText(fullText));
+                } catch (err) {
+                    status.textContent = 'Error reading PDF: ' + err.message;
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function parsePastedLabText() {
+            const text = document.getElementById('lab-text-input').value;
+            if (!text.trim()) {
+                document.getElementById('lab-parse-status').textContent = 'Please paste some text first.';
+                return;
+            }
+            _showLabParsePreview(parseLabReportText(text));
+        }
+
+        function parseLabReportText(text) {
+            const results = {};
+            const lines = text.split('\n');
+
+            for (const def of LAB_PATTERNS) {
+                for (let i = 0; i < lines.length; i++) {
+                    if (!def.regex.test(lines[i])) continue;
+                    if (def.antiMatch && def.antiMatch.test(lines[i])) continue;
+
+                    // Search this line + next 2 for a number that is NOT part of a reference range
+                    const ctx = lines.slice(i, i + 3).join(' ');
+                    // Grab the first number NOT immediately preceded by - or / and NOT followed by -digit (range)
+                    const m = ctx.match(/(?<![\/\-\d])(\d+\.?\d*)(?!\s*[-–]\s*\d)/);
+                    if (m) {
+                        const val = parseFloat(m[1]);
+                        if (!isNaN(val) && val > 0) results[def.key] = val;
+                    }
+                    break;
+                }
+            }
+
+            // Try to extract the collection date
+            const dateRx = /(?:date of service|specimen collected|collected|date drawn|drawn)[:\s]+(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/i;
+            const dm = text.match(dateRx) || text.match(/\b(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4})\b/);
+            if (dm) {
+                const parts = dm[1].match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
+                if (parts) {
+                    let yr = parseInt(parts[3]);
+                    if (yr < 100) yr += 2000;
+                    results._date = `${yr}-${parts[1].padStart(2,'0')}-${parts[2].padStart(2,'0')}`;
+                }
+            }
+
+            return results;
+        }
+
+        function _showLabParsePreview(results) {
+            const status = document.getElementById('lab-parse-status');
+            const preview = document.getElementById('lab-parse-preview');
+            const found = LAB_PATTERNS.filter(d => results[d.key] != null);
+            const missing = LAB_PATTERNS.filter(d => results[d.key] == null);
+
+            if (found.length === 0) {
+                status.textContent = 'No lab values recognized. Check the text format or try pasting different text.';
+                preview.style.display = 'none';
+                return;
+            }
+
+            status.textContent = `Found ${found.length} value${found.length !== 1 ? 's' : ''}.`;
+
+            let html = '<div style="background:white;border-radius:10px;padding:15px;border:1px solid #e9ecef;">';
+            if (results._date) html += `<p style="margin-bottom:10px;"><strong>Date:</strong> ${results._date}</p>`;
+            html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">';
+            for (const d of found) {
+                html += `<span style="background:#d4edda;color:#155724;padding:3px 10px;border-radius:20px;font-size:0.85em;">✓ ${d.label}: <strong>${results[d.key]}</strong></span>`;
+            }
+            html += '</div>';
+            if (missing.length > 0) {
+                html += `<p style="font-size:0.8em;color:#6c757d;margin-bottom:12px;">Not found: ${missing.map(d=>d.label).join(', ')}</p>`;
+            }
+            html += `<button onclick="_fillLabFormFromParsed()" class="btn" style="background:#28a745;">✓ Fill Form with These Values</button>`;
+            html += '</div>';
+
+            preview.innerHTML = html;
+            preview.dataset.results = JSON.stringify(results);
+            preview.style.display = 'block';
+        }
+
+        function _fillLabFormFromParsed() {
+            const results = JSON.parse(document.getElementById('lab-parse-preview').dataset.results || '{}');
+            if (results._date) document.getElementById('lab-date').value = results._date;
+            const map = {
+                testosterone:'lab-testosterone', testosteroneFree:'lab-testosterone-free',
+                estradiol:'lab-estradiol', progesterone:'lab-progesterone', shbg:'lab-shbg',
+                prolactin:'lab-prolactin', dhea:'lab-dhea', tsh:'lab-tsh', t4:'lab-t4',
+                t3:'lab-t3', vitd:'lab-vitd', b12:'lab-b12', ferritin:'lab-ferritin',
+                glucose:'lab-glucose', hba1c:'lab-hba1c', cholesterol:'lab-cholesterol',
+                ldl:'lab-ldl', hdl:'lab-hdl', triglycerides:'lab-triglycerides'
+            };
+            for (const [key, id] of Object.entries(map)) {
+                if (results[key] != null) {
+                    const el = document.getElementById(id);
+                    if (el) el.value = results[key];
+                }
+            }
+            document.getElementById('lab-date').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.getElementById('lab-parse-status').textContent = 'Form filled! Review the values and click Save Lab Results.';
+        }
+
         function renderLabsTab() {
             renderLabsHistory();
             updateLabChart();
@@ -5830,6 +6342,7 @@
 
         // ============ MEDICATION MANAGER ============
         const DEFAULT_MED_IDS = ['trt', 'nad', 'wellbutrin', 'multivitamin', 'iron', 'vitc'];
+        let editingMedId = null;
 
         function renderMedicationManager() {
             const container = document.getElementById('medication-manager');
@@ -5842,21 +6355,31 @@
 
             // Scheduled medications
             scheduledMeds.forEach(med => {
-                const isDefault = DEFAULT_MED_IDS.includes(med.id);
                 const scheduleText = med.schedule === 'daily' ? 'Daily' :
                     med.schedule === 'weekly' ? med.days.map(d => getDayName(d)).join(', ') : med.schedule;
-                html += `
-                    <div class="med-manager-item">
-                        <div class="med-manager-info">
-                            <div class="med-manager-name">
-                                ${med.emoji} ${med.name}
-                                ${isDefault ? '<span class="med-manager-default-badge">Default</span>' : ''}
-                            </div>
-                            <div class="med-manager-schedule">${scheduleText}${med.time ? ' at ' + formatTime12h(med.time) : ''}</div>
-                        </div>
-                        ${!isDefault ? `<button class="med-manager-delete" onclick="removeMedication('${med.id}')" title="Remove medication">&times;</button>` : ''}
-                    </div>
-                `;
+                const isEditing = editingMedId === med.id;
+                const safeId = med.id;
+                const safeName = med.name.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+
+                let nameCell, btnCell;
+                if (isEditing) {
+                    nameCell = '<input type="text" id="inline-edit-' + safeId + '" value="' + safeName + '" ondragstart="event.stopPropagation();event.preventDefault();" onmousedown="event.stopPropagation();" style="font-size:1em;font-weight:600;border:2px solid #667eea;border-radius:6px;padding:4px 8px;width:100%;box-sizing:border-box;">';
+                    btnCell = '<button onclick="saveMedEdit(\'' + safeId + '\')" style="background:#28a745;color:white;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:0.85em;">Save</button>'
+                           + '<button onclick="cancelMedEdit()" style="background:#6c757d;color:white;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:0.85em;margin-left:4px;">Cancel</button>';
+                } else {
+                    nameCell = '<div class="med-manager-name">' + med.emoji + ' ' + med.name + '</div>';
+                    btnCell = '<button onclick="editMedication(\'' + safeId + '\')" style="background:#667eea;color:white;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:0.85em;">Edit</button>'
+                           + '<button class="med-manager-delete" onclick="removeMedication(\'' + safeId + '\')" title="Remove" style="margin-left:4px;">&times;</button>';
+                }
+
+                html += '<div class="med-manager-item" draggable="' + (isEditing ? 'false' : 'true') + '" data-med-id="' + safeId + '">'
+                     + '<span class="drag-handle" title="Drag to reorder">☰</span>'
+                     + '<div class="med-manager-info" style="flex:1;min-width:0;">'
+                     + nameCell
+                     + '<div class="med-manager-schedule">' + scheduleText + (med.time ? ' at ' + formatTime12h(med.time) : '') + '</div>'
+                     + '</div>'
+                     + '<div style="display:flex;gap:6px;align-items:center;flex-shrink:0;margin-left:10px;">' + btnCell + '</div>'
+                     + '</div>';
             });
 
             // PRN medications
@@ -5864,15 +6387,12 @@
                 html += '<div style="margin-top: 12px; font-size: 0.85em; color: #fd7e14; font-weight: 600;">As Needed</div>';
                 prnMeds.forEach(med => {
                     const limitText = med.maxPerDay ? `Max ${med.maxPerDay}/day` : 'No daily limit';
-                    html += `
-                        <div class="med-manager-item prn">
-                            <div class="med-manager-info">
-                                <div class="med-manager-name">${med.emoji} ${med.name}</div>
-                                <div class="med-manager-schedule">As Needed &mdash; ${limitText}</div>
-                            </div>
-                            <button class="med-manager-delete" onclick="removeMedication('${med.id}')" title="Remove medication">&times;</button>
-                        </div>
-                    `;
+                    html += '<div class="med-manager-item prn" draggable="true" data-med-id="' + med.id + '">'
+                         + '<span class="drag-handle" title="Drag to reorder">☰</span>'
+                         + '<div class="med-manager-info"><div class="med-manager-name">' + med.emoji + ' ' + med.name + '</div>'
+                         + '<div class="med-manager-schedule">As Needed &mdash; ' + limitText + '</div></div>'
+                         + '<button class="med-manager-delete" onclick="removeMedication(\'' + med.id + '\')" title="Remove medication">&times;</button>'
+                         + '</div>';
                 });
             }
 
@@ -5884,7 +6404,7 @@
                     <h4>+ Add New Medication / Supplement</h4>
                     <div class="form-group">
                         <label>Name</label>
-                        <input type="text" id="new-med-name" placeholder="e.g., Magnesium, Tylenol, Melatonin">
+                        <input type="text" id="new-med-name" placeholder="e.g., Magnesium, Tylenol, Melatonin" ondragstart="event.stopPropagation();event.preventDefault();" onmousedown="event.stopPropagation();">
                     </div>
                     <div class="form-group">
                         <label>Emoji</label>
@@ -5954,6 +6474,68 @@
 
             container.innerHTML = html;
             updateAddMedForm();
+            initMedDragSort();
+            // If a med is in edit mode, focus its inline input and wire up keys
+            if (editingMedId) {
+                const inp = document.getElementById('inline-edit-' + editingMedId);
+                if (inp) {
+                    inp.focus();
+                    inp.select();
+                    inp.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter') saveMedEdit(editingMedId);
+                        if (e.key === 'Escape') cancelMedEdit();
+                    });
+                }
+            }
+        }
+
+        let dragSrcId = null;
+
+        function initMedDragSort() {
+            const items = document.querySelectorAll('.med-manager-item[data-med-id]');
+            items.forEach(function(item) {
+                item.addEventListener('dragstart', function(e) {
+                    const tag = e.target.tagName;
+                    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') {
+                        e.preventDefault();
+                        return;
+                    }
+                    dragSrcId = this.dataset.medId;
+                    e.dataTransfer.effectAllowed = 'move';
+                    setTimeout(() => this.style.opacity = '0.4', 0);
+                });
+                item.addEventListener('dragend', function() {
+                    this.style.opacity = '1';
+                    document.querySelectorAll('.med-manager-item').forEach(function(i) {
+                        i.classList.remove('drag-over');
+                    });
+                });
+                item.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    document.querySelectorAll('.med-manager-item').forEach(function(i) {
+                        i.classList.remove('drag-over');
+                    });
+                    this.classList.add('drag-over');
+                });
+                item.addEventListener('dragleave', function() {
+                    this.classList.remove('drag-over');
+                });
+                item.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('drag-over');
+                    const targetId = this.dataset.medId;
+                    if (!dragSrcId || dragSrcId === targetId) return;
+                    const srcIdx = appData.medications.findIndex(function(m) { return m.id === dragSrcId; });
+                    const tgtIdx = appData.medications.findIndex(function(m) { return m.id === targetId; });
+                    if (srcIdx === -1 || tgtIdx === -1) return;
+                    const removed = appData.medications.splice(srcIdx, 1)[0];
+                    appData.medications.splice(tgtIdx, 0, removed);
+                    saveData();
+                    renderMedicationManager();
+                    renderTodayMeds();
+                });
+            });
         }
 
         function selectEmoji(btn) {
@@ -6051,14 +6633,14 @@
             const med = appData.medications.find(m => m.id === id);
             if (!med) return;
 
-            if (DEFAULT_MED_IDS.includes(id)) {
-                alert('Default medications cannot be removed.');
-                return;
-            }
-
             if (!confirm(`Remove "${med.emoji} ${med.name}" from your medications?\n\nNote: Historical logs will be preserved.`)) return;
 
             appData.medications = appData.medications.filter(m => m.id !== id);
+            // Track deleted defaults so they don't get re-added on next load
+            if (DEFAULT_MED_IDS.includes(id)) {
+                if (!appData.deletedDefaultIds) appData.deletedDefaultIds = [];
+                if (!appData.deletedDefaultIds.includes(id)) appData.deletedDefaultIds.push(id);
+            }
             saveData();
 
             renderMedicationManager();
@@ -6067,6 +6649,30 @@
             renderPrnSection();
             renderCalendar();
             setupReminders();
+        }
+
+        function editMedication(id) {
+            editingMedId = id;
+            renderMedicationManager();
+        }
+
+        function saveMedEdit(id) {
+            const inp = document.getElementById('inline-edit-' + id);
+            if (!inp) return;
+            const trimmed = inp.value.trim();
+            if (!trimmed) { inp.focus(); return; }
+            const med = appData.medications.find(m => m.id === id);
+            if (med) med.name = trimmed;
+            editingMedId = null;
+            saveData();
+            renderMedicationManager();
+            renderRemindersTab();
+            renderTodayMeds();
+        }
+
+        function cancelMedEdit() {
+            editingMedId = null;
+            renderMedicationManager();
         }
 
         function formatTime12h(time24) {
@@ -6397,6 +7003,91 @@
         }
 
         // ============ INITIALIZE ============
+        // ============ FIREBASE SYNC ============
+        // TO SET UP: Replace the placeholder values below with your Firebase project config.
+        // Steps: console.firebase.google.com → New project → Add web app → copy firebaseConfig
+        const firebaseConfig = {
+            apiKey: "REPLACE_WITH_YOUR_API_KEY",
+            authDomain: "REPLACE_WITH_YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "REPLACE_WITH_YOUR_PROJECT_ID",
+            storageBucket: "REPLACE_WITH_YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "REPLACE_WITH_YOUR_SENDER_ID",
+            appId: "REPLACE_WITH_YOUR_APP_ID"
+        };
+
+        let db = null;
+        let docRef = null;
+        let syncDebounceTimer = null;
+        const FIREBASE_READY = firebaseConfig.apiKey !== "REPLACE_WITH_YOUR_API_KEY";
+
+        if (FIREBASE_READY) {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            docRef = db.collection('wellness').doc('data');
+        }
+
+        function setSyncStatus(status) {
+            const el = document.getElementById('sync-status');
+            if (!el) return;
+            const states = {
+                syncing: { text: '↕ Syncing...', color: '#ffc107' },
+                synced:  { text: '✓ Synced',     color: '#28a745' },
+                error:   { text: '✗ Sync error', color: '#dc3545' },
+                offline: { text: '◌ Offline',    color: '#6c757d' }
+            };
+            const s = states[status] || states.offline;
+            el.textContent = s.text;
+            el.style.background = s.color;
+            el.style.opacity = '1';
+            if (status === 'synced') {
+                setTimeout(() => { el.style.opacity = '0'; }, 3000);
+            }
+        }
+
+        function syncToFirebase() {
+            if (!FIREBASE_READY || !docRef) return;
+            clearTimeout(syncDebounceTimer);
+            syncDebounceTimer = setTimeout(async () => {
+                try {
+                    setSyncStatus('syncing');
+                    appData.lastModified = Date.now();
+                    localStorage.setItem('wellnessTracker_v1', JSON.stringify(appData));
+                    await docRef.set(appData);
+                    setSyncStatus('synced');
+                } catch (err) {
+                    console.error('Firebase sync failed:', err);
+                    setSyncStatus('error');
+                }
+            }, 1500);
+        }
+
+        async function syncFromFirebase() {
+            if (!FIREBASE_READY || !docRef) return;
+            try {
+                setSyncStatus('syncing');
+                const doc = await docRef.get();
+                if (doc.exists) {
+                    const remoteData = doc.data();
+                    const localModified = appData.lastModified || 0;
+                    const remoteModified = remoteData.lastModified || 0;
+                    if (remoteModified > localModified) {
+                        appData = remoteData;
+                        localStorage.setItem('wellnessTracker_v1', JSON.stringify(appData));
+                        renderCalendar();
+                        renderTodayMeds();
+                        updateStats();
+                        updateShotDashboard();
+                        updateInjectionSiteRotation();
+                        renderNadMiniChart();
+                    }
+                }
+                setSyncStatus('synced');
+            } catch (err) {
+                console.error('Firebase load failed:', err);
+                setSyncStatus('offline');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', init);
 
         // Close modal on escape key
