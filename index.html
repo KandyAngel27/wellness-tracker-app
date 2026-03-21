@@ -5939,6 +5939,7 @@
 
         function parseLabReportText(text) {
             const results = {};
+            const debugLog = [];
             const lines = text.split('\n');
 
             for (const def of LAB_PATTERNS) {
@@ -5961,7 +5962,6 @@
                     }
 
                     // Remove numbers that are part of a reference range (X - Y or X-Y patterns)
-                    // Also remove single-digit numbers that are likely row indices or flags
                     const rangeRx = /(\d+\.?\d*)\s*[-–]\s*(\d+\.?\d*)/g;
                     const rangeNums = new Set();
                     let rm;
@@ -5971,20 +5971,34 @@
                     }
 
                     // Find the first valid result number
+                    let picked = null;
                     for (const num of allNums) {
                         if (rangeNums.has(num.raw)) continue;
                         if (num.val <= 0) continue;
                         // Skip numbers that look like row/page indices (single digit, not decimal)
                         if (num.val < 10 && !num.raw.includes('.') && num.raw.length === 1) {
-                            // Allow single digits only for HbA1c (values 4-9 are valid)
                             if (def.key !== 'hba1c') continue;
                         }
                         results[def.key] = num.val;
+                        picked = num;
                         break;
                     }
+                    debugLog.push({
+                        key: def.key,
+                        label: def.label,
+                        matchedLine: lines[i],
+                        matchedText: labelMatch[0],
+                        contextAfter: ctx.substring(0, 120),
+                        allNums: allNums.map(n => n.raw),
+                        rangeNums: [...rangeNums],
+                        picked: picked ? picked.raw : null
+                    });
                     break;
                 }
             }
+
+            results._debugLog = debugLog;
+            results._rawText = text;
 
             // Try to extract the collection date
             const dateRx = /(?:date of service|specimen collected|collected|date drawn|drawn)[:\s]+(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/i;
@@ -6026,10 +6040,34 @@
                 html += `<p style="font-size:0.8em;color:#6c757d;margin-bottom:12px;">Not found: ${missing.map(d=>d.label).join(', ')}</p>`;
             }
             html += `<button onclick="_fillLabFormFromParsed()" class="btn" style="background:#28a745;">✓ Fill Form with These Values</button>`;
+            html += ` <button onclick="document.getElementById('lab-debug-info').style.display=document.getElementById('lab-debug-info').style.display==='none'?'block':'none'" class="btn" style="background:#6c757d;margin-left:8px;">Show Debug Info</button>`;
+            html += `<div id="lab-debug-info" style="display:none;margin-top:12px;background:#f8f9fa;border:1px solid #dee2e6;border-radius:8px;padding:12px;font-size:0.75em;font-family:monospace;max-height:400px;overflow:auto;">`;
+            if (results._debugLog) {
+                html += `<strong>Parser matches:</strong><br>`;
+                for (const d of results._debugLog) {
+                    html += `<div style="margin:6px 0;padding:6px;background:white;border-radius:4px;border-left:3px solid ${d.picked ? '#28a745' : '#dc3545'}">`;
+                    html += `<strong>${d.label}</strong> (${d.key})<br>`;
+                    html += `Line: "${d.matchedLine.substring(0, 100)}"<br>`;
+                    html += `Matched: "${d.matchedText}"<br>`;
+                    html += `Context after: "${d.contextAfter}"<br>`;
+                    html += `All nums: [${d.allNums.join(', ')}]<br>`;
+                    html += `Range nums (excluded): [${d.rangeNums.join(', ')}]<br>`;
+                    html += `<strong>Picked: ${d.picked || 'NONE'}</strong>`;
+                    html += `</div>`;
+                }
+            }
+            if (results._rawText) {
+                html += `<br><strong>Raw extracted text:</strong><br><pre style="white-space:pre-wrap;max-height:200px;overflow:auto;background:white;padding:8px;border-radius:4px;">${results._rawText.replace(/</g,'&lt;')}</pre>`;
+            }
+            html += `</div>`;
             html += '</div>';
 
             preview.innerHTML = html;
-            preview.dataset.results = JSON.stringify(results);
+            // Store results without debug data
+            const storeResults = Object.assign({}, results);
+            delete storeResults._debugLog;
+            delete storeResults._rawText;
+            preview.dataset.results = JSON.stringify(storeResults);
             preview.style.display = 'block';
         }
 
