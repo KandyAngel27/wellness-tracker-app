@@ -6269,6 +6269,7 @@
 
             // Find restart date position (interpolated between lab dates)
             let restartPosition = -1;
+            let restartAfterAll = false;
             if (appData.wellbutrinRestartDate && filtered.length > 0) {
                 const restartTime = parseDate(appData.wellbutrinRestartDate).getTime();
                 const labDates = filtered.map(l => parseDate(l.date).getTime());
@@ -6286,14 +6287,16 @@
                         break;
                     }
                 }
-                // If restart is after all labs, place it at the end
+                // If restart is after all labs, place at last label
                 if (restartPosition === -1 && restartTime > labDates[labDates.length - 1]) {
-                    restartPosition = labDates.length - 0.5;
+                    restartPosition = labDates.length - 1;
+                    restartAfterAll = true;
                 }
             }
 
             // Find taper date position (interpolated between lab dates)
             let taperPosition = -1;
+            let taperAfterAll = false;
             if (appData.wellbutrinTaperDate && filtered.length > 0) {
                 const taperTime = parseDate(appData.wellbutrinTaperDate).getTime();
                 const labDates = filtered.map(l => parseDate(l.date).getTime());
@@ -6310,7 +6313,8 @@
                     }
                 }
                 if (taperPosition === -1 && taperTime > labDates[labDates.length - 1]) {
-                    taperPosition = labDates.length - 0.5;
+                    taperPosition = labDates.length - 1;
+                    taperAfterAll = true;
                 }
             }
 
@@ -6327,7 +6331,8 @@
                     const ctx = chart.ctx;
                     const xAxis = chart.scales.x;
                     const yAxis = chart.scales.y;
-                    const x = xAxis.getPixelForValue(restartPosition);
+                    // If after all labs, draw at right edge of chart area
+                    const x = restartAfterAll ? chart.chartArea.right : xAxis.getPixelForValue(restartPosition);
 
                     ctx.save();
                     ctx.beginPath();
@@ -6338,12 +6343,12 @@
                     ctx.setLineDash([5, 5]);
                     ctx.stroke();
 
-                    // Draw label
+                    // Draw label (align right if at edge)
                     ctx.fillStyle = '#ff6b6b';
                     ctx.font = 'bold 12px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('Wellbutrin', x, yAxis.top - 20);
-                    ctx.fillText('Restart', x, yAxis.top - 8);
+                    ctx.textAlign = restartAfterAll ? 'right' : 'center';
+                    ctx.fillText('Wellbutrin', x - (restartAfterAll ? 4 : 0), yAxis.top - 20);
+                    ctx.fillText('Restart', x - (restartAfterAll ? 4 : 0), yAxis.top - 8);
                     ctx.restore();
                 }
             };
@@ -6357,7 +6362,8 @@
                     const ctx = chart.ctx;
                     const xAxis = chart.scales.x;
                     const yAxis = chart.scales.y;
-                    const x = xAxis.getPixelForValue(taperPosition);
+                    // If after all labs, draw at right edge of chart area
+                    const x = taperAfterAll ? chart.chartArea.right : xAxis.getPixelForValue(taperPosition);
 
                     ctx.save();
                     ctx.beginPath();
@@ -6368,12 +6374,12 @@
                     ctx.setLineDash([5, 5]);
                     ctx.stroke();
 
-                    // Draw label
+                    // Draw label (align right if at edge)
                     ctx.fillStyle = '#9b59b6';
                     ctx.font = 'bold 12px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('WB 150', x, yAxis.top - 20);
-                    ctx.fillText('Taper', x, yAxis.top - 8);
+                    ctx.textAlign = taperAfterAll ? 'right' : 'center';
+                    ctx.fillText('WB 150', x - (taperAfterAll ? 4 : 0), yAxis.top - 20);
+                    ctx.fillText('Taper', x - (taperAfterAll ? 4 : 0), yAxis.top - 8);
                     ctx.restore();
                 }
             };
