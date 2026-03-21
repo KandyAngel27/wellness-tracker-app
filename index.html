@@ -5951,11 +5951,36 @@
                     // from names like A1C→1, T4→4, T3→3, B12→12, 25-hydroxy→25
                     const restOfLine = lines[i].substring(labelMatch.index + labelMatch[0].length);
                     const ctx = restOfLine + ' ' + lines.slice(i + 1, i + 3).join(' ');
-                    // Grab the first standalone number NOT part of a reference range
-                    const m = ctx.match(/(?<![\/\-\d])(\d+\.?\d*)(?!\s*[-–]\s*\d)/);
-                    if (m) {
-                        const val = parseFloat(m[1]);
-                        if (!isNaN(val) && val > 0) results[def.key] = val;
+
+                    // Extract all numbers from the context
+                    const allNums = [];
+                    const numRx = /(\d+\.?\d*)/g;
+                    let nm;
+                    while ((nm = numRx.exec(ctx)) !== null) {
+                        allNums.push({ val: parseFloat(nm[1]), idx: nm.index, raw: nm[1] });
+                    }
+
+                    // Remove numbers that are part of a reference range (X - Y or X-Y patterns)
+                    // Also remove single-digit numbers that are likely row indices or flags
+                    const rangeRx = /(\d+\.?\d*)\s*[-–]\s*(\d+\.?\d*)/g;
+                    const rangeNums = new Set();
+                    let rm;
+                    while ((rm = rangeRx.exec(ctx)) !== null) {
+                        rangeNums.add(rm[1]);
+                        rangeNums.add(rm[2]);
+                    }
+
+                    // Find the first valid result number
+                    for (const num of allNums) {
+                        if (rangeNums.has(num.raw)) continue;
+                        if (num.val <= 0) continue;
+                        // Skip numbers that look like row/page indices (single digit, not decimal)
+                        if (num.val < 10 && !num.raw.includes('.') && num.raw.length === 1) {
+                            // Allow single digits only for HbA1c (values 4-9 are valid)
+                            if (def.key !== 'hba1c') continue;
+                        }
+                        results[def.key] = num.val;
+                        break;
                     }
                     break;
                 }
@@ -6241,9 +6266,9 @@
                 .filter(l => l[selected] != null && l[selected] !== '')
                 .sort((a, b) => parseDate(a.date) - parseDate(b.date));
 
-            const labels = filtered.map(l => formatDate(parseDate(l.date)));
+            let labels = filtered.map(l => formatDate(parseDate(l.date)));
             const dateKeys = filtered.map(l => l.date);
-            const data = filtered.map(l => parseFloat(l[selected]));
+            let data = filtered.map(l => parseFloat(l[selected]));
 
             const labelMap = {
                 testosterone: 'Testosterone Total (ng/dL)',
@@ -6267,56 +6292,33 @@
                 triglycerides: 'Triglycerides (mg/dL)'
             };
 
-            // Find restart date position (interpolated between lab dates)
-            let restartPosition = -1;
-            let restartAfterAll = false;
-            if (appData.wellbutrinRestartDate && filtered.length > 0) {
-                const restartTime = parseDate(appData.wellbutrinRestartDate).getTime();
-                const labDates = filtered.map(l => parseDate(l.date).getTime());
+            // Insert restart/taper dates into the labels+data arrays so they appear on the x-axis
+            let restartIndex = -1;
+            let taperIndex = -1;
 
-                // Find where restart falls in the sequence
-                for (let i = 0; i < labDates.length; i++) {
-                    if (restartTime <= labDates[i]) {
-                        if (i === 0) {
-                            restartPosition = 0;
-                        } else {
-                            // Interpolate between i-1 and i
-                            const ratio = (restartTime - labDates[i-1]) / (labDates[i] - labDates[i-1]);
-                            restartPosition = i - 1 + ratio;
-                        }
-                        break;
-                    }
+            function insertMarkerDate(dateStr, markerLabel) {
+                if (!dateStr || filtered.length === 0) return -1;
+                const t = parseDate(dateStr).getTime();
+                const labTimes = filtered.map(l => parseDate(l.date).getTime());
+                // Check if this date already exists as a label
+                const existingIdx = dateKeys.indexOf(dateStr);
+                if (existingIdx !== -1) return existingIdx;
+                // Find insertion point
+                let insertAt = labTimes.length; // default: after all
+                for (let j = 0; j < labTimes.length; j++) {
+                    if (t <= labTimes[j]) { insertAt = j; break; }
                 }
-                // If restart is after all labs, place at last label
-                if (restartPosition === -1 && restartTime > labDates[labDates.length - 1]) {
-                    restartPosition = labDates.length - 1;
-                    restartAfterAll = true;
-                }
+                labels.splice(insertAt, 0, markerLabel);
+                data.splice(insertAt, 0, null);
+                dateKeys.splice(insertAt, 0, dateStr);
+                // Shift any previously-set index
+                if (restartIndex >= insertAt) restartIndex++;
+                if (taperIndex >= insertAt) taperIndex++;
+                return insertAt;
             }
 
-            // Find taper date position (interpolated between lab dates)
-            let taperPosition = -1;
-            let taperAfterAll = false;
-            if (appData.wellbutrinTaperDate && filtered.length > 0) {
-                const taperTime = parseDate(appData.wellbutrinTaperDate).getTime();
-                const labDates = filtered.map(l => parseDate(l.date).getTime());
-
-                for (let i = 0; i < labDates.length; i++) {
-                    if (taperTime <= labDates[i]) {
-                        if (i === 0) {
-                            taperPosition = 0;
-                        } else {
-                            const ratio = (taperTime - labDates[i-1]) / (labDates[i] - labDates[i-1]);
-                            taperPosition = i - 1 + ratio;
-                        }
-                        break;
-                    }
-                }
-                if (taperPosition === -1 && taperTime > labDates[labDates.length - 1]) {
-                    taperPosition = labDates.length - 1;
-                    taperAfterAll = true;
-                }
-            }
+            restartIndex = insertMarkerDate(appData.wellbutrinRestartDate, 'WB Restart');
+            taperIndex = insertMarkerDate(appData.wellbutrinTaperDate, 'WB 150 Taper');
 
             if (labChart) {
                 labChart.destroy();
@@ -6326,13 +6328,12 @@
             const restartLinePlugin = {
                 id: 'labRestartLine',
                 afterDraw: (chart) => {
-                    if (restartPosition === -1) return;
+                    if (restartIndex === -1) return;
 
                     const ctx = chart.ctx;
                     const xAxis = chart.scales.x;
                     const yAxis = chart.scales.y;
-                    // If after all labs, draw at right edge of chart area
-                    const x = restartAfterAll ? chart.chartArea.right : xAxis.getPixelForValue(restartPosition);
+                    const x = xAxis.getPixelForValue(restartIndex);
 
                     ctx.save();
                     ctx.beginPath();
@@ -6343,12 +6344,11 @@
                     ctx.setLineDash([5, 5]);
                     ctx.stroke();
 
-                    // Draw label (align right if at edge)
                     ctx.fillStyle = '#ff6b6b';
                     ctx.font = 'bold 12px Arial';
-                    ctx.textAlign = restartAfterAll ? 'right' : 'center';
-                    ctx.fillText('Wellbutrin', x - (restartAfterAll ? 4 : 0), yAxis.top - 20);
-                    ctx.fillText('Restart', x - (restartAfterAll ? 4 : 0), yAxis.top - 8);
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Wellbutrin', x, yAxis.top - 20);
+                    ctx.fillText('Restart', x, yAxis.top - 8);
                     ctx.restore();
                 }
             };
@@ -6357,13 +6357,12 @@
             const taperLinePlugin = {
                 id: 'labTaperLine',
                 afterDraw: (chart) => {
-                    if (taperPosition === -1) return;
+                    if (taperIndex === -1) return;
 
                     const ctx = chart.ctx;
                     const xAxis = chart.scales.x;
                     const yAxis = chart.scales.y;
-                    // If after all labs, draw at right edge of chart area
-                    const x = taperAfterAll ? chart.chartArea.right : xAxis.getPixelForValue(taperPosition);
+                    const x = xAxis.getPixelForValue(taperIndex);
 
                     ctx.save();
                     ctx.beginPath();
@@ -6374,12 +6373,11 @@
                     ctx.setLineDash([5, 5]);
                     ctx.stroke();
 
-                    // Draw label (align right if at edge)
                     ctx.fillStyle = '#9b59b6';
                     ctx.font = 'bold 12px Arial';
-                    ctx.textAlign = taperAfterAll ? 'right' : 'center';
-                    ctx.fillText('WB 150', x - (taperAfterAll ? 4 : 0), yAxis.top - 20);
-                    ctx.fillText('Taper', x - (taperAfterAll ? 4 : 0), yAxis.top - 8);
+                    ctx.textAlign = 'center';
+                    ctx.fillText('WB 150', x, yAxis.top - 20);
+                    ctx.fillText('Taper', x, yAxis.top - 8);
                     ctx.restore();
                 }
             };
