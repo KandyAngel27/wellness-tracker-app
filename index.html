@@ -1612,6 +1612,11 @@
                         <span style="font-weight: 600; color: #e67e22; font-size: 12px; white-space: nowrap;">WB Restart:</span>
                         <input type="date" id="wellbutrin-restart-date" style="padding: 4px 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 12px;" onchange="saveWellbutrinRestartDate()">
                     </div>
+                    <!-- Wellbutrin 150 Taper Date -->
+                    <div style="display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #f8f9fa; border-radius: 8px; border-left: 3px solid #9b59b6;">
+                        <span style="font-weight: 600; color: #9b59b6; font-size: 12px; white-space: nowrap;">WB 150 Taper:</span>
+                        <input type="date" id="wellbutrin-taper-date" style="padding: 4px 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 12px;" onchange="saveWellbutrinTaperDate()">
+                    </div>
                 </div>
                 <div class="chart-container" style="margin-bottom: 30px;">
                     <div id="symptom-chart-legend" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 8px 10px; font-size: 13px;"></div>
@@ -3335,6 +3340,7 @@
                 time: '08:00'
             },
             wellbutrinRestartDate: null,
+            wellbutrinTaperDate: null,
             trtStartDate: '2025-11-25',
             nadStartDate: '2025-12-26',
             settings: {
@@ -3536,6 +3542,7 @@
         function init() {
             loadData();
             loadWellbutrinRestartDate();
+            loadWellbutrinTaperDate();
             renderCalendar();
             renderTodayMeds();
             updateStats();
@@ -3795,6 +3802,7 @@
             if (tabId === 'history') {
                 renderHistory();
                 loadWellbutrinRestartDate();
+            loadWellbutrinTaperDate();
                 loadChartCheckboxes();
                 renderSymptomChart();
                 updateSymptomStats();
@@ -4634,6 +4642,12 @@
                 restartIndex = dateKeys.indexOf(appData.wellbutrinRestartDate);
             }
 
+            // Find taper date index
+            let taperIndex = -1;
+            if (appData.wellbutrinTaperDate) {
+                taperIndex = dateKeys.indexOf(appData.wellbutrinTaperDate);
+            }
+
             if (sleepChart) {
                 sleepChart.destroy();
             }
@@ -4663,6 +4677,35 @@
                     ctx.font = '10px Arial';
                     ctx.textAlign = 'center';
                     ctx.fillText('WB Restart', x, yAxis.top - 8);
+                    ctx.restore();
+                }
+            };
+
+            // Custom plugin to draw vertical line for taper date
+            const taperLinePlugin = {
+                id: 'sleepTaperLine',
+                afterDraw: (chart) => {
+                    if (taperIndex === -1) return;
+
+                    const ctx = chart.ctx;
+                    const xAxis = chart.scales.x;
+                    const yAxis = chart.scales.y;
+                    const x = xAxis.getPixelForValue(taperIndex);
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(x, yAxis.top);
+                    ctx.lineTo(x, yAxis.bottom);
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = '#9b59b6';
+                    ctx.setLineDash([6, 4]);
+                    ctx.stroke();
+
+                    // Draw label
+                    ctx.fillStyle = '#9b59b6';
+                    ctx.font = '10px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('WB 150 Taper', x, yAxis.top - 8);
                     ctx.restore();
                 }
             };
@@ -4731,7 +4774,7 @@
                         }
                     }
                 },
-                plugins: [restartLinePlugin]
+                plugins: [restartLinePlugin, taperLinePlugin]
             });
 
             // Populate custom legend
@@ -4812,6 +4855,12 @@
                 restartIndex = dateKeys.indexOf(appData.wellbutrinRestartDate);
             }
 
+            // Find taper date index
+            let taperIndex = -1;
+            if (appData.wellbutrinTaperDate) {
+                taperIndex = dateKeys.indexOf(appData.wellbutrinTaperDate);
+            }
+
             if (symptomChart) {
                 symptomChart.destroy();
             }
@@ -4859,6 +4908,35 @@
                     ctx.font = '9px Arial';
                     ctx.textAlign = 'center';
                     ctx.fillText('WB Restart', x, yAxis.top - 5);
+                    ctx.restore();
+                }
+            };
+
+            // Custom plugin to draw vertical line for taper date
+            const taperLinePlugin = {
+                id: 'symptomTaperLine',
+                afterDraw: (chart) => {
+                    if (taperIndex === -1) return;
+
+                    const ctx = chart.ctx;
+                    const xAxis = chart.scales.x;
+                    const yAxis = chart.scales.y;
+                    const x = xAxis.getPixelForValue(taperIndex);
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(x, yAxis.top);
+                    ctx.lineTo(x, yAxis.bottom);
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = '#9b59b6';
+                    ctx.setLineDash([6, 4]);
+                    ctx.stroke();
+
+                    // Draw label
+                    ctx.fillStyle = '#9b59b6';
+                    ctx.font = '9px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('WB 150 Taper', x, yAxis.top - 5);
                     ctx.restore();
                 }
             };
@@ -4921,7 +4999,7 @@
                         intersect: false
                     }
                 },
-                plugins: [restartLinePlugin]
+                plugins: [restartLinePlugin, taperLinePlugin]
             });
 
             // Populate custom legend
@@ -4976,6 +5054,24 @@
             const dateInput = document.getElementById('wellbutrin-restart-date');
             if (dateInput) {
                 dateInput.value = appData.wellbutrinRestartDate;
+            }
+        }
+
+        function saveWellbutrinTaperDate() {
+            const dateInput = document.getElementById('wellbutrin-taper-date').value;
+            appData.wellbutrinTaperDate = dateInput || null;
+            saveData();
+            renderSymptomChart();
+        }
+
+        function loadWellbutrinTaperDate() {
+            if (!appData.wellbutrinTaperDate) {
+                appData.wellbutrinTaperDate = '2026-03-15';
+                saveData();
+            }
+            const dateInput = document.getElementById('wellbutrin-taper-date');
+            if (dateInput) {
+                dateInput.value = appData.wellbutrinTaperDate;
             }
         }
 
@@ -5466,6 +5562,14 @@
                 wbRestartIndex = labels.indexOf(wbDateStr);
             }
 
+            // Find Wellbutrin taper date index
+            let wbTaperIndex = -1;
+            if (appData.wellbutrinTaperDate) {
+                const wbTaperDate = parseDate(appData.wellbutrinTaperDate);
+                const wbTaperDateStr = `${wbTaperDate.getMonth()+1}/${wbTaperDate.getDate()}`;
+                wbTaperIndex = labels.indexOf(wbTaperDateStr);
+            }
+
             // Plugin to draw Wellbutrin restart line
             const wbRestartPlugin = {
                 id: 'nadWbRestart',
@@ -5490,6 +5594,34 @@
                     ctx.font = '8px Arial';
                     ctx.textAlign = 'center';
                     ctx.fillText('WB', x, yAxis.top - 3);
+                    ctx.restore();
+                }
+            };
+
+            // Plugin to draw Wellbutrin taper line
+            const wbTaperPlugin = {
+                id: 'nadWbTaper',
+                afterDraw: (chart) => {
+                    if (wbTaperIndex === -1) return;
+                    const ctx = chart.ctx;
+                    const xAxis = chart.scales.x;
+                    const yAxis = chart.scales.y;
+                    const x = xAxis.getPixelForValue(wbTaperIndex);
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(x, yAxis.top);
+                    ctx.lineTo(x, yAxis.bottom);
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = '#9b59b6';
+                    ctx.setLineDash([4, 3]);
+                    ctx.stroke();
+
+                    // Label
+                    ctx.fillStyle = '#9b59b6';
+                    ctx.font = '8px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('150', x, yAxis.top - 3);
                     ctx.restore();
                 }
             };
@@ -5558,7 +5690,7 @@
                         }
                     }
                 },
-                plugins: [wbRestartPlugin]
+                plugins: [wbRestartPlugin, wbTaperPlugin]
             });
         }
 
@@ -6157,6 +6289,28 @@
                 }
             }
 
+            // Find taper date position (interpolated between lab dates)
+            let taperPosition = -1;
+            if (appData.wellbutrinTaperDate && filtered.length > 0) {
+                const taperTime = parseDate(appData.wellbutrinTaperDate).getTime();
+                const labDates = filtered.map(l => parseDate(l.date).getTime());
+
+                for (let i = 0; i < labDates.length; i++) {
+                    if (taperTime <= labDates[i]) {
+                        if (i === 0) {
+                            taperPosition = 0;
+                        } else {
+                            const ratio = (taperTime - labDates[i-1]) / (labDates[i] - labDates[i-1]);
+                            taperPosition = i - 1 + ratio;
+                        }
+                        break;
+                    }
+                }
+                if (taperPosition === -1 && taperTime > labDates[labDates.length - 1]) {
+                    taperPosition = labDates.length - 0.5;
+                }
+            }
+
             if (labChart) {
                 labChart.destroy();
             }
@@ -6187,6 +6341,36 @@
                     ctx.textAlign = 'center';
                     ctx.fillText('Wellbutrin', x, yAxis.top - 20);
                     ctx.fillText('Restart', x, yAxis.top - 8);
+                    ctx.restore();
+                }
+            };
+
+            // Custom plugin to draw vertical line for taper date
+            const taperLinePlugin = {
+                id: 'labTaperLine',
+                afterDraw: (chart) => {
+                    if (taperPosition === -1) return;
+
+                    const ctx = chart.ctx;
+                    const xAxis = chart.scales.x;
+                    const yAxis = chart.scales.y;
+                    const x = xAxis.getPixelForValue(taperPosition);
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(x, yAxis.top);
+                    ctx.lineTo(x, yAxis.bottom);
+                    ctx.lineWidth = 3;
+                    ctx.strokeStyle = '#9b59b6';
+                    ctx.setLineDash([5, 5]);
+                    ctx.stroke();
+
+                    // Draw label
+                    ctx.fillStyle = '#9b59b6';
+                    ctx.font = 'bold 12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('WB 150', x, yAxis.top - 20);
+                    ctx.fillText('Taper', x, yAxis.top - 8);
                     ctx.restore();
                 }
             };
@@ -6252,7 +6436,7 @@
                         }
                     }
                 },
-                plugins: selected === 'ferritin' ? [] : [restartLinePlugin]
+                plugins: selected === 'ferritin' ? [] : [restartLinePlugin, taperLinePlugin]
             });
         }
 
