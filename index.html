@@ -5943,15 +5943,16 @@
 
             for (const def of LAB_PATTERNS) {
                 for (let i = 0; i < lines.length; i++) {
-                    if (!def.regex.test(lines[i])) continue;
+                    const labelMatch = def.regex.exec(lines[i]);
+                    if (!labelMatch) continue;
                     if (def.antiMatch && def.antiMatch.test(lines[i])) continue;
 
-                    // Search this line + next 2 for a number that is NOT part of a reference range
-                    const ctx = lines.slice(i, i + 3).join(' ');
-                    // Strip the matched label so we don't grab digits from names like A1C, T4, T3, B12
-                    const afterLabel = ctx.replace(def.regex, '');
-                    // Grab the first number NOT immediately preceded by - or / and NOT followed by -digit (range)
-                    const m = afterLabel.match(/(?<![\/\-\d])(\d+\.?\d*)(?!\s*[-–]\s*\d)/);
+                    // Only search text AFTER the label match to avoid grabbing digits
+                    // from names like A1C→1, T4→4, T3→3, B12→12, 25-hydroxy→25
+                    const restOfLine = lines[i].substring(labelMatch.index + labelMatch[0].length);
+                    const ctx = restOfLine + ' ' + lines.slice(i + 1, i + 3).join(' ');
+                    // Grab the first standalone number NOT part of a reference range
+                    const m = ctx.match(/(?<![\/\-\d])(\d+\.?\d*)(?!\s*[-–]\s*\d)/);
                     if (m) {
                         const val = parseFloat(m[1]);
                         if (!isNaN(val) && val > 0) results[def.key] = val;
