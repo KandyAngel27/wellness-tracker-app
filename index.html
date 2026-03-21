@@ -1938,6 +1938,8 @@
                             <option value="shbg">SHBG</option>
                             <option value="prolactin">Prolactin</option>
                             <option value="dhea">DHEA-S</option>
+                            <option value="fsh">FSH</option>
+                            <option value="lh">LH</option>
                             <option value="tsh">TSH</option>
                             <option value="t4">Free T4</option>
                             <option value="t3">Free T3</option>
@@ -2018,9 +2020,17 @@
                                 <label>Prolactin (ng/mL)</label>
                                 <input type="text" inputmode="decimal" id="lab-prolactin" placeholder="e.g., 41.55">
                             </div>
-                            <div class="form-group" style="margin-bottom: 0;">
+                            <div class="form-group" style="margin-bottom: 12px;">
                                 <label>DHEA-S (ug/dL)</label>
                                 <input type="text" inputmode="decimal" id="lab-dhea" placeholder="e.g., 151.8">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 12px;">
+                                <label>FSH (mIU/mL)</label>
+                                <input type="text" inputmode="decimal" id="lab-fsh" placeholder="e.g., 5.2">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>LH (mIU/mL)</label>
+                                <input type="text" inputmode="decimal" id="lab-lh" placeholder="e.g., 4.7">
                             </div>
                         </div>
 
@@ -5861,12 +5871,14 @@
             { key: 'testosteroneFree', label: 'Free Testosterone',  regex: /testosterone[,\s]*(free|calculated|bioavailable)|free\s+testosterone|cft\b/i },
             { key: 'estradiol',        label: 'Estradiol',          regex: /estradiol/i },
             { key: 'progesterone',     label: 'Progesterone',       regex: /progesterone/i },
-            { key: 'shbg',             label: 'SHBG',               regex: /shbg\b|sex hormone.binding/i },
+            { key: 'shbg',             label: 'SHBG',               regex: /\bshbg\b|sex horm\w*.?bind\w*/i },
             { key: 'prolactin',        label: 'Prolactin',          regex: /prolactin/i },
-            { key: 'dhea',             label: 'DHEA-S',             regex: /dhea-?s\b|dehydroepiandrosterone\s+sulfate/i },
+            { key: 'dhea',             label: 'DHEA-S',             regex: /\bdhea[\s-]*s(?:ulfate)?\b|dehydroepiandrosterone/i },
+            { key: 'fsh',              label: 'FSH',                regex: /\bfsh\b|follicle.stimulating/i },
+            { key: 'lh',               label: 'LH',                regex: /\blh\b|luteinizing\s+hormone/i, antiMatch: /cholesterol/i },
             { key: 'tsh',              label: 'TSH',                regex: /\btsh\b|thyroid.stimulating hormone/i },
-            { key: 't4',               label: 'Free T4',            regex: /t4[,\s]*free|free\s+t4|thyroxine[,\s]*free/i },
-            { key: 't3',               label: 'Free T3',            regex: /t3[,\s]*free|free\s+t3|triiodothyronine[,\s]*free/i },
+            { key: 't4',               label: 'Free T4',            regex: /t4[,\s]*free|free\s+t4|thyroxine[,\s]*free|free\s+thyroxine/i },
+            { key: 't3',               label: 'Free T3',            regex: /t3[,\s]*free|free\s+t3|triiodothyronine[,\s]*free|free\s+triiodothyronine/i },
             { key: 'vitd',             label: 'Vitamin D',          regex: /vitamin\s*d\b|25-?(?:oh|hydroxy)/i },
             { key: 'b12',              label: 'Vitamin B12',        regex: /vitamin\s*b-?12\b|cobalamin\b/i },
             { key: 'ferritin',         label: 'Ferritin',           regex: /ferritin/i },
@@ -6091,7 +6103,8 @@
             const map = {
                 testosterone:'lab-testosterone', testosteroneFree:'lab-testosterone-free',
                 estradiol:'lab-estradiol', progesterone:'lab-progesterone', shbg:'lab-shbg',
-                prolactin:'lab-prolactin', dhea:'lab-dhea', tsh:'lab-tsh', t4:'lab-t4',
+                prolactin:'lab-prolactin', dhea:'lab-dhea', fsh:'lab-fsh', lh:'lab-lh',
+                tsh:'lab-tsh', t4:'lab-t4',
                 t3:'lab-t3', vitd:'lab-vitd', b12:'lab-b12', ferritin:'lab-ferritin',
                 glucose:'lab-glucose', hba1c:'lab-hba1c', cholesterol:'lab-cholesterol',
                 ldl:'lab-ldl', hdl:'lab-hdl', triglycerides:'lab-triglycerides'
@@ -6133,6 +6146,8 @@
                     { key: 'shbg', label: 'SHBG', unit: 'nmol/L' },
                     { key: 'prolactin', label: 'Prolactin', unit: 'ng/mL' },
                     { key: 'dhea', label: 'DHEA-S', unit: 'ug/dL' },
+                    { key: 'fsh', label: 'FSH', unit: 'mIU/mL' },
+                    { key: 'lh', label: 'LH', unit: 'mIU/mL' },
                     { key: 'tsh', label: 'TSH', unit: 'uIU/mL' },
                     { key: 't4', label: 'Free T4', unit: 'ng/dL' },
                     { key: 't3', label: 'Free T3', unit: 'pg/mL' },
@@ -6181,6 +6196,8 @@
                 shbg: parseFloat(document.getElementById('lab-shbg').value) || null,
                 prolactin: parseFloat(document.getElementById('lab-prolactin').value) || null,
                 dhea: parseFloat(document.getElementById('lab-dhea').value) || null,
+                fsh: parseFloat(document.getElementById('lab-fsh').value) || null,
+                lh: parseFloat(document.getElementById('lab-lh').value) || null,
                 // Thyroid
                 tsh: parseFloat(document.getElementById('lab-tsh').value) || null,
                 t4: parseFloat(document.getElementById('lab-t4').value) || null,
@@ -6223,7 +6240,7 @@
 
             // Clear form - all fields
             const labFields = ['lab-date', 'lab-testosterone', 'lab-testosterone-free', 'lab-estradiol', 'lab-progesterone',
-                'lab-shbg', 'lab-prolactin', 'lab-dhea', 'lab-tsh', 'lab-t4', 'lab-t3', 'lab-vitd', 'lab-b12',
+                'lab-shbg', 'lab-prolactin', 'lab-dhea', 'lab-fsh', 'lab-lh', 'lab-tsh', 'lab-t4', 'lab-t3', 'lab-vitd', 'lab-b12',
                 'lab-ferritin', 'lab-glucose', 'lab-hba1c', 'lab-cholesterol', 'lab-ldl', 'lab-hdl',
                 'lab-triglycerides', 'lab-notes'];
             labFields.forEach(id => {
@@ -6271,6 +6288,8 @@
             document.getElementById('lab-shbg').value = lab.shbg || '';
             document.getElementById('lab-prolactin').value = lab.prolactin || '';
             document.getElementById('lab-dhea').value = lab.dhea || '';
+            document.getElementById('lab-fsh').value = lab.fsh || '';
+            document.getElementById('lab-lh').value = lab.lh || '';
             document.getElementById('lab-tsh').value = lab.tsh || '';
             document.getElementById('lab-t4').value = lab.t4 || '';
             document.getElementById('lab-t3').value = lab.t3 || '';
@@ -6300,7 +6319,7 @@
 
             // Clear form
             const labFields = ['lab-date', 'lab-testosterone', 'lab-testosterone-free', 'lab-estradiol', 'lab-progesterone',
-                'lab-shbg', 'lab-prolactin', 'lab-dhea', 'lab-tsh', 'lab-t4', 'lab-t3', 'lab-vitd', 'lab-b12',
+                'lab-shbg', 'lab-prolactin', 'lab-dhea', 'lab-fsh', 'lab-lh', 'lab-tsh', 'lab-t4', 'lab-t3', 'lab-vitd', 'lab-b12',
                 'lab-ferritin', 'lab-glucose', 'lab-hba1c', 'lab-cholesterol', 'lab-ldl', 'lab-hdl',
                 'lab-triglycerides', 'lab-notes'];
             labFields.forEach(id => {
@@ -6330,6 +6349,8 @@
                 shbg: 'SHBG (nmol/L)',
                 prolactin: 'Prolactin (ng/mL)',
                 dhea: 'DHEA-S (ug/dL)',
+                fsh: 'FSH (mIU/mL)',
+                lh: 'LH (mIU/mL)',
                 tsh: 'TSH (uIU/mL)',
                 t4: 'Free T4 (ng/dL)',
                 t3: 'Free T3 (pg/mL)',
