@@ -5948,8 +5948,10 @@
 
                     // Search this line + next 2 for a number that is NOT part of a reference range
                     const ctx = lines.slice(i, i + 3).join(' ');
+                    // Strip the matched label so we don't grab digits from names like A1C, T4, T3, B12
+                    const afterLabel = ctx.replace(def.regex, '');
                     // Grab the first number NOT immediately preceded by - or / and NOT followed by -digit (range)
-                    const m = ctx.match(/(?<![\/\-\d])(\d+\.?\d*)(?!\s*[-–]\s*\d)/);
+                    const m = afterLabel.match(/(?<![\/\-\d])(\d+\.?\d*)(?!\s*[-–]\s*\d)/);
                     if (m) {
                         const val = parseFloat(m[1]);
                         if (!isNaN(val) && val > 0) results[def.key] = val;
