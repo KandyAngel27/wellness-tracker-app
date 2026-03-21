@@ -5874,7 +5874,7 @@
             { key: 'hba1c',            label: 'HbA1c',              regex: /hba1c\b|hemoglobin\s*a1c|\ba1c\b/i },
             { key: 'cholesterol',      label: 'Total Cholesterol',  regex: /cholesterol[,\s]*(total)?/i, antiMatch: /ldl|hdl|non.hdl/i },
             { key: 'ldl',              label: 'LDL',                regex: /\bldl\b|low.density lipoprotein/i },
-            { key: 'hdl',              label: 'HDL',                regex: /\bhdl\b|high.density lipoprotein/i },
+            { key: 'hdl',              label: 'HDL',                regex: /\bhdl\b|high.density lipoprotein/i, antiMatch: /chol\s*\/\s*hdl|vldl|hdl\s*ratio/i },
             { key: 'triglycerides',    label: 'Triglycerides',      regex: /triglyceride/i }
         ];
 
@@ -5950,8 +5950,21 @@
 
                     // Only search text AFTER the label match to avoid grabbing digits
                     // from names like A1C→1, T4→4, T3→3, B12→12, 25-hydroxy→25
-                    const restOfLine = lines[i].substring(labelMatch.index + labelMatch[0].length);
-                    const ctx = restOfLine + ' ' + lines.slice(i + 1, i + 3).join(' ');
+                    let restOfLine = lines[i].substring(labelMatch.index + labelMatch[0].length);
+
+                    // For subsequent context lines, also strip past any re-occurrence of the label
+                    // PDF format often has: "TestName [Final]" on one line, "TestName Value Units..." on the next
+                    let ctxLines = '';
+                    for (let j = i + 1; j <= Math.min(i + 2, lines.length - 1); j++) {
+                        let line = lines[j];
+                        const reMatch = def.regex.exec(line);
+                        if (reMatch) {
+                            // Strip past the label re-occurrence to avoid picking up embedded numbers
+                            line = line.substring(reMatch.index + reMatch[0].length);
+                        }
+                        ctxLines += ' ' + line;
+                    }
+                    const ctx = restOfLine + ctxLines;
 
                     // Extract all numbers from the context
                     const allNums = [];
@@ -5993,7 +6006,8 @@
                         rangeNums: [...rangeNums],
                         picked: picked ? picked.raw : null
                     });
-                    break;
+                    // If we found a value, stop; otherwise keep scanning for another match
+                    if (picked) break;
                 }
             }
 
