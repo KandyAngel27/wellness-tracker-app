@@ -7262,6 +7262,12 @@
 
         function syncToFirebase() {
             if (!FIREBASE_READY || !docRef) return;
+            // SAFETY: Never push empty/default data to Firebase — it would overwrite real data
+            const logCount = appData.dailyLogs ? Object.keys(appData.dailyLogs).length : 0;
+            if (logCount === 0) {
+                console.warn('syncToFirebase blocked: no daily logs — refusing to overwrite remote with empty data');
+                return;
+            }
             clearTimeout(syncDebounceTimer);
             syncDebounceTimer = setTimeout(async () => {
                 try {
