@@ -5018,21 +5018,28 @@
             if (!appData.medicationTimeline) {
                 appData.medicationTimeline = [];
             }
-            // One-time migration from old fields
-            if (appData.medicationTimeline.length === 0 && (appData.wellbutrinRestartDate || appData.wellbutrinTaperDate || appData.trtStartDate || appData.nadStartDate)) {
+            // One-time migration from old fields — only if real user data exists (has daily logs)
+            const hasRealData = appData.dailyLogs && Object.keys(appData.dailyLogs).length > 0;
+            if (hasRealData && appData.medicationTimeline.length === 0) {
                 if (appData.wellbutrinRestartDate) {
                     appData.medicationTimeline.push({ name: 'WB Restart', startDate: appData.wellbutrinRestartDate, stopDate: null, color: '#e67e22' });
                 }
                 if (appData.wellbutrinTaperDate) {
                     appData.medicationTimeline.push({ name: 'WB Taper', startDate: appData.wellbutrinTaperDate, stopDate: null, color: '#9b59b6' });
                 }
-                if (appData.trtStartDate) {
+                if (appData.trtStartDate && appData.trtStartDate !== '2025-11-25') {
+                    appData.medicationTimeline.push({ name: 'TRT', startDate: appData.trtStartDate, stopDate: null, color: '#1abc9c' });
+                } else if (hasRealData && appData.trtStartDate) {
                     appData.medicationTimeline.push({ name: 'TRT', startDate: appData.trtStartDate, stopDate: null, color: '#1abc9c' });
                 }
-                if (appData.nadStartDate) {
+                if (appData.nadStartDate && appData.nadStartDate !== '2025-12-26') {
+                    appData.medicationTimeline.push({ name: 'NAD+', startDate: appData.nadStartDate, stopDate: null, color: '#e91e63' });
+                } else if (hasRealData && appData.nadStartDate) {
                     appData.medicationTimeline.push({ name: 'NAD+', startDate: appData.nadStartDate, stopDate: null, color: '#e91e63' });
                 }
-                saveData();
+                if (appData.medicationTimeline.length > 0) {
+                    saveData();
+                }
             }
             renderMedTimeline();
         }
