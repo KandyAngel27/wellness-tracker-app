@@ -1,0 +1,12 @@
+{
+  "name": "wellness-tracker-functions",
+  "description": "Cloud Functions for Wellness Tracker push notifications",
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^13.7.0",
+    "firebase-functions": "^7.2.2"
+  }
+}

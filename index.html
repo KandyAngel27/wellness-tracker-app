@@ -3317,6 +3317,7 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js"></script>
 
     <!-- Sync status indicator -->
     <div id="sync-status" style="
@@ -7073,7 +7074,7 @@
                 if (remindersBanner) {
                     remindersBanner.style.display = 'flex';
                     remindersBanner.classList.add('granted');
-                    document.getElementById('notification-status-text').innerHTML = '<strong>Notifications enabled!</strong> Note: Reminders only work when this tab is open.';
+                    document.getElementById('notification-status-text').innerHTML = '<strong>Push notifications enabled!</strong> You\'ll receive reminders even when the app is closed.';
                     document.getElementById('enable-notifications-btn').style.display = 'none';
                 }
             } else if (Notification.permission === 'denied') {
@@ -7104,11 +7105,13 @@
 
                     // Test notification
                     new Notification('Wellness Tracker', {
-                        body: 'Notifications enabled! You\'ll now receive medication reminders.',
+                        body: 'Push notifications enabled! You\'ll receive reminders even when the app is closed.',
                         icon: '💊'
                     });
 
                     setupReminders();
+                    // Register for FCM push notifications
+                    initFCM();
                 }
                 updateNotificationBanner();
             });
@@ -7242,6 +7245,53 @@
             docRef = db.collection('wellness').doc('data');
         }
 
+        // ============ FCM PUSH NOTIFICATIONS ============
+        const FCM_VAPID_KEY = 'BAVgpv15BjwaFMLW4VXaQnBQMHmr7029LFfkPEyxX1AtMvwT_wpQIcregEYP-hmkx_YUuelOYVjh288neE8nc4c';
+
+        async function initFCM() {
+            if (!FIREBASE_READY || !('serviceWorker' in navigator) || !('Notification' in window)) return;
+            if (Notification.permission !== 'granted') return;
+            // Skip FCM in Electron (uses native reminders)
+            if (window.electronAPI && window.electronAPI.isElectron) return;
+
+            try {
+                const messaging = firebase.messaging();
+                const registration = await navigator.serviceWorker.getRegistration('./sw.js');
+                if (!registration) return;
+
+                const token = await messaging.getToken({
+                    vapidKey: FCM_VAPID_KEY,
+                    serviceWorkerRegistration: registration
+                });
+
+                if (token) {
+                    console.log('FCM token obtained');
+                    // Store token and timezone in separate Firestore doc
+                    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    const tokenDoc = db.collection('wellness').doc('fcmTokens');
+                    const existing = await tokenDoc.get();
+                    const tokens = existing.exists ? (existing.data().tokens || []) : [];
+                    if (!tokens.includes(token)) {
+                        tokens.push(token);
+                    }
+                    await tokenDoc.set({ tokens, timezone }, { merge: true });
+                }
+
+                // Handle foreground messages
+                messaging.onMessage((payload) => {
+                    if (payload.notification) {
+                        new Notification(payload.notification.title, {
+                            body: payload.notification.body,
+                            icon: './icon.png',
+                            requireInteraction: true
+                        });
+                    }
+                });
+            } catch (err) {
+                console.error('FCM init failed:', err);
+            }
+        }
+
         function setSyncStatus(status) {
             const el = document.getElementById('sync-status');
             if (!el) return;
@@ -7328,6 +7378,10 @@
                 navigator.serviceWorker.register('./sw.js')
                     .then(registration => {
                         console.log('ServiceWorker registered:', registration.scope);
+                        // Initialize FCM if notification permission already granted
+                        if (Notification.permission === 'granted') {
+                            initFCM();
+                        }
                     })
                     .catch(error => {
                         console.log('ServiceWorker registration failed:', error);

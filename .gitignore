@@ -4,3 +4,5 @@ dist/
 .DS_Store
 Thumbs.db
 wellness-tracker-auto-backup.json
+.firebase/
+firebase-debug.log

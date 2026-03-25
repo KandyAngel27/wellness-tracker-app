@@ -1,4 +1,32 @@
-const CACHE_NAME = 'wellness-tracker-v10';
+// Firebase Cloud Messaging support
+importScripts('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js');
+
+firebase.initializeApp({
+    apiKey: "AIzaSyAxqkJiZL94gR3W5TBPTRNE5AdLyCDwb2g",
+    authDomain: "wellness-tracker-127.firebaseapp.com",
+    projectId: "wellness-tracker-127",
+    storageBucket: "wellness-tracker-127.firebasestorage.app",
+    messagingSenderId: "769681534889",
+    appId: "1:769681534889:web:a273b28653892af4039eb8"
+});
+
+const messaging = firebase.messaging();
+
+// Handle background push notifications (when app is not in foreground)
+messaging.onBackgroundMessage((payload) => {
+    const title = payload.notification?.title || 'Wellness Reminder';
+    const options = {
+        body: payload.notification?.body || '',
+        icon: './icon.png',
+        badge: './icon.png',
+        vibrate: [200, 100, 200],
+        requireInteraction: true
+    };
+    return self.registration.showNotification(title, options);
+});
+
+const CACHE_NAME = 'wellness-tracker-v11';
 const ASSETS = [
     './',
     './index.html',
@@ -35,20 +63,6 @@ self.addEventListener('fetch', event => {
                 return response;
             })
             .catch(() => caches.match(event.request))
-    );
-});
-
-// Handle push notifications from Firebase Cloud Messaging
-self.addEventListener('push', event => {
-    const data = event.data ? event.data.json() : { title: 'Wellness Reminder', body: "Time to check in!" };
-    event.waitUntil(
-        self.registration.showNotification(data.title || 'Wellness Reminder', {
-            body: data.body || '',
-            icon: './icon.png',
-            badge: './icon.png',
-            vibrate: [200, 100, 200],
-            requireInteraction: true
-        })
     );
 });
 
