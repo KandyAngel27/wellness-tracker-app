@@ -7352,8 +7352,15 @@
                     const localModified = appData.lastModified || 0;
                     const remoteModified = remoteData.lastModified || 0;
                     const remoteLogCount = remoteData.dailyLogs ? Object.keys(remoteData.dailyLogs).length : 0;
-                    console.log('syncFromFirebase: remote logs=' + remoteLogCount + ', remoteModified=' + remoteModified + ', localModified=' + localModified);
+                    const localLogCount = appData.dailyLogs ? Object.keys(appData.dailyLogs).length : 0;
+                    console.log('syncFromFirebase: remote logs=' + remoteLogCount + ', local logs=' + localLogCount + ', remoteModified=' + remoteModified + ', localModified=' + localModified);
                     if (remoteModified > localModified) {
+                        // Safety: don't overwrite richer local data with emptier remote data
+                        if (localLogCount > remoteLogCount && localLogCount > 5) {
+                            console.warn('syncFromFirebase: remote is newer but has fewer logs (' + remoteLogCount + ' vs ' + localLogCount + ') — pushing local data instead');
+                            syncToFirebase();
+                            return;
+                        }
                         appData = remoteData;
                         localStorage.setItem('wellnessTracker_v1', JSON.stringify(appData));
                         renderCalendar();
