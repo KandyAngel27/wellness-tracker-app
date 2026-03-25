@@ -2186,6 +2186,16 @@
 
                     <div id="backup-status" style="margin-top: 15px; display: none; padding: 10px; border-radius: 8px;"></div>
                 </div>
+
+                <!-- Cloud Sync Section -->
+                <div style="background: linear-gradient(135deg, #6f42c1 0%, #8b5cf6 100%); padding: 25px; border-radius: 15px; margin-top: 25px; color: white;">
+                    <h3 style="color: white; margin-bottom: 15px;">☁️ Cloud Sync</h3>
+                    <p style="opacity: 0.9; margin-bottom: 20px;">Force pull the latest data from Firebase, ignoring timestamps.</p>
+                    <button onclick="forceSyncFromFirebase()" class="btn" style="background: white; color: #6f42c1; font-weight: bold;">
+                        🔄 Force Sync from Cloud
+                    </button>
+                    <div id="force-sync-status" style="margin-top: 15px; display: none; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.15);"></div>
+                </div>
             </div>
 
             <!-- Side Effects Patterns Tab -->
@@ -7334,7 +7344,10 @@
         }
 
         async function syncFromFirebase() {
-            if (!FIREBASE_READY || !docRef) return;
+            if (!FIREBASE_READY || !docRef) {
+                console.warn('syncFromFirebase skipped: FIREBASE_READY=' + FIREBASE_READY + ', docRef=' + !!docRef);
+                return;
+            }
             try {
                 setSyncStatus('syncing');
                 const doc = await docRef.get();
@@ -7342,6 +7355,8 @@
                     const remoteData = doc.data();
                     const localModified = appData.lastModified || 0;
                     const remoteModified = remoteData.lastModified || 0;
+                    const remoteLogCount = remoteData.dailyLogs ? Object.keys(remoteData.dailyLogs).length : 0;
+                    console.log('syncFromFirebase: remote logs=' + remoteLogCount + ', remoteModified=' + remoteModified + ', localModified=' + localModified);
                     if (remoteModified > localModified) {
                         appData = remoteData;
                         localStorage.setItem('wellnessTracker_v1', JSON.stringify(appData));
@@ -7351,12 +7366,57 @@
                         updateShotDashboard();
                         updateInjectionSiteRotation();
                         renderNadMiniChart();
+                        console.log('syncFromFirebase: pulled ' + remoteLogCount + ' logs from Firebase');
+                    } else {
+                        console.log('syncFromFirebase: local is newer or equal, no pull needed');
                     }
+                } else {
+                    console.warn('syncFromFirebase: no document found in Firebase');
                 }
                 setSyncStatus('synced');
             } catch (err) {
                 console.error('Firebase load failed:', err);
                 setSyncStatus('offline');
+            }
+        }
+
+        async function forceSyncFromFirebase() {
+            const statusEl = document.getElementById('force-sync-status');
+            if (!FIREBASE_READY || !docRef) {
+                if (statusEl) {
+                    statusEl.style.display = 'block';
+                    statusEl.textContent = 'Firebase not ready. Check your connection.';
+                }
+                return;
+            }
+            try {
+                if (statusEl) {
+                    statusEl.style.display = 'block';
+                    statusEl.textContent = 'Pulling from Firebase...';
+                }
+                const doc = await docRef.get();
+                if (doc.exists) {
+                    const remoteData = doc.data();
+                    const remoteLogCount = remoteData.dailyLogs ? Object.keys(remoteData.dailyLogs).length : 0;
+                    if (remoteLogCount === 0) {
+                        if (statusEl) statusEl.textContent = 'Remote data is empty — nothing to pull.';
+                        return;
+                    }
+                    appData = remoteData;
+                    localStorage.setItem('wellnessTracker_v1', JSON.stringify(appData));
+                    renderCalendar();
+                    renderTodayMeds();
+                    updateStats();
+                    updateShotDashboard();
+                    updateInjectionSiteRotation();
+                    renderNadMiniChart();
+                    if (statusEl) statusEl.textContent = '✓ Pulled ' + remoteLogCount + ' daily logs from cloud!';
+                } else {
+                    if (statusEl) statusEl.textContent = 'No data found in Firebase.';
+                }
+            } catch (err) {
+                console.error('Force sync failed:', err);
+                if (statusEl) statusEl.textContent = 'Sync failed: ' + err.message;
             }
         }
 
