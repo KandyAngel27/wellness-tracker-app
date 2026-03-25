@@ -3332,10 +3332,10 @@
     <!-- Sync status indicator -->
     <div id="sync-status" style="
         position: fixed; bottom: 16px; right: 16px; z-index: 9999;
-        background: #28a745; color: white; font-size: 12px; font-weight: 600;
-        padding: 6px 12px; border-radius: 20px; opacity: 0;
-        transition: opacity 0.4s; pointer-events: none; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    "></div>
+        background: #6c757d; color: white; font-size: 12px; font-weight: 600;
+        padding: 6px 12px; border-radius: 20px; opacity: 1;
+        pointer-events: none; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    ">◌ Connecting...</div>
 
     <script>
         // ============ DATA STRUCTURE ============
@@ -7314,10 +7314,6 @@
             const s = states[status] || states.offline;
             el.textContent = s.text;
             el.style.background = s.color;
-            el.style.opacity = '1';
-            if (status === 'synced') {
-                setTimeout(() => { el.style.opacity = '0'; }, 3000);
-            }
         }
 
         function syncToFirebase() {
