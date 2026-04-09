@@ -547,6 +547,71 @@
             color: #6c757d;
         }
 
+        /* Sobriety Tracker */
+        .sobriety-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 10px;
+        }
+        .sobriety-day {
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            cursor: default;
+            position: relative;
+        }
+        .sobriety-day:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: 26px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.85);
+            color: #fff;
+            font-size: 11px;
+            white-space: nowrap;
+            padding: 3px 7px;
+            border-radius: 5px;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .sobriety-day.clean    { background: #28a745; }
+        .sobriety-day.alcohol  { background: #ffc107; }
+        .sobriety-day.substances { background: #fd7e14; }
+        .sobriety-day.both     { background: #dc3545; }
+        .sobriety-day.no-data  { background: #dee2e6; }
+        .sobriety-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 12px;
+            font-size: 0.82em;
+            color: #555;
+        }
+        .sobriety-legend span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .sobriety-legend .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        .streak-highlight {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: #28a745;
+            line-height: 1;
+        }
+        .streak-label {
+            font-size: 0.8em;
+            color: #888;
+            margin-top: 3px;
+        }
+
         /* Sleep Tracking Section */
         .sleep-section {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -1692,6 +1757,38 @@
                     <div class="stat-card">
                         <div class="stat-label">Best Night</div>
                         <div class="stat-value" id="sleep-best">-</div>
+                    </div>
+                </div>
+
+                <!-- Sobriety Tracker -->
+                <h3 style="color: #667eea; margin: 35px 0 15px;">Alcohol & Substance Tracker</h3>
+                <div class="stats-grid" style="margin-bottom: 20px;">
+                    <div class="stat-card" style="text-align:center;">
+                        <div class="streak-highlight" id="sober-streak">-</div>
+                        <div class="streak-label">Current Clean Streak (logged days)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Clean Days This Month</div>
+                        <div class="stat-value" id="sober-clean-month">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Alcohol Days This Month</div>
+                        <div class="stat-value" id="sober-alcohol-month">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Substance Days This Month</div>
+                        <div class="stat-value" id="sober-substances-month">-</div>
+                    </div>
+                </div>
+                <div style="background:#f8f9fa; border-radius:12px; padding:18px;">
+                    <div style="font-size:0.85em; color:#666; margin-bottom:8px;">Last 90 logged days — newest on the right</div>
+                    <div class="sobriety-grid" id="sobriety-grid"></div>
+                    <div class="sobriety-legend">
+                        <span><span class="dot" style="background:#28a745;"></span> Clean</span>
+                        <span><span class="dot" style="background:#ffc107;"></span> Alcohol</span>
+                        <span><span class="dot" style="background:#fd7e14;"></span> Substances</span>
+                        <span><span class="dot" style="background:#dc3545;"></span> Both</span>
+                        <span><span class="dot" style="background:#dee2e6;"></span> No data</span>
                     </div>
                 </div>
             </div>
@@ -3902,6 +3999,7 @@
             } else if (tabId === 'sleep') {
                 renderSleepChart();
                 updateSleepStats();
+                renderSubstanceTracker();
             } else if (tabId === 'tapering') {
                 renderTaperingTab();
             } else if (tabId === 'labs') {
@@ -4875,6 +4973,82 @@
             document.getElementById('sleep-avg-hours').textContent = (hours.reduce((a, b) => a + b, 0) / hours.length).toFixed(1);
             document.getElementById('sleep-avg-quality').textContent = quality.length > 0 ? (quality.reduce((a, b) => a + b, 0) / quality.length).toFixed(1) : '-';
             document.getElementById('sleep-best').textContent = Math.max(...hours).toFixed(1) + 'h';
+        }
+
+        function renderSubstanceTracker() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Build last 90 days array
+            const days = [];
+            for (let i = 89; i >= 0; i--) {
+                const d = new Date(today);
+                d.setDate(d.getDate() - i);
+                days.push(d);
+            }
+
+            // Classify each day
+            function classify(log) {
+                if (!log) return 'no-data';
+                const hasAlcohol = log.sleep && log.sleep.alcohol;
+                const hasSubs = log.sleep && log.sleep.substances;
+                if (hasAlcohol && hasSubs) return 'both';
+                if (hasAlcohol) return 'alcohol';
+                if (hasSubs) return 'substances';
+                // Only count as "clean" if there's any log entry for that day
+                return 'clean';
+            }
+
+            // Render grid
+            const grid = document.getElementById('sobriety-grid');
+            grid.innerHTML = days.map(d => {
+                const dateStr = formatDateKey(d);
+                const log = appData.dailyLogs[dateStr];
+                const cls = classify(log);
+                const label = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                const tipText = cls === 'no-data' ? `${label}: no data`
+                    : cls === 'clean' ? `${label}: clean`
+                    : cls === 'alcohol' ? `${label}: alcohol (${log.sleep.alcohol})`
+                    : cls === 'substances' ? `${label}: substances (${log.sleep.substances})`
+                    : `${label}: alcohol + substances`;
+                return `<div class="sobriety-day ${cls}" data-tip="${tipText}" title="${tipText}"></div>`;
+            }).join('');
+
+            // Stats for current month
+            const now = new Date();
+            const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+            let cleanMonth = 0, alcoholMonth = 0, subsMonth = 0;
+            Object.entries(appData.dailyLogs).forEach(([dateStr, log]) => {
+                if (!dateStr.startsWith(monthKey)) return;
+                const cls = classify(log);
+                if (cls === 'clean') cleanMonth++;
+                else if (cls === 'alcohol') alcoholMonth++;
+                else if (cls === 'substances') subsMonth++;
+                else if (cls === 'both') { alcoholMonth++; subsMonth++; }
+            });
+            document.getElementById('sober-clean-month').textContent = cleanMonth;
+            document.getElementById('sober-alcohol-month').textContent = alcoholMonth;
+            document.getElementById('sober-substances-month').textContent = subsMonth;
+
+            // Current clean streak — consecutive logged days going back from today
+            let streak = 0;
+            for (let i = 0; i < 365; i++) {
+                const d = new Date(today);
+                d.setDate(d.getDate() - i);
+                const dateStr = formatDateKey(d);
+                const log = appData.dailyLogs[dateStr];
+                if (!log) {
+                    // Skip days with no log (don't break streak, but don't count)
+                    continue;
+                }
+                const cls = classify(log);
+                if (cls === 'clean') {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+            document.getElementById('sober-streak').textContent = streak;
         }
 
         // ============ SYMPTOM CHART ============
