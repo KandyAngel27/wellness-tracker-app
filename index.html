@@ -3064,19 +3064,6 @@
                                 <input type="number" id="modal-sleep-quality" min="1" max="10" placeholder="7">
                             </div>
                             <div class="sleep-input">
-                                <label>Morning Energy (1-10)</label>
-                                <input type="number" id="modal-sleep-energy" min="1" max="10" placeholder="6">
-                            </div>
-                            <div class="sleep-input">
-                                <label>Sleep Aid Used?</label>
-                                <select id="modal-sleep-aid">
-                                    <option value="">None</option>
-                                    <option value="melatonin">Melatonin</option>
-                                    <option value="magnesium">Magnesium</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                            <div class="sleep-input">
                                 <label>Alcohol Used?</label>
                                 <select id="modal-sleep-alcohol">
                                     <option value="">No</option>
@@ -4519,16 +4506,12 @@
             if (log && log.sleep) {
                 document.getElementById('modal-sleep-hours').value = log.sleep.hours || '';
                 document.getElementById('modal-sleep-quality').value = log.sleep.quality || '';
-                document.getElementById('modal-sleep-energy').value = log.sleep.morningEnergy || '';
-                document.getElementById('modal-sleep-aid').value = log.sleep.aid || '';
                 document.getElementById('modal-sleep-alcohol').value = log.sleep.alcohol || '';
                 document.getElementById('modal-sleep-substances').value = log.sleep.substances || '';
                 document.getElementById('modal-sleep-notes').value = log.sleep.notes || '';
             } else {
                 document.getElementById('modal-sleep-hours').value = '';
                 document.getElementById('modal-sleep-quality').value = '';
-                document.getElementById('modal-sleep-energy').value = '';
-                document.getElementById('modal-sleep-aid').value = '';
                 document.getElementById('modal-sleep-alcohol').value = '';
                 document.getElementById('modal-sleep-substances').value = '';
                 document.getElementById('modal-sleep-notes').value = '';
@@ -4590,8 +4573,6 @@
                 sleep: {
                     hours: parseFloat(document.getElementById('modal-sleep-hours').value) || null,
                     quality: parseInt(document.getElementById('modal-sleep-quality').value) || null,
-                    morningEnergy: parseInt(document.getElementById('modal-sleep-energy').value) || null,
-                    aid: document.getElementById('modal-sleep-aid').value || null,
                     alcohol: document.getElementById('modal-sleep-alcohol').value || null,
                     substances: document.getElementById('modal-sleep-substances').value || null,
                     notes: document.getElementById('modal-sleep-notes').value || ''
@@ -4776,7 +4757,7 @@
                         </div>
                         ${log.sleep && log.sleep.hours ? `
                             <div class="entry-sleep">
-                                <strong>Sleep:</strong> ${log.sleep.hours}h | Quality: ${log.sleep.quality || '-'}/10 | Morning Energy: ${log.sleep.morningEnergy || '-'}/10
+                                <strong>Sleep:</strong> ${log.sleep.hours}h | Quality: ${log.sleep.quality || '-'}/10
                             </div>
                         ` : ''}
                         ${log.symptoms ? `
