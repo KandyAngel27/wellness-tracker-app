@@ -6073,10 +6073,13 @@
                     status = 'completed';
                 }
 
+                const isEOD = phase.frequency === 'every-other-day';
+                const doseLabel = phase.dose === 0 ? 'Complete!' : phase.dose + 'mg XL' + (isEOD ? ' (every other day)' : '');
+                const weeksLabel = phase.weeks > 0 ? phase.weeks + ' weeks' + (isEOD ? ' — alternating days' : '') : 'Finished tapering';
                 return `
                     <div class="taper-phase ${status}">
-                        <h4>${phase.dose === 0 ? 'Complete!' : phase.dose + 'mg XL'}</h4>
-                        <p>${phase.weeks > 0 ? phase.weeks + ' weeks' : 'Finished tapering'}</p>
+                        <h4>${doseLabel}</h4>
+                        <p>${weeksLabel}</p>
                         ${startDate ? `<p style="font-size: 0.85em; color: #6c757d;">Starts: ${formatDate(startDate)}</p>` : ''}
                     </div>
                 `;
@@ -6084,7 +6087,8 @@
 
             // Update stats
             if (currentPhase) {
-                document.getElementById('taper-current-dose').textContent = currentPhase.dose + 'mg';
+                const eodSuffix = currentPhase.frequency === 'every-other-day' ? ' EOD' : '';
+                document.getElementById('taper-current-dose').textContent = currentPhase.dose + 'mg' + eodSuffix;
 
                 const phaseStart = parseDate(currentPhase.startDate);
                 const daysAtDose = Math.floor((today - phaseStart) / (1000 * 60 * 60 * 24));
