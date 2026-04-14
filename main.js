@@ -197,6 +197,26 @@ function setupReminders(medications, checkinReminder) {
             });
             if (job) scheduledJobs.push(job);
             console.log(`Scheduled daily reminder for ${med.name} at ${med.time}`);
+        } else if (med.schedule === 'every-other-day') {
+            // Every-other-day reminder — schedule daily but check the date before firing
+            const eodStartDate = med.eodStartDate || new Date().toISOString().slice(0, 10);
+            const job = schedule.scheduleJob({ hour: hours, minute: minutes }, () => {
+                const start = new Date(eodStartDate + 'T12:00:00');
+                const today = new Date();
+                today.setHours(12, 0, 0, 0);
+                const daysDiff = Math.round((today - start) / (1000 * 60 * 60 * 24));
+                if (daysDiff % 2 === 0) {
+                    console.log(`EOD reminder triggered for ${med.name} (day ${daysDiff}) at ${new Date().toLocaleTimeString()}`);
+                    showNotification(
+                        `Time for ${med.name}!`,
+                        `Every-other-day dose — don't forget your ${med.name}`
+                    );
+                } else {
+                    console.log(`EOD skip for ${med.name} (day ${daysDiff} — not a dose day)`);
+                }
+            });
+            if (job) scheduledJobs.push(job);
+            console.log(`Scheduled every-other-day reminder for ${med.name} at ${med.time} (start: ${eodStartDate})`);
         } else if (med.schedule === 'weekly' && med.days && med.days.length > 0) {
             // Weekly reminder on specific days
             med.days.forEach(day => {

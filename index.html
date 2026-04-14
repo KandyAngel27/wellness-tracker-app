@@ -6789,6 +6789,24 @@
         }
 
         // ============ REMINDERS ============
+        function getScheduleLabel(med) {
+            if (med.schedule === 'daily') return 'Daily';
+            if (med.schedule === 'every-other-day') return 'Every Other Day';
+            if (med.schedule === 'weekly') return med.days.map(d => getDayName(d)).join(', ');
+            return med.schedule;
+        }
+
+        function isEodDoseDay(med) {
+            if (!med.eodStartDate) return true; // no start date set, default to show
+            const start = parseDate(med.eodStartDate);
+            const today = new Date();
+            // Zero out time for accurate day diff
+            start.setHours(12, 0, 0, 0);
+            today.setHours(12, 0, 0, 0);
+            const daysDiff = Math.round((today - start) / (1000 * 60 * 60 * 24));
+            return daysDiff % 2 === 0; // even = dose day
+        }
+
         function renderRemindersTab() {
             const scheduleContainer = document.getElementById('medication-schedule');
             const editorContainer = document.getElementById('reminder-editor');
@@ -6798,12 +6816,14 @@
             const prnMeds = appData.medications.filter(m => m.schedule === 'asneeded');
 
             let scheduleHtml = scheduledMeds.map(med => {
-                const scheduleText = med.schedule === 'daily' ? 'Daily' :
-                    med.schedule === 'weekly' ? med.days.map(d => getDayName(d)).join(', ') : med.schedule;
+                const scheduleText = getScheduleLabel(med);
+                const eodBadge = med.schedule === 'every-other-day'
+                    ? ` <span style="font-size:0.8em; background:${isEodDoseDay(med) ? '#28a745' : '#6c757d'}; color:white; padding:2px 7px; border-radius:10px;">${isEodDoseDay(med) ? 'DOSE TODAY' : 'SKIP TODAY'}</span>`
+                    : '';
                 return `
                     <div class="reminder-card">
                         <div class="reminder-info">
-                            <h4>${med.emoji} ${med.name}</h4>
+                            <h4>${med.emoji} ${med.name}${eodBadge}</h4>
                             <p>${scheduleText}</p>
                         </div>
                         <div class="reminder-time">${med.time ? formatTime12h(med.time) : 'No time set'}</div>
@@ -6828,20 +6848,34 @@
 
             // Show editor (only for scheduled meds - PRN meds don't have reminders)
             editorContainer.innerHTML = scheduledMeds.map(med => {
-                const scheduleText = med.schedule === 'daily' ? 'Daily' :
-                    med.schedule === 'weekly' ? med.days.map(d => getDayName(d)).join(', ') : med.schedule;
+                const scheduleText = getScheduleLabel(med);
+                const isEod = med.schedule === 'every-other-day';
+                const eodStartVal = med.eodStartDate || formatDateKey(new Date());
                 return `
-                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;">
-                        <div style="flex: 1; min-width: 200px;">
-                            <strong>${med.emoji} ${med.name}</strong>
-                            <span style="color: #6c757d; margin-left: 10px;">(${scheduleText})</span>
+                    <div style="border: 1px solid #e9ecef; border-radius: 10px; padding: 12px; margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                            <div style="flex: 1; min-width: 200px;">
+                                <strong>${med.emoji} ${med.name}</strong>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                <select id="reminder-schedule-${med.id}" onchange="onScheduleChange('${med.id}')"
+                                    style="padding: 8px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 0.9em;">
+                                    <option value="daily" ${med.schedule === 'daily' ? 'selected' : ''}>Daily</option>
+                                    <option value="every-other-day" ${isEod ? 'selected' : ''}>Every Other Day</option>
+                                    <option value="weekly" ${med.schedule === 'weekly' ? 'selected' : ''}>Weekly (use days)</option>
+                                </select>
+                                <input type="time" id="reminder-time-${med.id}" value="${med.time || ''}" style="padding: 8px; border: 2px solid #e9ecef; border-radius: 8px;">
+                                <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                                    <input type="checkbox" id="reminder-enabled-${med.id}" ${med.reminderEnabled ? 'checked' : ''} style="width: 18px; height: 18px;">
+                                    <span style="font-size: 0.9em;">Enabled</span>
+                                </label>
+                            </div>
                         </div>
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <input type="time" id="reminder-time-${med.id}" value="${med.time || ''}" style="padding: 8px; border: 2px solid #e9ecef; border-radius: 8px;">
-                            <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
-                                <input type="checkbox" id="reminder-enabled-${med.id}" ${med.reminderEnabled ? 'checked' : ''} style="width: 18px; height: 18px;">
-                                <span style="font-size: 0.9em;">Enabled</span>
-                            </label>
+                        <div id="eod-section-${med.id}" style="margin-top: 10px; display: ${isEod ? 'flex' : 'none'}; align-items: center; gap: 10px; flex-wrap: wrap; background: #f0f7ff; padding: 8px 12px; border-radius: 8px;">
+                            <span style="font-size: 0.9em; color: #495057;">First dose date (Day 1):</span>
+                            <input type="date" id="eod-start-${med.id}" value="${eodStartVal}"
+                                style="padding: 6px; border: 2px solid #b8daff; border-radius: 8px; font-size: 0.9em;">
+                            <span id="eod-status-${med.id}" style="font-size: 0.85em; color: #495057;">${isEod ? (isEodDoseDay(med) ? '✅ Today is a dose day' : '⏭️ Today is a skip day') : ''}</span>
                         </div>
                     </div>
                 `;
@@ -6854,16 +6888,42 @@
             updateNotificationBanner();
         }
 
+        function onScheduleChange(medId) {
+            const select = document.getElementById(`reminder-schedule-${medId}`);
+            const eodSection = document.getElementById(`eod-section-${medId}`);
+            if (eodSection) {
+                eodSection.style.display = select.value === 'every-other-day' ? 'flex' : 'none';
+            }
+            // Update status label immediately
+            if (select.value === 'every-other-day') {
+                const startInput = document.getElementById(`eod-start-${medId}`);
+                const statusEl = document.getElementById(`eod-status-${medId}`);
+                if (startInput && statusEl) {
+                    const fakeMed = { eodStartDate: startInput.value };
+                    statusEl.textContent = isEodDoseDay(fakeMed) ? '✅ Today is a dose day' : '⏭️ Today is a skip day';
+                }
+            }
+        }
+
         function saveReminderTimes() {
             appData.medications.forEach(med => {
                 const timeInput = document.getElementById(`reminder-time-${med.id}`);
                 const enabledInput = document.getElementById(`reminder-enabled-${med.id}`);
+                const scheduleInput = document.getElementById(`reminder-schedule-${med.id}`);
+                const eodStartInput = document.getElementById(`eod-start-${med.id}`);
 
                 if (timeInput) {
                     med.time = timeInput.value || null;
                 }
                 if (enabledInput) {
                     med.reminderEnabled = enabledInput.checked;
+                }
+                if (scheduleInput && med.schedule !== 'weekly') {
+                    // Only update schedule for daily/every-other-day meds (weekly day config is separate)
+                    med.schedule = scheduleInput.value;
+                }
+                if (eodStartInput && med.schedule === 'every-other-day') {
+                    med.eodStartDate = eodStartInput.value;
                 }
             });
 
@@ -7464,7 +7524,12 @@
                     if (!med.reminderEnabled || !med.time) return;
 
                     // Check if this med should be taken today
-                    const shouldTakeToday = med.schedule === 'daily' || med.days.includes(currentDay);
+                    let shouldTakeToday;
+                    if (med.schedule === 'every-other-day') {
+                        shouldTakeToday = isEodDoseDay(med);
+                    } else {
+                        shouldTakeToday = med.schedule === 'daily' || med.days.includes(currentDay);
+                    }
                     if (!shouldTakeToday) return;
 
                     // Check if it's time (with 1-minute tolerance)
