@@ -3088,7 +3088,7 @@
                         <div style="margin-top: 15px;">
                             <label style="color: #a8d8ea; font-size: 0.85em; display: block; margin-bottom: 8px;">Sleep Quality vs Substance Use</label>
                             <div style="background: rgba(255,255,255,0.95); border-radius: 8px; padding: 10px; height: 160px; position: relative;">
-                                <canvas id="modal-sleep-quality-chart"></canvas>
+                                <canvas id="modal-sleep-quality-chart" tabindex="-1" style="pointer-events: none;"></canvas>
                             </div>
                         </div>
                     </div>
@@ -4549,7 +4549,14 @@
             document.getElementById('modal-notes').value = log && log.notes ? log.notes : '';
 
             document.getElementById('day-modal').classList.add('active');
+            // Reset scroll to top so sleep/notes fields are visible immediately
+            document.querySelector('.modal').scrollTop = 0;
             renderSleepQualityChart();
+            // Electron fix: explicitly route keyboard focus into the modal
+            setTimeout(() => {
+                const input = document.getElementById('modal-sleep-hours');
+                if (input) input.focus();
+            }, 50);
         }
 
         let sleepQualityChart = null;
