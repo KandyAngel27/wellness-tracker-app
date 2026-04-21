@@ -117,8 +117,8 @@ exports.checkMedReminders = onSchedule("every 1 minutes", async () => {
           },
           webpush: {
             notification: {
-              icon: "https://kandyangel27.github.io/wellness-tracker-app/icon.png",
-              badge: "https://kandyangel27.github.io/wellness-tracker-app/icon.png",
+              icon: "https://kandyphoenix.github.io/wellness-tracker-app/icon.png",
+              badge: "https://kandyphoenix.github.io/wellness-tracker-app/icon.png",
               vibrate: [200, 100, 200],
               requireInteraction: true,
             },
