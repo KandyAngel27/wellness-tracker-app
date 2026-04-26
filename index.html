@@ -6676,6 +6676,19 @@
                 triglycerides: 'Triglycerides (mg/dL)'
             };
 
+            // Anchor x-axis to the globally earliest lab date across ALL lab types
+            if (appData.labResults.length > 0 && filtered.length > 0) {
+                const globalEarliest = appData.labResults.reduce((min, l) => {
+                    const d = parseDate(l.date);
+                    return d < min ? d : min;
+                }, parseDate(appData.labResults[0].date));
+                if (globalEarliest < parseDate(filtered[0].date)) {
+                    labels.unshift(formatDate(globalEarliest));
+                    data.unshift(null);
+                    dateKeys.unshift(formatDate(globalEarliest));
+                }
+            }
+
             // Insert taper date into the labels+data arrays so it appears on the x-axis
             let taperIndex = -1;
 
