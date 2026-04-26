@@ -6193,12 +6193,12 @@
             { key: 'testosteroneFree', label: 'Free Testosterone',  regex: /testosterone[,\s]*(free|calculated|bioavailable)|free\s+testosterone|cft\b/i },
             { key: 'estradiol',        label: 'Estradiol',          regex: /estradiol/i },
             { key: 'progesterone',     label: 'Progesterone',       regex: /progesterone/i },
-            { key: 'shbg',             label: 'SHBG',               regex: /shbg\b|sex hormone.binding/i },
+            { key: 'shbg',             label: 'SHBG',               regex: /shbg\b|sex\s+horm(?:one)?\s+bind/i },
             { key: 'prolactin',        label: 'Prolactin',          regex: /prolactin/i },
             { key: 'dhea',             label: 'DHEA-S',             regex: /dhea-?s\b|dehydroepiandrosterone\s+sulfate/i },
             { key: 'tsh',              label: 'TSH',                regex: /\btsh\b|thyroid.stimulating hormone/i },
-            { key: 't4',               label: 'Free T4',            regex: /t4[,\s]*free|free\s+t4|thyroxine[,\s]*free/i },
-            { key: 't3',               label: 'Free T3',            regex: /t3[,\s]*free|free\s+t3|triiodothyronine[,\s]*free/i },
+            { key: 't4',               label: 'Free T4',            regex: /t4[,\s]*free|free\s+t4|thyroxine.{0,20}free/i },
+            { key: 't3',               label: 'Free T3',            regex: /t3[,\s]*free|free\s+t3|triiodothyronine.{0,15}free/i },
             { key: 'vitd',             label: 'Vitamin D',          regex: /vitamin\s*d\b|25-?(?:oh|hydroxy)/i },
             { key: 'b12',              label: 'Vitamin B12',        regex: /vitamin\s*b-?12\b|cobalamin\b/i },
             { key: 'ferritin',         label: 'Ferritin',           regex: /ferritin/i },
@@ -6296,18 +6296,26 @@
                         }
                         ctxLines += ' ' + line;
                     }
-                    const ctx = restOfLine + ctxLines;
+                    // If this is a header-only line (e.g. "TestName [Final]"), the actual value
+                    // is on the next line — skip restOfLine to avoid picking up label-embedded
+                    // numbers like "25" in "Vitamin D, 25-Hydroxy [Final]"
+                    const isHeaderLine = /\[\s*(?:Final|Preliminary|Corrected)\s*\]/i.test(restOfLine);
+                    const ctx = isHeaderLine ? ctxLines : (restOfLine + ctxLines);
 
-                    // Extract all numbers from the context
+                    // Extract all numbers from the context, skipping numbers that are part of
+                    // label text like "25-Hydroxy" (number immediately followed by dash+letter)
                     const allNums = [];
                     const numRx = /(\d+\.?\d*)/g;
                     let nm;
                     while ((nm = numRx.exec(ctx)) !== null) {
+                        const afterNum = ctx.substring(nm.index + nm[0].length);
+                        if (/^-[a-zA-Z]/.test(afterNum)) continue;
                         allNums.push({ val: parseFloat(nm[1]), idx: nm.index, raw: nm[1] });
                     }
 
                     // Remove numbers that are part of a reference range (X - Y or X-Y patterns)
-                    const rangeRx = /(\d+\.?\d*)\s*[-–]\s*(\d+\.?\d*)/g;
+                    // Also handles flag letters between range values e.g. "13.00 - F 150.00"
+                    const rangeRx = /(\d+\.?\d*)\s*[-–]\s*(?:[A-Z]\s+)?(\d+\.?\d*)/g;
                     const rangeNums = new Set();
                     let rm;
                     while ((rm = rangeRx.exec(ctx)) !== null) {
