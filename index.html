@@ -6861,9 +6861,13 @@
                         }
                     },
                     scales: {
-                        y: {
-                            beginAtZero: false
-                        }
+                        y: (() => {
+                            const vals = data.filter(v => v != null);
+                            const allY = [...vals, ...(rangeLow != null ? [rangeLow] : []), ...(rangeHigh != null ? [rangeHigh] : [])];
+                            if (allY.length === 0) return { beginAtZero: false };
+                            const pad = (Math.max(...allY) - Math.min(...allY)) * 0.18 || Math.max(...allY) * 0.1;
+                            return { min: Math.max(0, Math.min(...allY) - pad), max: Math.max(...allY) + pad, beginAtZero: false };
+                        })()
                     },
                     plugins: {
                         legend: {
