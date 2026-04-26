@@ -3712,6 +3712,7 @@
         let symptomChart = null;
         let nadMiniChart = null;
         let editingLabIndex = null; // Track which lab entry we're editing
+        let _pendingLabRanges = null; // Reference ranges from the most recent parse
         let reminderIntervals = [];
         let lastKnownDateStr = null; // Track the current date for auto-refresh
 
@@ -6336,6 +6337,13 @@
                         picked = num;
                         break;
                     }
+
+                    // Also store the reference range if we found two range boundary numbers
+                    if (picked && rangeNums.size >= 2) {
+                        const rangePair = [...rangeNums].map(Number).sort((a, b) => a - b);
+                        if (!results._ranges) results._ranges = {};
+                        results._ranges[def.key] = { low: rangePair[0], high: rangePair[rangePair.length - 1] };
+                    }
                     debugLog.push({
                         key: def.key,
                         label: def.label,
@@ -6427,6 +6435,7 @@
 
         function _fillLabFormFromParsed() {
             const results = JSON.parse(document.getElementById('lab-parse-preview').dataset.results || '{}');
+            if (results._ranges) _pendingLabRanges = results._ranges;
             if (results._date) document.getElementById('lab-date').value = results._date;
             const map = {
                 testosterone:'lab-testosterone', testosteroneFree:'lab-testosterone-free',
@@ -6536,7 +6545,8 @@
                 ldl: parseFloat(document.getElementById('lab-ldl').value) || null,
                 hdl: parseFloat(document.getElementById('lab-hdl').value) || null,
                 triglycerides: parseFloat(document.getElementById('lab-triglycerides').value) || null,
-                notes: document.getElementById('lab-notes').value
+                notes: document.getElementById('lab-notes').value,
+                ranges: _pendingLabRanges || undefined
             };
 
             if (!entry.date) {
@@ -6723,6 +6733,51 @@
                 labChart.destroy();
             }
 
+            // Find the most recent reference range for this lab type
+            const rangeEntry = [...appData.labResults]
+                .sort((a, b) => parseDate(b.date) - parseDate(a.date))
+                .find(l => l.ranges && l.ranges[selected]);
+            const refRange = rangeEntry ? rangeEntry.ranges[selected] : null;
+            const rangeLow  = refRange ? refRange.low  : null;
+            const rangeHigh = refRange ? refRange.high : null;
+
+            // Plugin: shaded green band showing the reference range
+            const referenceRangePlugin = {
+                id: 'referenceRange',
+                beforeDraw: (chart) => {
+                    if (!rangeLow && !rangeHigh) return;
+                    const { ctx, scales: { x, y } } = chart;
+                    const yLow  = rangeLow  ? Math.min(y.getPixelForValue(rangeLow),  y.bottom) : y.bottom;
+                    const yHigh = rangeHigh ? Math.max(y.getPixelForValue(rangeHigh), y.top)    : y.top;
+                    ctx.save();
+                    // Green shaded band
+                    ctx.fillStyle = 'rgba(40, 167, 69, 0.08)';
+                    ctx.fillRect(x.left, yHigh, x.right - x.left, yLow - yHigh);
+                    // Boundary lines
+                    ctx.setLineDash([6, 4]);
+                    ctx.lineWidth = 1.5;
+                    ctx.strokeStyle = 'rgba(40, 167, 69, 0.55)';
+                    if (rangeLow) {
+                        ctx.beginPath(); ctx.moveTo(x.left, yLow); ctx.lineTo(x.right, yLow); ctx.stroke();
+                        ctx.fillStyle = 'rgba(40, 167, 69, 0.85)';
+                        ctx.font = 'bold 10px Arial'; ctx.textAlign = 'left';
+                        ctx.fillText(`▼ Low: ${rangeLow}`, x.left + 4, yLow - 3);
+                    }
+                    if (rangeHigh) {
+                        ctx.beginPath(); ctx.moveTo(x.left, yHigh); ctx.lineTo(x.right, yHigh); ctx.stroke();
+                        ctx.fillStyle = 'rgba(40, 167, 69, 0.85)';
+                        ctx.font = 'bold 10px Arial'; ctx.textAlign = 'left';
+                        ctx.fillText(`▲ High: ${rangeHigh}`, x.left + 4, yHigh + 11);
+                    }
+                    // "In Range" label centred in the band
+                    const bandMid = yHigh + (yLow - yHigh) / 2;
+                    ctx.fillStyle = 'rgba(40, 167, 69, 0.3)';
+                    ctx.font = 'bold 11px Arial'; ctx.textAlign = 'right';
+                    ctx.fillText('In Range', x.right - 6, bandMid + 4);
+                    ctx.restore();
+                }
+            };
+
             // Custom plugin to draw vertical line for taper date
             const taperLinePlugin = {
                 id: 'labTaperLine',
@@ -6785,7 +6840,12 @@
                         tension: 0.3,
                         spanGaps: true,
                         pointRadius: 6,
-                        pointBackgroundColor: '#667eea',
+                        pointBackgroundColor: data.map(v => {
+                            if (v == null) return '#667eea';
+                            if (rangeLow  != null && v < rangeLow)  return '#dc3545';
+                            if (rangeHigh != null && v > rangeHigh) return '#dc3545';
+                            return '#28a745';
+                        }),
                         pointBorderColor: '#fff',
                         pointBorderWidth: 2,
                         pointHoverRadius: 8,
@@ -6812,7 +6872,7 @@
                         }
                     }
                 },
-                plugins: [taperLinePlugin]
+                plugins: [referenceRangePlugin, taperLinePlugin]
             });
         }
 
