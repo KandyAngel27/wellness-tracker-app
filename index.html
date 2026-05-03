@@ -2091,6 +2091,7 @@
                             <option value="vitd">Vitamin D</option>
                             <option value="b12">Vitamin B12</option>
                             <option value="ferritin">Ferritin</option>
+                            <option value="iron">Serum Iron</option>
                             <option value="glucose">Glucose</option>
                             <option value="hba1c">HbA1c</option>
                             <option value="cholesterol">Total Cholesterol</option>
@@ -2199,9 +2200,13 @@
                                 <label>Vitamin B12 (pg/mL)</label>
                                 <input type="text" inputmode="decimal" id="lab-b12" placeholder="e.g., 294">
                             </div>
-                            <div class="form-group" style="margin-bottom: 0;">
+                            <div class="form-group" style="margin-bottom: 12px;">
                                 <label>Ferritin (ng/mL)</label>
                                 <input type="text" inputmode="decimal" id="lab-ferritin" placeholder="e.g., 26.97">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Serum Iron (mcg/dL)</label>
+                                <input type="text" inputmode="decimal" id="lab-iron" placeholder="e.g., 85">
                             </div>
                         </div>
 
@@ -2749,6 +2754,10 @@
                                     <tr style="border-bottom: 1px solid #eee;">
                                         <td style="padding: 8px 0; color: #555;"><strong>Ferritin</strong></td>
                                         <td style="padding: 8px 0; color: #333; text-align: right;">50-150 ng/mL</td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid #eee;">
+                                        <td style="padding: 8px 0; color: #555;"><strong>Serum Iron</strong></td>
+                                        <td style="padding: 8px 0; color: #333; text-align: right;">60-170 mcg/dL</td>
                                     </tr>
                                     <tr style="border-bottom: 1px solid #eee;">
                                         <td style="padding: 8px 0; color: #555;"><strong>B12</strong></td>
@@ -6203,6 +6212,7 @@
             { key: 'vitd',             label: 'Vitamin D',          regex: /vitamin\s*d\b|25-?(?:oh|hydroxy)/i },
             { key: 'b12',              label: 'Vitamin B12',        regex: /vitamin\s*b-?12\b|cobalamin\b/i },
             { key: 'ferritin',         label: 'Ferritin',           regex: /ferritin/i },
+            { key: 'iron',             label: 'Serum Iron',         regex: /\biron[,\s]*(serum|total|binding)?\b/i, antiMatch: /ferritin|tibc|transferrin/i },
             { key: 'glucose',          label: 'Glucose',            regex: /glucose(?!\s*tolerance)/i },
             { key: 'hba1c',            label: 'HbA1c',              regex: /hba1c\b|hemoglobin\s*a1c|\ba1c\b/i },
             { key: 'cholesterol',      label: 'Total Cholesterol',  regex: /cholesterol[,\s]*(total)?/i, antiMatch: /ldl|hdl|non.hdl/i },
@@ -6441,7 +6451,7 @@
                 testosterone:'lab-testosterone', testosteroneFree:'lab-testosterone-free',
                 estradiol:'lab-estradiol', progesterone:'lab-progesterone', shbg:'lab-shbg',
                 prolactin:'lab-prolactin', dhea:'lab-dhea', tsh:'lab-tsh', t4:'lab-t4',
-                t3:'lab-t3', vitd:'lab-vitd', b12:'lab-b12', ferritin:'lab-ferritin',
+                t3:'lab-t3', vitd:'lab-vitd', b12:'lab-b12', ferritin:'lab-ferritin', iron:'lab-iron',
                 glucose:'lab-glucose', hba1c:'lab-hba1c', cholesterol:'lab-cholesterol',
                 ldl:'lab-ldl', hdl:'lab-hdl', triglycerides:'lab-triglycerides'
             };
@@ -6488,6 +6498,7 @@
                     { key: 'vitd', label: 'Vitamin D', unit: 'ng/mL' },
                     { key: 'b12', label: 'B12', unit: 'pg/mL' },
                     { key: 'ferritin', label: 'Ferritin', unit: 'ng/mL' },
+                    { key: 'iron', label: 'Serum Iron', unit: 'mcg/dL' },
                     { key: 'glucose', label: 'Glucose', unit: 'mg/dL' },
                     { key: 'hba1c', label: 'HbA1c', unit: '%' },
                     { key: 'cholesterol', label: 'Cholesterol', unit: 'mg/dL' },
@@ -6538,6 +6549,7 @@
                 vitd: parseFloat(document.getElementById('lab-vitd').value) || null,
                 b12: parseFloat(document.getElementById('lab-b12').value) || null,
                 ferritin: parseFloat(document.getElementById('lab-ferritin').value) || null,
+                iron: parseFloat(document.getElementById('lab-iron').value) || null,
                 // Metabolic
                 glucose: parseFloat(document.getElementById('lab-glucose').value) || null,
                 hba1c: parseFloat(document.getElementById('lab-hba1c').value) || null,
@@ -6574,7 +6586,7 @@
             // Clear form - all fields
             const labFields = ['lab-date', 'lab-testosterone', 'lab-testosterone-free', 'lab-estradiol', 'lab-progesterone',
                 'lab-shbg', 'lab-prolactin', 'lab-dhea', 'lab-tsh', 'lab-t4', 'lab-t3', 'lab-vitd', 'lab-b12',
-                'lab-ferritin', 'lab-glucose', 'lab-hba1c', 'lab-cholesterol', 'lab-ldl', 'lab-hdl',
+                'lab-ferritin', 'lab-iron', 'lab-glucose', 'lab-hba1c', 'lab-cholesterol', 'lab-ldl', 'lab-hdl',
                 'lab-triglycerides', 'lab-notes'];
             labFields.forEach(id => {
                 const el = document.getElementById(id);
@@ -6627,6 +6639,7 @@
             document.getElementById('lab-vitd').value = lab.vitd || '';
             document.getElementById('lab-b12').value = lab.b12 || '';
             document.getElementById('lab-ferritin').value = lab.ferritin || '';
+            document.getElementById('lab-iron').value = lab.iron || '';
             document.getElementById('lab-glucose').value = lab.glucose || '';
             document.getElementById('lab-hba1c').value = lab.hba1c || '';
             document.getElementById('lab-cholesterol').value = lab.cholesterol || '';
@@ -6651,7 +6664,7 @@
             // Clear form
             const labFields = ['lab-date', 'lab-testosterone', 'lab-testosterone-free', 'lab-estradiol', 'lab-progesterone',
                 'lab-shbg', 'lab-prolactin', 'lab-dhea', 'lab-tsh', 'lab-t4', 'lab-t3', 'lab-vitd', 'lab-b12',
-                'lab-ferritin', 'lab-glucose', 'lab-hba1c', 'lab-cholesterol', 'lab-ldl', 'lab-hdl',
+                'lab-ferritin', 'lab-iron', 'lab-glucose', 'lab-hba1c', 'lab-cholesterol', 'lab-ldl', 'lab-hdl',
                 'lab-triglycerides', 'lab-notes'];
             labFields.forEach(id => {
                 const el = document.getElementById(id);
@@ -6686,6 +6699,7 @@
                 vitd: 'Vitamin D (ng/mL)',
                 b12: 'Vitamin B12 (pg/mL)',
                 ferritin: 'Ferritin (ng/mL)',
+                iron: 'Serum Iron (mcg/dL)',
                 glucose: 'Glucose (mg/dL)',
                 hba1c: 'HbA1c (%)',
                 cholesterol: 'Total Cholesterol (mg/dL)',
