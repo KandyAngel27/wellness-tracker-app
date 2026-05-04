@@ -2780,6 +2780,16 @@
                     </div>
                 </div>
 
+                <!-- Workout Section -->
+                <div class="modal-section">
+                    <h3>Workout</h3>
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 15px; background: #f0fff4; border-radius: 10px; border-left: 4px solid #28a745; cursor: pointer;" onclick="document.getElementById('modal-workout-done').click()">
+                        <input type="checkbox" id="modal-workout-done" style="width: 22px; height: 22px; cursor: pointer;" onclick="event.stopPropagation()">
+                        <label for="modal-workout-done" style="font-weight: 600; color: #28a745; cursor: pointer; font-size: 1em; margin: 0;">Worked out today</label>
+                    </div>
+                    <input type="text" id="modal-workout-notes" placeholder="What did you do? (optional)" style="margin-top: 10px; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9em; box-sizing: border-box;">
+                </div>
+
                 <!-- Symptoms Section -->
                 <div class="modal-section">
                     <h3>How Are You Feeling?</h3>
@@ -4181,6 +4191,10 @@
                 if (el) el.checked = (log && log.sideEffects && log.sideEffects[dataKey]) || false;
             });
 
+            // Populate workout
+            document.getElementById('modal-workout-done').checked = (log && log.workout && log.workout.done) || false;
+            document.getElementById('modal-workout-notes').value = (log && log.workout && log.workout.notes) || '';
+
             // Populate notes
             document.getElementById('modal-notes').value = log && log.notes ? log.notes : '';
 
@@ -4300,6 +4314,10 @@
                     temperature: parseInt(document.getElementById('modal-temperature').value)
                 },
                 sideEffects: {},
+                workout: {
+                    done: document.getElementById('modal-workout-done').checked,
+                    notes: document.getElementById('modal-workout-notes').value || ''
+                },
                 notes: document.getElementById('modal-notes').value
             };
 
