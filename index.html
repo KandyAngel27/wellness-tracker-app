@@ -547,6 +547,29 @@
             color: #6c757d;
         }
 
+        /* Side Effect Pills */
+        .se-section { margin-bottom: 10px; }
+        .se-section-label { font-weight: 600; font-size: 0.8em; margin-bottom: 6px; }
+        .se-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+        .se-pill-input { display: none; }
+        .se-pill-tag {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.78em;
+            cursor: pointer;
+            border: 1.5px solid;
+            transition: background 0.15s, color 0.15s;
+            user-select: none;
+        }
+        .se-trt .se-pill-tag  { color: #764ba2; border-color: #764ba2; background: #f9f5ff; }
+        .se-trt  .se-pill-input:checked + .se-pill-tag  { background: #764ba2; color: #fff; }
+        .se-nad .se-pill-tag  { color: #11998e; border-color: #11998e; background: #edfaf7; }
+        .se-nad  .se-pill-input:checked + .se-pill-tag  { background: #11998e; color: #fff; }
+        .se-supp .se-pill-tag { color: #e65100; border-color: #e65100; background: #fff8f0; }
+        .se-supp .se-pill-input:checked + .se-pill-tag  { background: #e65100; color: #fff; }
+        .se-gen .se-pill-tag  { color: #5a6370; border-color: #adb5bd; background: #f8f9fa; }
+        .se-gen  .se-pill-input:checked + .se-pill-tag  { background: #5a6370; color: #fff; }
+
         /* Sobriety Tracker */
         .sobriety-grid {
             display: flex;
@@ -2853,248 +2876,95 @@
 
                 <!-- Side Effects Section -->
                 <div class="modal-section">
-                    <h3>Side Effects (check any you're experiencing)</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
+                    <h3>Side Effects</h3>
 
-                        <!-- TRT -->
-                        <div style="background: #f5f0ff; padding: 15px; border-radius: 10px; border-left: 4px solid #764ba2;">
-                            <div style="font-weight: 600; color: #764ba2; margin-bottom: 10px; font-size: 0.9em;">💉 TRT</div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-acne" style="width: 16px; height: 16px;"> Acne/oily skin
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-hairchanges" style="width: 16px; height: 16px;"> Hair thinning/loss
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-moodswings" style="width: 16px; height: 16px;"> Mood swings
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-injection-pain" style="width: 16px; height: 16px;"> Injection site pain
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-bloating" style="width: 16px; height: 16px;"> Water retention
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-voice" style="width: 16px; height: 16px;"> Voice changes
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-bodyhair" style="width: 16px; height: 16px;"> Body hair growth
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-irritability" style="width: 16px; height: 16px;"> Irritability
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-trt-nightsweats" style="width: 16px; height: 16px;"> Night sweats
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-trt-breast" style="width: 16px; height: 16px;"> Breast tenderness
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-trt-itching" style="width: 16px; height: 16px;"> Itching
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-trt-snoring" style="width: 16px; height: 16px;"> Snoring/sleep apnea
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-trt-aggression" style="width: 16px; height: 16px;"> Aggression
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-trt-bp" style="width: 16px; height: 16px;"> High blood pressure
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-trt-edema" style="width: 16px; height: 16px;"> Swelling/edema
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-trt-libido-increase" style="width: 16px; height: 16px;"> Libido increase
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-trt-libido-decrease" style="width: 16px; height: 16px;"> Libido decrease
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-trt-clitoral" style="width: 16px; height: 16px;"> Clitoral enlargement
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-trt-vaginal-dryness" style="width: 16px; height: 16px;"> Vaginal dryness
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-trt-arousal-changes" style="width: 16px; height: 16px;"> Arousal changes
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-trt-orgasm-changes" style="width: 16px; height: 16px;"> Orgasm changes
-                                </label>
-                            </div>
+                    <div class="se-section se-trt">
+                        <div class="se-section-label" style="color:#764ba2;">💉 TRT</div>
+                        <div class="se-pills">
+                            <input type="checkbox" class="se-pill-input" id="modal-se-acne"><label class="se-pill-tag" for="modal-se-acne">Acne/oily skin</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-hairchanges"><label class="se-pill-tag" for="modal-se-hairchanges">Hair thinning</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-moodswings"><label class="se-pill-tag" for="modal-se-moodswings">Mood swings</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-injection-pain"><label class="se-pill-tag" for="modal-se-injection-pain">Injection pain</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-bloating"><label class="se-pill-tag" for="modal-se-bloating">Water retention</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-voice"><label class="se-pill-tag" for="modal-se-voice">Voice changes</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-bodyhair"><label class="se-pill-tag" for="modal-se-bodyhair">Body hair growth</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-irritability"><label class="se-pill-tag" for="modal-se-irritability">Irritability</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-trt-nightsweats"><label class="se-pill-tag" for="modal-se-trt-nightsweats">Night sweats</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-trt-breast"><label class="se-pill-tag" for="modal-se-trt-breast">Breast tenderness</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-trt-itching"><label class="se-pill-tag" for="modal-se-trt-itching">Itching</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-trt-snoring"><label class="se-pill-tag" for="modal-se-trt-snoring">Snoring</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-trt-aggression"><label class="se-pill-tag" for="modal-se-trt-aggression">Aggression</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-trt-bp"><label class="se-pill-tag" for="modal-se-trt-bp">High blood pressure</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-trt-edema"><label class="se-pill-tag" for="modal-se-trt-edema">Swelling/edema</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-trt-libido-increase"><label class="se-pill-tag" for="modal-se-trt-libido-increase">Libido increase</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-trt-libido-decrease"><label class="se-pill-tag" for="modal-se-trt-libido-decrease">Libido decrease</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-trt-clitoral"><label class="se-pill-tag" for="modal-se-trt-clitoral">Clitoral enlargement</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-trt-vaginal-dryness"><label class="se-pill-tag" for="modal-se-trt-vaginal-dryness">Vaginal dryness</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-trt-arousal-changes"><label class="se-pill-tag" for="modal-se-trt-arousal-changes">Arousal changes</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-trt-orgasm-changes"><label class="se-pill-tag" for="modal-se-trt-orgasm-changes">Orgasm changes</label>
                         </div>
-
-                        <!-- NAD+ -->
-                        <div style="background: #e8f8f5; padding: 15px; border-radius: 10px; border-left: 4px solid #11998e;">
-                            <div style="font-weight: 600; color: #11998e; margin-bottom: 10px; font-size: 0.9em;">💉 NAD+</div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-flushing" style="width: 16px; height: 16px;"> Flushing/warmth
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-chest-tightness" style="width: 16px; height: 16px;"> Chest tightness
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-nad-nausea" style="width: 16px; height: 16px;"> Nausea
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-lightheaded" style="width: 16px; height: 16px;"> Lightheaded
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-cramping" style="width: 16px; height: 16px;"> Cramping
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-bruising" style="width: 16px; height: 16px;"> Bruising at site
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-nad-headache" style="width: 16px; height: 16px;"> Headache
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-nad-palpitations" style="width: 16px; height: 16px;"> Heart palpitations
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-nad-tingling" style="width: 16px; height: 16px;"> Tingling/numbness
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-nad-muscleache" style="width: 16px; height: 16px;"> Muscle aches
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Iron & Supplements -->
-                        <div style="background: #fff8f0; padding: 15px; border-radius: 10px; border-left: 4px solid #e65100;">
-                            <div style="font-weight: 600; color: #e65100; margin-bottom: 10px; font-size: 0.9em;">💊 Iron / Vitamins</div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-constipation" style="width: 16px; height: 16px;"> Constipation
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-stomach" style="width: 16px; height: 16px;"> Stomach cramps
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-nausea" style="width: 16px; height: 16px;"> Nausea
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-darkstool" style="width: 16px; height: 16px;"> Dark stool
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-metallic" style="width: 16px; height: 16px;"> Metallic taste
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-heartburn" style="width: 16px; height: 16px;"> Heartburn
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-iron-diarrhea" style="width: 16px; height: 16px;"> Diarrhea
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-iron-appetiteloss" style="width: 16px; height: 16px;"> Loss of appetite
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Creatine -->
-                        <div style="background: #e3f2fd; padding: 15px; border-radius: 10px; border-left: 4px solid #1565c0;">
-                            <div style="font-weight: 600; color: #1565c0; margin-bottom: 10px; font-size: 0.9em;">💪 Creatine</div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-cr-bloating" style="width: 16px; height: 16px;"> Bloating/water weight
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-cr-stomach" style="width: 16px; height: 16px;"> Stomach upset
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-cr-cramps" style="width: 16px; height: 16px;"> Muscle cramps
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-cr-nausea" style="width: 16px; height: 16px;"> Nausea
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-cr-diarrhea" style="width: 16px; height: 16px;"> Diarrhea
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-cr-thirst" style="width: 16px; height: 16px;"> Increased thirst
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Magnesium -->
-                        <div style="background: #f1f8e9; padding: 15px; border-radius: 10px; border-left: 4px solid #558b2f;">
-                            <div style="font-weight: 600; color: #558b2f; margin-bottom: 10px; font-size: 0.9em;">🪨 Magnesium</div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-mag-diarrhea" style="width: 16px; height: 16px;"> Diarrhea/loose stools
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-mag-cramps" style="width: 16px; height: 16px;"> Stomach cramps
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-mag-nausea" style="width: 16px; height: 16px;"> Nausea
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-mag-drowsiness" style="width: 16px; height: 16px;"> Drowsiness
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-mag-lowbp" style="width: 16px; height: 16px;"> Low blood pressure
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-mag-weakness" style="width: 16px; height: 16px;"> Muscle weakness
-                                </label>
-                            </div>
-                        </div>
-
                     </div>
 
-                    <!-- General - full width -->
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 4px solid #6c757d; margin-top: 12px;">
-                        <div style="font-weight: 600; color: #6c757d; margin-bottom: 10px; font-size: 0.9em;">General</div>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 6px;">
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                <input type="checkbox" id="modal-se-headache" style="width: 16px; height: 16px;"> Headache
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                <input type="checkbox" id="modal-se-fatigue" style="width: 16px; height: 16px;"> Fatigue
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                <input type="checkbox" id="modal-se-dizziness" style="width: 16px; height: 16px;"> Dizziness
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                <input type="checkbox" id="modal-se-hotflash" style="width: 16px; height: 16px;"> Hot flash
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                <input type="checkbox" id="modal-se-brainfog" style="width: 16px; height: 16px;"> Brain fog
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                <input type="checkbox" id="modal-se-anxiety" style="width: 16px; height: 16px;"> Anxiety
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                <input type="checkbox" id="modal-se-jointpain" style="width: 16px; height: 16px;"> Joint pain
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                <input type="checkbox" id="modal-se-musclecramps" style="width: 16px; height: 16px;"> Muscle cramps
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                <input type="checkbox" id="modal-se-nightsweats" style="width: 16px; height: 16px;"> Night sweats
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                <input type="checkbox" id="modal-se-dryskin" style="width: 16px; height: 16px;"> Dry skin
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                <input type="checkbox" id="modal-se-chestpain" style="width: 16px; height: 16px;"> Chest pain
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                <input type="checkbox" id="modal-se-shortbreath" style="width: 16px; height: 16px;"> Shortness of breath
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                <input type="checkbox" id="modal-se-eye-pressure" style="width: 16px; height: 16px;"> Eye pressure
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                <input type="checkbox" id="modal-se-eye-blurry" style="width: 16px; height: 16px;"> Eye blurriness
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                <input type="checkbox" id="modal-se-double-vision" style="width: 16px; height: 16px;"> Double vision
-                            </label>
+                    <div class="se-section se-nad">
+                        <div class="se-section-label" style="color:#11998e;">💉 NAD+</div>
+                        <div class="se-pills">
+                            <input type="checkbox" class="se-pill-input" id="modal-se-flushing"><label class="se-pill-tag" for="modal-se-flushing">Flushing/warmth</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-chest-tightness"><label class="se-pill-tag" for="modal-se-chest-tightness">Chest tightness</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-nad-nausea"><label class="se-pill-tag" for="modal-se-nad-nausea">Nausea</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-lightheaded"><label class="se-pill-tag" for="modal-se-lightheaded">Lightheaded</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-cramping"><label class="se-pill-tag" for="modal-se-cramping">Cramping</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-bruising"><label class="se-pill-tag" for="modal-se-bruising">Bruising at site</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-nad-headache"><label class="se-pill-tag" for="modal-se-nad-headache">Headache</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-nad-palpitations"><label class="se-pill-tag" for="modal-se-nad-palpitations">Heart palpitations</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-nad-tingling"><label class="se-pill-tag" for="modal-se-nad-tingling">Tingling/numbness</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-nad-muscleache"><label class="se-pill-tag" for="modal-se-nad-muscleache">Muscle aches</label>
+                        </div>
+                    </div>
+
+                    <div class="se-section se-supp">
+                        <div class="se-section-label" style="color:#e65100;">💊 Supplements (Iron · Creatine · Magnesium)</div>
+                        <div class="se-pills">
+                            <input type="checkbox" class="se-pill-input" id="modal-se-constipation"><label class="se-pill-tag" for="modal-se-constipation">Constipation</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-stomach"><label class="se-pill-tag" for="modal-se-stomach">Stomach cramps</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-nausea"><label class="se-pill-tag" for="modal-se-nausea">Nausea</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-darkstool"><label class="se-pill-tag" for="modal-se-darkstool">Dark stool</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-metallic"><label class="se-pill-tag" for="modal-se-metallic">Metallic taste</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-heartburn"><label class="se-pill-tag" for="modal-se-heartburn">Heartburn</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-iron-diarrhea"><label class="se-pill-tag" for="modal-se-iron-diarrhea">Diarrhea</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-iron-appetiteloss"><label class="se-pill-tag" for="modal-se-iron-appetiteloss">Loss of appetite</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-cr-bloating"><label class="se-pill-tag" for="modal-se-cr-bloating">Bloating</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-cr-stomach"><label class="se-pill-tag" for="modal-se-cr-stomach">Stomach upset</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-cr-cramps"><label class="se-pill-tag" for="modal-se-cr-cramps">Muscle cramps</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-cr-nausea"><label class="se-pill-tag" for="modal-se-cr-nausea">Nausea (creatine)</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-cr-diarrhea"><label class="se-pill-tag" for="modal-se-cr-diarrhea">Diarrhea (creatine)</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-cr-thirst"><label class="se-pill-tag" for="modal-se-cr-thirst">Increased thirst</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-mag-diarrhea"><label class="se-pill-tag" for="modal-se-mag-diarrhea">Loose stools</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-mag-cramps"><label class="se-pill-tag" for="modal-se-mag-cramps">Stomach cramps (mag)</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-mag-nausea"><label class="se-pill-tag" for="modal-se-mag-nausea">Nausea (mag)</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-mag-drowsiness"><label class="se-pill-tag" for="modal-se-mag-drowsiness">Drowsiness</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-mag-lowbp"><label class="se-pill-tag" for="modal-se-mag-lowbp">Low blood pressure</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-mag-weakness"><label class="se-pill-tag" for="modal-se-mag-weakness">Muscle weakness</label>
+                        </div>
+                    </div>
+
+                    <div class="se-section se-gen">
+                        <div class="se-section-label" style="color:#5a6370;">General</div>
+                        <div class="se-pills">
+                            <input type="checkbox" class="se-pill-input" id="modal-se-headache"><label class="se-pill-tag" for="modal-se-headache">Headache</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-fatigue"><label class="se-pill-tag" for="modal-se-fatigue">Fatigue</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-dizziness"><label class="se-pill-tag" for="modal-se-dizziness">Dizziness</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-hotflash"><label class="se-pill-tag" for="modal-se-hotflash">Hot flash</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-brainfog"><label class="se-pill-tag" for="modal-se-brainfog">Brain fog</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-anxiety"><label class="se-pill-tag" for="modal-se-anxiety">Anxiety</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-jointpain"><label class="se-pill-tag" for="modal-se-jointpain">Joint pain</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-musclecramps"><label class="se-pill-tag" for="modal-se-musclecramps">Muscle cramps</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-nightsweats"><label class="se-pill-tag" for="modal-se-nightsweats">Night sweats</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-dryskin"><label class="se-pill-tag" for="modal-se-dryskin">Dry skin</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-chestpain"><label class="se-pill-tag" for="modal-se-chestpain">Chest pain</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-shortbreath"><label class="se-pill-tag" for="modal-se-shortbreath">Shortness of breath</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-eye-pressure"><label class="se-pill-tag" for="modal-se-eye-pressure">Eye pressure</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-eye-blurry"><label class="se-pill-tag" for="modal-se-eye-blurry">Eye blurriness</label>
+                            <input type="checkbox" class="se-pill-input" id="modal-se-double-vision"><label class="se-pill-tag" for="modal-se-double-vision">Double vision</label>
                         </div>
                     </div>
                 </div>
