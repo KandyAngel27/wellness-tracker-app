@@ -2856,55 +2856,6 @@
                     <h3>Side Effects (check any you're experiencing)</h3>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
 
-                        <!-- Wellbutrin -->
-                        <div style="background: #f0f3ff; padding: 15px; border-radius: 10px; border-left: 4px solid #667eea;">
-                            <div style="font-weight: 600; color: #667eea; margin-bottom: 10px; font-size: 0.9em;">💊 Wellbutrin</div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-drymouth" style="width: 16px; height: 16px;"> Dry mouth
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-appetite" style="width: 16px; height: 16px;"> Appetite changes
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-jitters" style="width: 16px; height: 16px;"> Jitters/restless
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-insomnia" style="width: 16px; height: 16px;"> Insomnia
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-sweating" style="width: 16px; height: 16px;"> Sweating
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-tinnitus" style="width: 16px; height: 16px;"> Ringing in ears
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-tremor" style="width: 16px; height: 16px;"> Tremor/shaking
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-rapid-heart" style="width: 16px; height: 16px;"> Rapid heartbeat
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-wb-constipation" style="width: 16px; height: 16px;"> Constipation
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-wb-weightchange" style="width: 16px; height: 16px;"> Weight change
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-wb-blurredvision" style="width: 16px; height: 16px;"> Blurred vision
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-wb-agitation" style="width: 16px; height: 16px;"> Agitation
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-wb-rash" style="width: 16px; height: 16px;"> Skin rash
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
-                                    <input type="checkbox" id="modal-se-wb-seizure" style="width: 16px; height: 16px;"> Seizure warning signs
-                                </label>
-                            </div>
-                        </div>
-
                         <!-- TRT -->
                         <div style="background: #f5f0ff; padding: 15px; border-radius: 10px; border-left: 4px solid #764ba2;">
                             <div style="font-weight: 600; color: #764ba2; margin-bottom: 10px; font-size: 0.9em;">💉 TRT</div>
@@ -3135,6 +3086,15 @@
                             <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
                                 <input type="checkbox" id="modal-se-shortbreath" style="width: 16px; height: 16px;"> Shortness of breath
                             </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                <input type="checkbox" id="modal-se-eye-pressure" style="width: 16px; height: 16px;"> Eye pressure
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                <input type="checkbox" id="modal-se-eye-blurry" style="width: 16px; height: 16px;"> Eye blurriness
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em;">
+                                <input type="checkbox" id="modal-se-double-vision" style="width: 16px; height: 16px;"> Double vision
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -3196,21 +3156,6 @@
 
         // Side effect field mappings (element ID -> data key)
         const seFields = {
-            // Wellbutrin
-            'modal-se-drymouth': 'dryMouth',
-            'modal-se-appetite': 'appetite',
-            'modal-se-jitters': 'jitters',
-            'modal-se-insomnia': 'insomnia',
-            'modal-se-sweating': 'sweating',
-            'modal-se-tinnitus': 'tinnitus',
-            'modal-se-tremor': 'tremor',
-            'modal-se-rapid-heart': 'rapidHeart',
-            'modal-se-wb-constipation': 'wbConstipation',
-            'modal-se-wb-weightchange': 'wbWeightChange',
-            'modal-se-wb-blurredvision': 'wbBlurredVision',
-            'modal-se-wb-agitation': 'wbAgitation',
-            'modal-se-wb-rash': 'wbRash',
-            'modal-se-wb-seizure': 'wbSeizureWarning',
             // TRT
             'modal-se-acne': 'acne',
             'modal-se-hairchanges': 'hairChanges',
@@ -3279,25 +3224,14 @@
             'modal-se-nightsweats': 'nightSweats',
             'modal-se-dryskin': 'drySkin',
             'modal-se-chestpain': 'chestPain',
-            'modal-se-shortbreath': 'shortBreath'
+            'modal-se-shortbreath': 'shortBreath',
+            'modal-se-eye-pressure': 'eyePressure',
+            'modal-se-eye-blurry': 'eyeBlurry',
+            'modal-se-double-vision': 'doubleVision'
         };
 
         // Human-readable labels and categories for side effects
         const seLabels = {
-            dryMouth: { label: 'Dry mouth', category: 'Wellbutrin', color: '#667eea' },
-            appetite: { label: 'Appetite changes', category: 'Wellbutrin', color: '#667eea' },
-            jitters: { label: 'Jitters/restless', category: 'Wellbutrin', color: '#667eea' },
-            insomnia: { label: 'Insomnia', category: 'Wellbutrin', color: '#667eea' },
-            sweating: { label: 'Sweating', category: 'Wellbutrin', color: '#667eea' },
-            tinnitus: { label: 'Ringing in ears', category: 'Wellbutrin', color: '#667eea' },
-            tremor: { label: 'Tremor/shaking', category: 'Wellbutrin', color: '#667eea' },
-            rapidHeart: { label: 'Rapid heartbeat', category: 'Wellbutrin', color: '#667eea' },
-            wbConstipation: { label: 'Constipation', category: 'Wellbutrin', color: '#667eea' },
-            wbWeightChange: { label: 'Weight change', category: 'Wellbutrin', color: '#667eea' },
-            wbBlurredVision: { label: 'Blurred vision', category: 'Wellbutrin', color: '#667eea' },
-            wbAgitation: { label: 'Agitation', category: 'Wellbutrin', color: '#667eea' },
-            wbRash: { label: 'Skin rash', category: 'Wellbutrin', color: '#667eea' },
-            wbSeizureWarning: { label: 'Seizure warning', category: 'Wellbutrin', color: '#667eea' },
             acne: { label: 'Acne/oily skin', category: 'TRT', color: '#764ba2' },
             hairChanges: { label: 'Hair thinning/loss', category: 'TRT', color: '#764ba2' },
             moodSwings: { label: 'Mood swings', category: 'TRT', color: '#764ba2' },
@@ -3360,7 +3294,10 @@
             nightSweats: { label: 'Night sweats', category: 'General', color: '#6c757d' },
             drySkin: { label: 'Dry skin', category: 'General', color: '#6c757d' },
             chestPain: { label: 'Chest pain', category: 'General', color: '#6c757d' },
-            shortBreath: { label: 'Shortness of breath', category: 'General', color: '#6c757d' }
+            shortBreath: { label: 'Shortness of breath', category: 'General', color: '#6c757d' },
+            eyePressure: { label: 'Eye pressure', category: 'General', color: '#6c757d' },
+            eyeBlurry: { label: 'Eye blurriness', category: 'General', color: '#6c757d' },
+            doubleVision: { label: 'Double vision', category: 'General', color: '#6c757d' }
         };
 
         let currentMonth = new Date().getMonth();
